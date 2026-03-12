@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T3RT77HJ');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESL 주간 산업 동향 리포트</title>
@@ -448,6 +455,10 @@
     </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T3RT77HJ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <!-- LOGIN OVERLAY -->
 <div id="loginOverlay">
@@ -1324,10 +1335,21 @@ const SESS_PREFIX = 'esl_sess_';
 
 function trackView(weekId) {
     const sessKey = SESS_PREFIX + weekId;
-    if (sessionStorage.getItem(sessKey)) return; // 이미 이 세션에서 조회함
-    const prev = getViewCount(weekId);
-    localStorage.setItem(VIEW_PREFIX + weekId, prev + 1);
-    sessionStorage.setItem(sessKey, '1');
+    const isNew = !sessionStorage.getItem(sessKey);
+    if (isNew) {
+        const prev = getViewCount(weekId);
+        localStorage.setItem(VIEW_PREFIX + weekId, prev + 1);
+        sessionStorage.setItem(sessKey, '1');
+    }
+    // GTM: 주간 리포트 조회 이벤트 (매번 전송)
+    window.dataLayer = window.dataLayer || [];
+    const report = WEEKLY_REPORTS.find(r => r.weekId === weekId);
+    window.dataLayer.push({
+        event: 'esl_report_view',
+        week_id: weekId,
+        week_label: report ? report.weekLabel : weekId,
+        is_new_session_view: isNew
+    });
 }
 
 function getViewCount(weekId) {
@@ -1401,6 +1423,9 @@ function doLogin() {
     if (!valid) return;
 
     sessionStorage.setItem(AUTH_KEY, 'true');
+    // GTM: 로그인 이벤트
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'esl_login', user_email: document.getElementById('loginEmail').value.trim().toLowerCase() });
     const overlay = document.getElementById('loginOverlay');
     overlay.style.transition = 'opacity 0.3s';
     overlay.style.opacity = '0';
