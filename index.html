@@ -199,7 +199,8 @@
             border-color: var(--blue);
             background: var(--blue-light);
         }
-        .stat-icon { font-size: 1.3rem; margin-bottom: 6px; }
+        .stat-icon { font-size: 1.3rem; margin-bottom: 6px; line-height: 0; display: flex; align-items: center; justify-content: center; }
+        .stat-icon svg { width: 32px; height: 32px; display: block; }
         .stat-count { font-size: 1.6rem; font-weight: 800; color: var(--blue); letter-spacing: -0.5px; }
         .stat-label { font-size: 0.7rem; color: var(--text-tertiary); margin-top: 3px; line-height: 1.3; font-weight: 500; }
 
@@ -1244,36 +1245,48 @@ const WEEKLY_REPORTS = [
 // END_WEEKLY_REPORTS - DO NOT MODIFY THIS LINE
 // =====================================================================
 
+// ── SECTION 3D ICONS ──────────────────────────────────────────────────────
+const ICON_GLOBE = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="i1bg" cx="38%" cy="32%" r="65%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#2F006D"/></radialGradient></defs><circle cx="16" cy="16" r="11" fill="url(#i1bg)" filter="drop-shadow(0 2px 3px rgba(47,0,109,0.35))"/><ellipse cx="16" cy="16" rx="11" ry="4" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="0.9"/><line x1="16" y1="5" x2="16" y2="27" stroke="rgba(255,255,255,0.3)" stroke-width="0.9"/><path d="M16 5 Q22.5 16 16 27" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.7"/><path d="M16 5 Q9.5 16 16 27" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.7"/><path d="M7.5 11.5 Q16 9 24.5 11.5" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.7"/><path d="M7.5 20.5 Q16 23 24.5 20.5" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.7"/><circle cx="16" cy="16" r="11" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.9"/><ellipse cx="12.5" cy="11" rx="3.5" ry="2" fill="rgba(255,255,255,0.28)"/></svg>`;
+
+const ICON_STORE = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="i2t" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C084FC"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient><linearGradient id="i2f" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#9333EA"/><stop offset="100%" stop-color="#2F006D"/></linearGradient><linearGradient id="i2r" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6B21A8"/><stop offset="100%" stop-color="#1e0047"/></linearGradient></defs><path d="M4 16 L16 10 L28 16 L16 22 Z" fill="url(#i2t)" stroke="rgba(255,255,255,0.3)" stroke-width="0.6" filter="drop-shadow(0 2px 4px rgba(47,0,109,0.4))"/><path d="M4 16 L4 24 L16 28 L16 22 Z" fill="url(#i2f)" stroke="rgba(255,255,255,0.2)" stroke-width="0.6"/><path d="M28 16 L28 24 L16 28 L16 22 Z" fill="url(#i2r)" stroke="rgba(255,255,255,0.15)" stroke-width="0.6"/><rect x="5.5" y="17.5" width="3" height="3.5" rx="0.5" fill="rgba(255,255,255,0.5)"/><rect x="9.5" y="17.5" width="3" height="3.5" rx="0.5" fill="rgba(255,255,255,0.45)"/><rect x="7" y="23" width="2.5" height="2.5" rx="0.4" fill="rgba(255,255,255,0.35)"/><rect x="19" y="17.5" width="2.5" height="3" rx="0.5" fill="rgba(255,255,255,0.3)"/><rect x="22.5" y="17.5" width="2.5" height="3" rx="0.5" fill="rgba(255,255,255,0.25)"/><path d="M4 16 L16 10 L28 16" stroke="rgba(255,255,255,0.75)" stroke-width="0.9" fill="none"/></svg>`;
+
+const ICON_CORP = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="i3t" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#DDD6FE"/><stop offset="100%" stop-color="#9333EA"/></linearGradient><linearGradient id="i3f" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#A855F7"/><stop offset="100%" stop-color="#3B0764"/></linearGradient><linearGradient id="i3r" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7E22CE"/><stop offset="100%" stop-color="#1e0047"/></linearGradient></defs><path d="M10 9 L16 6 L22 9 L16 12 Z" fill="url(#i3t)" stroke="rgba(255,255,255,0.4)" stroke-width="0.6" filter="drop-shadow(0 2px 4px rgba(47,0,109,0.4))"/><path d="M10 9 L10 26 L16 29 L16 12 Z" fill="url(#i3f)" stroke="rgba(255,255,255,0.2)" stroke-width="0.6"/><path d="M22 9 L22 26 L16 29 L16 12 Z" fill="url(#i3r)" stroke="rgba(255,255,255,0.15)" stroke-width="0.6"/><rect x="11" y="14" width="2" height="2" rx="0.3" fill="rgba(255,255,255,0.55)"/><rect x="13.5" y="14" width="2" height="2" rx="0.3" fill="rgba(255,255,255,0.45)"/><rect x="11" y="17" width="2" height="2" rx="0.3" fill="rgba(255,255,255,0.45)"/><rect x="13.5" y="17" width="2" height="2" rx="0.3" fill="rgba(255,255,255,0.55)"/><rect x="11" y="20" width="2" height="2" rx="0.3" fill="rgba(255,255,255,0.35)"/><rect x="13.5" y="20" width="2" height="2" rx="0.3" fill="rgba(255,255,255,0.35)"/><rect x="17.5" y="14" width="1.8" height="2" rx="0.3" fill="rgba(255,255,255,0.28)"/><rect x="20" y="14" width="1.8" height="2" rx="0.3" fill="rgba(255,255,255,0.22)"/><rect x="17.5" y="17" width="1.8" height="2" rx="0.3" fill="rgba(255,255,255,0.22)"/><rect x="20" y="17" width="1.8" height="2" rx="0.3" fill="rgba(255,255,255,0.18)"/><path d="M10 9 L16 6 L22 9" stroke="rgba(255,255,255,0.8)" stroke-width="0.9" fill="none"/></svg>`;
+
+const ICON_SOLUTION = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="i4c" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#E9D5FF"/><stop offset="100%" stop-color="#7C3AED"/></radialGradient><radialGradient id="i4n" cx="40%" cy="35%" r="55%"><stop offset="0%" stop-color="#C084FC"/><stop offset="100%" stop-color="#4C1D95"/></radialGradient></defs><line x1="16" y1="15" x2="7" y2="9" stroke="rgba(192,132,252,0.65)" stroke-width="1.8" stroke-linecap="round"/><line x1="16" y1="15" x2="25" y2="9" stroke="rgba(192,132,252,0.65)" stroke-width="1.8" stroke-linecap="round"/><line x1="16" y1="15" x2="7" y2="23" stroke="rgba(192,132,252,0.45)" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="15" x2="25" y2="23" stroke="rgba(192,132,252,0.45)" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="9" r="3.5" fill="url(#i4n)" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/><circle cx="25" cy="9" r="3.5" fill="url(#i4n)" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/><circle cx="7" cy="23" r="3" fill="url(#i4n)" stroke="rgba(255,255,255,0.45)" stroke-width="0.8"/><circle cx="25" cy="23" r="3" fill="url(#i4n)" stroke="rgba(255,255,255,0.45)" stroke-width="0.8"/><circle cx="16" cy="15" r="5.5" fill="url(#i4c)" stroke="rgba(255,255,255,0.65)" stroke-width="1" filter="drop-shadow(0 2px 4px rgba(47,0,109,0.4))"/><ellipse cx="14.5" cy="13" rx="2" ry="1.2" fill="rgba(255,255,255,0.4)"/></svg>`;
+
+const ICON_TECH = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="i5t" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#DDD6FE"/><stop offset="100%" stop-color="#9333EA"/></linearGradient><linearGradient id="i5f" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#A855F7"/><stop offset="100%" stop-color="#3B0764"/></linearGradient><linearGradient id="i5r" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6B21A8"/><stop offset="100%" stop-color="#1e0047"/></linearGradient></defs><path d="M8 13 L16 9 L24 13 L16 17 Z" fill="url(#i5t)" stroke="rgba(255,255,255,0.4)" stroke-width="0.6" filter="drop-shadow(0 2px 4px rgba(47,0,109,0.4))"/><path d="M8 13 L8 21 L16 25 L16 17 Z" fill="url(#i5f)" stroke="rgba(255,255,255,0.2)" stroke-width="0.6"/><path d="M24 13 L24 21 L16 25 L16 17 Z" fill="url(#i5r)" stroke="rgba(255,255,255,0.15)" stroke-width="0.6"/><line x1="9.5" y1="14.5" x2="5" y2="17" stroke="rgba(192,132,252,0.75)" stroke-width="1" stroke-linecap="round"/><line x1="9.5" y1="17" x2="5" y2="19.5" stroke="rgba(192,132,252,0.75)" stroke-width="1" stroke-linecap="round"/><line x1="9.5" y1="19.5" x2="5" y2="22" stroke="rgba(192,132,252,0.55)" stroke-width="1" stroke-linecap="round"/><line x1="22.5" y1="14.5" x2="27" y2="17" stroke="rgba(192,132,252,0.65)" stroke-width="1" stroke-linecap="round"/><line x1="22.5" y1="17" x2="27" y2="19.5" stroke="rgba(192,132,252,0.65)" stroke-width="1" stroke-linecap="round"/><line x1="22.5" y1="19.5" x2="27" y2="22" stroke="rgba(192,132,252,0.45)" stroke-width="1" stroke-linecap="round"/><line x1="13" y1="11" x2="19" y2="11" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/><circle cx="16" cy="13" r="1.8" fill="rgba(255,255,255,0.65)"/><path d="M8 13 L16 9 L24 13" stroke="rgba(255,255,255,0.8)" stroke-width="0.9" fill="none"/></svg>`;
+// ── END SECTION ICONS ─────────────────────────────────────────────────────
+
 const SECTION_CONFIG = [
     {
         key: 'industryTrends',
         label: '글로벌 산업 동향',
-        icon: '🌐',
+        icon: ICON_GLOBE,
         description: '글로벌 ESL 산업 전반의 뉴스 및 동향'
     },
     {
         key: 'customerAdoption',
         label: '고객사 도입 동향',
-        icon: '🏪',
+        icon: ICON_STORE,
         description: '산업 세그먼트별 ESL 도입 고객사 현황',
         isSegmented: true
     },
     {
         key: 'majorCompanies',
         label: '주요 기업 동향',
-        icon: '🏢',
+        icon: ICON_CORP,
         description: 'SES-imagotag, Pricer, Hanshow 등 주요 ESL 기업 동향'
     },
     {
         key: 'solutionProviders',
         label: '솔루션 기업 동향',
-        icon: '⚙️',
+        icon: ICON_SOLUTION,
         description: 'ESL 관련 소프트웨어·솔루션 제공 기업 동향'
     },
     {
         key: 'technology',
         label: '기술 동향',
-        icon: '💡',
+        icon: ICON_TECH,
         description: 'ESL 관련 최신 기술·혁신·특허 동향'
     }
 ];
