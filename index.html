@@ -607,6 +607,68 @@
             letter-spacing: 0.6px;
         }
         .section-title-line { flex: 1; height: 1px; background: var(--border); }
+
+        /* ── LIKE BUTTON ── */
+        .reaction-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-light);
+        }
+        .like-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 13px 5px 10px;
+            border-radius: var(--radius-full);
+            border: 1.5px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            transition: all 0.18s;
+            font-family: inherit;
+            line-height: 1;
+        }
+        .like-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+        .like-btn.liked { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+        .like-btn svg { width: 15px; height: 15px; transition: transform 0.15s; flex-shrink: 0; }
+        .like-btn.liked svg { transform: scale(1.15); }
+        .like-btn:active svg { transform: scale(0.9); }
+        .like-count { min-width: 8px; }
+
+        /* ── TOAST ── */
+        .toast-wrap {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 8000;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast {
+            background: rgba(25, 25, 25, 0.95);
+            color: #fff;
+            padding: 11px 22px;
+            border-radius: var(--radius-full);
+            font-size: 0.84rem;
+            font-weight: 600;
+            letter-spacing: -0.1px;
+            opacity: 0;
+            transform: translateY(10px) scale(0.96);
+            transition: opacity 0.22s, transform 0.22s;
+            white-space: nowrap;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0) scale(1); }
     </style>
 </head>
 <body>
@@ -614,6 +676,9 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T3RT77HJ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toastWrap"></div>
 
 <!-- LOGIN OVERLAY -->
 <div id="loginOverlay">
@@ -803,6 +868,125 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 // =====================================================================
+// =====================================================================
+// REACTION (LIKE) SYSTEM
+// =====================================================================
+// 모든 사용자가 공유하는 좋아요 카운트를 위해 Firebase Realtime Database를 사용합니다.
+// 설정 방법:
+//   1. https://console.firebase.google.com 에서 프로젝트 생성
+//   2. Realtime Database → 만들기 (테스트 모드 선택)
+//   3. 아래 FIREBASE_DB_URL 에 데이터베이스 URL 입력
+//      (예: https://my-project-default-rtdb.firebaseio.com)
+// 미설정 시 개인 브라우저 기준으로만 카운트가 저장됩니다.
+
+const FIREBASE_DB_URL = ''; // ← 여기에 Firebase Realtime Database URL 입력
+
+// 기사 고유 ID 생성 (URL + 제목 해시)
+function getArticleId(article) {
+    const raw = (article.sourceUrl || '') + (article.title || '') + (article.pubDate || '');
+    let h = 0;
+    for (let i = 0; i < raw.length; i++) {
+        h = Math.imul(31, h) + raw.charCodeAt(i) | 0;
+    }
+    return 'a' + Math.abs(h).toString(36);
+}
+
+// 로컬 like 상태 (이 브라우저 사용자가 좋아요 눌렀는지)
+function isLikedLocally(articleId) {
+    try {
+        const likes = JSON.parse(localStorage.getItem('esl_likes') || '{}');
+        return !!likes[articleId];
+    } catch { return false; }
+}
+function setLikedLocally(articleId, val) {
+    try {
+        const likes = JSON.parse(localStorage.getItem('esl_likes') || '{}');
+        if (val) likes[articleId] = 1; else delete likes[articleId];
+        localStorage.setItem('esl_likes', JSON.stringify(likes));
+    } catch {}
+}
+
+// Firebase REST API로 카운트 읽기/쓰기
+async function fetchReactionCount(articleId) {
+    if (!FIREBASE_DB_URL) {
+        try { return parseInt(localStorage.getItem('esl_count_' + articleId) || '0', 10); } catch { return 0; }
+    }
+    try {
+        const res = await fetch(`${FIREBASE_DB_URL}/likes/${articleId}.json`);
+        const data = await res.json();
+        return typeof data === 'number' ? data : 0;
+    } catch { return 0; }
+}
+async function saveReactionCount(articleId, count) {
+    if (!FIREBASE_DB_URL) {
+        try { localStorage.setItem('esl_count_' + articleId, String(count)); } catch {} return;
+    }
+    try {
+        await fetch(`${FIREBASE_DB_URL}/likes/${articleId}.json`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Math.max(0, count))
+        });
+    } catch {}
+}
+
+// 렌더링 후 카드의 카운트를 비동기로 채워넣기
+async function loadReactionCounts() {
+    const btns = document.querySelectorAll('.like-btn[data-article-id]');
+    for (const btn of btns) {
+        const id = btn.dataset.articleId;
+        const count = await fetchReactionCount(id);
+        const countEl = btn.querySelector('.like-count');
+        if (countEl) countEl.textContent = count > 0 ? count : '';
+        if (isLikedLocally(id)) btn.classList.add('liked');
+    }
+}
+
+// 좋아요 토글 핸들러
+async function toggleLike(btn, articleId) {
+    const wasLiked = isLikedLocally(articleId);
+    const currentCount = parseInt(btn.querySelector('.like-count').textContent || '0', 10);
+    const newLiked = !wasLiked;
+    const newCount = newLiked ? currentCount + 1 : Math.max(0, currentCount - 1);
+
+    // 즉시 UI 반영 (낙관적 업데이트)
+    btn.classList.toggle('liked', newLiked);
+    btn.querySelector('.like-count').textContent = newCount > 0 ? newCount : '';
+    setLikedLocally(articleId, newLiked);
+
+    // Firebase 저장 (비동기)
+    await saveReactionCount(articleId, newCount);
+
+    // 토스트 메시지
+    showToast(newLiked
+        ? '정말 도움이 되는 중요한 정보에요'
+        : '정말 중요하고 도움이 된다고는 생각하지 않아요');
+}
+
+// 토스트 표시 (3초)
+let _toastTimer = null;
+function showToast(message) {
+    const wrap = document.getElementById('toastWrap');
+    if (!wrap) return;
+    // 기존 토스트 즉시 제거
+    if (_toastTimer) { clearTimeout(_toastTimer); _toastTimer = null; }
+    wrap.innerHTML = '';
+
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.textContent = message;
+    wrap.appendChild(el);
+
+    // 다음 프레임에 show 클래스 추가 (트랜지션 발동)
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+    _toastTimer = setTimeout(() => {
+        el.classList.remove('show');
+        setTimeout(() => { wrap.innerHTML = ''; }, 250);
+    }, 3000);
+}
+// =====================================================================
+
 // WEEKLY_REPORTS DATA - DO NOT MODIFY THIS LINE
 const WEEKLY_REPORTS = [
   // ─────────────────────────────────────────────────
@@ -1520,6 +1704,8 @@ function renderReport(report) {
     const viewSummaryHTML = renderViewSummaryHTML();
 
     document.getElementById('mainContent').innerHTML = weekHeaderHTML + viewSummaryHTML + statsHTML + sectionsHTML;
+    // 렌더링 후 좋아요 카운트 비동기 로드
+    loadReactionCounts();
 }
 
 function articleCard(article) {
@@ -1552,6 +1738,16 @@ function articleCard(article) {
                         원문 보기
                     </a>
                     <span style="font-size:0.72rem;color:var(--text-tertiary);font-weight:500;">${escapeHtml(sourceDisplay)}</span>
+                </div>
+                <div class="reaction-bar">
+                    <button class="like-btn" data-article-id="${getArticleId(article)}"
+                            onclick="toggleLike(this, '${getArticleId(article)}')" title="도움이 됐어요">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/>
+                            <path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/>
+                        </svg>
+                        <span class="like-count"></span>
+                    </button>
                 </div>
             </div>
         </div>`;
