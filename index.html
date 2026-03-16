@@ -375,17 +375,17 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            color: var(--blue);
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.78rem;
-            font-weight: 700;
+            font-weight: 600;
             padding: 6px 16px;
-            border: 1.5px solid rgba(47,0,109,0.25);
+            border: 1.5px solid var(--border);
             border-radius: var(--radius-full);
             transition: all 0.15s;
-            background: var(--blue-light);
+            background: var(--bg-base);
         }
-        .source-link:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .source-link:hover { background: var(--bg-white); color: var(--text-primary); border-color: #c0c8d0; }
         .source-link svg { width: 12px; height: 12px; }
 
         /* ── EMPTY / NO-REPORT ── */
@@ -630,9 +630,10 @@
             font-size: 0.78rem;
             font-weight: 700;
             color: var(--text-tertiary);
-            transition: all 0.18s;
+            transition: border-color 0.22s, color 0.22s, background 0.22s, padding 0.22s;
             font-family: inherit;
             line-height: 1;
+            overflow: hidden;
         }
         .like-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
         .like-btn.liked { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
@@ -640,6 +641,15 @@
         .like-btn.liked svg { transform: scale(1.15); }
         .like-btn:active svg { transform: scale(0.9); }
         .like-count { min-width: 8px; }
+        .like-label {
+            max-width: 0;
+            overflow: hidden;
+            opacity: 0;
+            white-space: nowrap;
+            transition: max-width 0.28s ease, opacity 0.2s ease 0.06s;
+            display: inline-block;
+        }
+        .like-btn:hover .like-label { max-width: 200px; opacity: 1; }
 
         /* ── TOAST ── */
         .toast-wrap {
@@ -1376,6 +1386,7 @@ function articleCard(article) {
                             <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/>
                             <path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/>
                         </svg>
+                        <span class="like-label">이 기사가 큰 도움이 되었어요!</span>
                         <span class="like-count"></span>
                     </button>
                 </div>
