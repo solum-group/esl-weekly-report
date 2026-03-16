@@ -918,17 +918,26 @@ async function fetchReactionCount(articleId) {
         return typeof data === 'number' ? data : 0;
     } catch { return 0; }
 }
-async function saveReactionCount(articleId, count) {
+// Firebase 서버사이드 increment/decrement — 동시 클릭 시 정확한 합산 보장
+async function incrementReactionCount(articleId, delta) {
     if (!FIREBASE_DB_URL) {
-        try { localStorage.setItem('esl_count_' + articleId, String(count)); } catch {} return;
+        try {
+            const cur = parseInt(localStorage.getItem('esl_count_' + articleId) || '0', 10);
+            const next = Math.max(0, cur + delta);
+            localStorage.setItem('esl_count_' + articleId, String(next));
+            return next;
+        } catch { return 0; }
     }
     try {
-        await fetch(`${FIREBASE_DB_URL}/likes/${articleId}.json`, {
+        // Firebase REST API 서버사이드 atomic increment
+        const res = await fetch(`${FIREBASE_DB_URL}/likes/${articleId}.json`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(Math.max(0, count))
+            body: JSON.stringify({ '.sv': { 'increment': delta } })
         });
-    } catch {}
+        const newVal = await res.json();
+        return Math.max(0, typeof newVal === 'number' ? newVal : await fetchReactionCount(articleId));
+    } catch { return null; }
 }
 
 // 렌더링 후 카드의 카운트를 비동기로 채워넣기
@@ -946,17 +955,20 @@ async function loadReactionCounts() {
 // 좋아요 토글 핸들러
 async function toggleLike(btn, articleId) {
     const wasLiked = isLikedLocally(articleId);
-    const currentCount = parseInt(btn.querySelector('.like-count').textContent || '0', 10);
     const newLiked = !wasLiked;
-    const newCount = newLiked ? currentCount + 1 : Math.max(0, currentCount - 1);
+    const delta = newLiked ? 1 : -1;
 
     // 즉시 UI 반영 (낙관적 업데이트)
     btn.classList.toggle('liked', newLiked);
-    btn.querySelector('.like-count').textContent = newCount > 0 ? newCount : '';
+    const optimisticCount = Math.max(0, parseInt(btn.querySelector('.like-count').textContent || '0', 10) + delta);
+    btn.querySelector('.like-count').textContent = optimisticCount > 0 ? optimisticCount : '';
     setLikedLocally(articleId, newLiked);
 
-    // Firebase 저장 (비동기)
-    await saveReactionCount(articleId, newCount);
+    // Firebase 서버사이드 increment로 저장 후 실제 값으로 UI 보정
+    const actualCount = await incrementReactionCount(articleId, delta);
+    if (actualCount !== null) {
+        btn.querySelector('.like-count').textContent = actualCount > 0 ? actualCount : '';
+    }
 
     // 토스트 메시지
     showToast(newLiked
