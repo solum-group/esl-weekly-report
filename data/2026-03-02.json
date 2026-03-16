@@ -1,0 +1,71 @@
+{
+  "weekId": "2026-03-02",
+  "weekLabel": "2026.03.02 ~ 2026.03.08",
+  "sections": {
+    "industryTrends": [
+      {
+        "title": "SOLUM, RetailTech Japan 2026서 '리테일 인 싱크' 비전 선보여",
+        "summary": "SOLUM이 3월 3~6일 도쿄 빅사이트 'RetailTech Japan 2026'에서 **'리테일 인 싱크(Retail in Sync)'** 비전을 발표했다.\n- 일본 대형 SI 기업 **BIPROGY**와 공동 부스 운영\n- 4개 혁신 존 시연: 피부 진단 키오스크 연동 개인화 쇼핑 / ESL LED 블링킹 기반 Pick-by-Light / 선반 중량 센서 지능형 재고 관리 / SSP(Solum Store Platform) 통합 대시보드\n- RetailTech Japan은 연간 **약 3만 명** 방문, 아시아 최대 유통·IT 전문 전시회\n- 일본은 ESL 보급률이 낮아 성장 잠재력이 큰 신규 시장",
+        "implications": "[🟢 기회] BIPROGY 채널 확보로 일본 엔터프라이즈 시장 진입 발판 마련\n- 일본은 Vusion·Hanshow 대비 SOLUM 선점 여지가 있는 시장\n- **단기 액션**: 전시 리드 기반으로 이온·세븐&아이·패밀리마트 등 주요 유통업체 후속 영업 즉시 가동\n- **채널 전략**: BIPROGY를 통한 간접 수주 파이프라인 구체화 필요",
+        "pubDate": "2026-03-02",
+        "sourceUrl": "https://www.businesswire.com/news/home/20260302882713/en/SOLUM-Accelerates-Japans-Retail-DX-at-RetailTech-Japan-2026",
+        "sourceName": "Business Wire"
+      },
+      {
+        "title": "Huawei, EuroShop 2026 총결산 발표… 스마트 리테일 디지털화 가속",
+        "summary": "화웨이가 EuroShop 2026(2월 22~26일, 뒤셀도르프) 참가 결과 보고서를 3월 2일 공개했다. 전시 참관객 약 **94,000명**, 역대 최대 규모.\n- 3대 전략 축: 실시간 데이터 스마트 스토어 / 인지형 공급망 자동화 / AI 개인화 고객 경험\n- 핵심 역량 부각: Wi-Fi 6/6E·5G 사설망 기반 IoT 통합 인프라\n- **SOLUM과의 파트너십** 포함 에코시스템 확장 강조\n- 유럽 유통 시장을 화웨이의 전략적 핵심 공략 무대로 공식화",
+        "implications": "[🔵 트렌드] 대형 ICT 기업의 리테일 진입으로 네트워크+ESL 번들 솔루션이 새로운 시장 표준으로 부상 중\n- SOLUM은 이미 MWC에서 화웨이와 공동 솔루션 발표 — 단순 기술 협력을 넘어 공동 영업 채널화 필요\n- **GTM 전략**: 화웨이 유럽·아시아 엔터프라이즈 고객 네트워크를 SOLUM ESL 영업에 직접 활용하는 방안 수립\n- **리스크 점검**: 화웨이 협력이 미국·영국·호주 등 서방 시장 조달에 미치는 영향 별도 검토",
+        "pubDate": "2026-03-02",
+        "sourceUrl": "https://www.prnewswire.com/news-releases/huawei-unveils-latest-smart-retail-solutions-at-euroshop-2026-to-accelerate-digital-transformation-302700957.html",
+        "sourceName": "PR Newswire"
+      }
+    ],
+    "customerAdoption": {},
+    "majorCompanies": [
+      {
+        "title": "SOLUM & Simbe, 유럽 자율 매장 인텔리전스 협력 확대",
+        "summary": "SOLUM과 자율 선반 스캐닝 로봇 선두 기업 **Simbe(미국)**가 유럽 시장 협력 확대를 3월 4일 발표했다.\n- 통합 방식: Simbe Tally 로봇의 실시간 선반 데이터(결품·오진열·가격 불일치) → **뉴턴 ESL 자동 반영**\n- 효과: 수동 매장 감사 대폭 감소, OSA(On-Shelf Availability) 실시간 유지\n- Simbe 기존 고객: 미국 Schnucks·Giant Eagle·Wakefern 등 **500개 이상** 매장\n- EuroShop 2026을 기점으로 유럽 시장 공동 공략 본격화\n- SOLUM ESL을 '자율 재고 관리 시스템의 실행 노드'로 포지셔닝하는 핵심 레퍼런스",
+        "implications": "[🟢 기회] Simbe 통합으로 ESL 부가가치를 '자율 재고 관리'까지 확장 — 단순 가격 표시 대비 ROI 기대치 대폭 상승\n- Vusion·Hanshow가 자체 AI 플랫폼 중심인 반면, SOLUM은 **개방형 파트너 통합 전략**으로 차별화 가능\n- **단기 액션**: 유럽 대형 슈퍼마켓 체인 대상 Simbe 공동 영업 제안서 신속 개발\n- **확장 검토**: Badger Technologies·Brain Corp 등 경쟁 로봇 플랫폼과의 호환성 확보로 개방형 전략 강화",
+        "pubDate": "2026-03-04",
+        "sourceUrl": "https://www.businesswire.com/news/home/20260304620371/en/SOLUM-and-Simbe-Expand-European-Collaboration-to-Advance-Intelligent-Store-Operations",
+        "sourceName": "Business Wire"
+      },
+      {
+        "title": "Huawei & SOLUM, MWC 2026서 숍인숍 스마트 컨버지드 네트워크 솔루션 공개",
+        "summary": "화웨이와 SOLUM이 MWC 바르셀로나 2026(3월 3~6일)에서 **SiS(Shop-in-Shop) 스마트 컨버지드 네트워크 솔루션**을 공동 발표했다.\n- 대상: 쇼핑몰·공항·전시장 등 복합공간 내 숍인숍 매장\n- 핵심: 화웨이 Wi-Fi 6/6E 네트워크 + SOLUM 뉴턴 ESL + 디지털 사이니지를 단일 인프라로 통합\n- 비용 효과: TCO(총소유비용) 최대 **55% 절감**, 대형 매장 기준 **33% 절감** 검증\n- MWC 참석자 약 **10만 명**, 세계 최대 통신·ICT 전시회에서 공동 발표 — 파트너십 전략적 격상 의미",
+        "implications": "[🟢 기회] TCO 55% 절감 수치는 비용 민감도 높은 복합상업시설·공항 운영사 세그먼트 공략의 강력한 무기\n- 화웨이 인프라 채널(170개국 이상)을 통해 중동·아프리카·동남아시아 등 기존 접근 어려운 시장 진입 가능\n- **단기 액션**: MWC 접촉 기업 대상 SiS 솔루션 후속 영업 즉시 실행\n- **리스크**: 화웨이 협력이 미국·영국·호주 등 서방 시장 공공 조달에 미치는 영향 별도 점검 필요",
+        "pubDate": "2026-03-05",
+        "sourceUrl": "https://www.prnewswire.com/apac/news-releases/huawei-and-solum-unveil-shop-in-shop-smart-converged-network-solution-to-accelerate-retail-intelligence-302705297.html",
+        "sourceName": "PR Newswire"
+      },
+      {
+        "title": "Vusion(SES-imagotag), €3,000만 자사주 매입 프로그램 공식 개시",
+        "summary": "Vusion, 최대 **€3,000만(약 430억 원)** 규모 자사주 매입 프로그램 공식 개시 (3월 3일)\n- **목적**: 임직원 무상주(free share award) 희석 상쇄 — 2025년 주총 결의 이행\n- **운영**: 독립 투자기관 위임, 매입 내역 파리 증권거래소 주 단위 공시\n- **배경**: 2025년 연매출 **€10억** 돌파·수익성 개선으로 현금 창출 능력 공식 확인\n- **의미**: ESL 시장 1위로서 M&A·R&D 투자 여력을 시장에 공개 선언",
+        "implications": "[🔴 위협] Vusion, 재무 여유 공개 선언 — 중장기 경쟁 심화 예고\n- **M&A 가속**: 신흥 ESL 기업·지역 채널 파트너 흡수 가능성 증가\n- **가격 공세**: 잉여 현금 활용한 공격적 가격 경쟁 리스크\n- **시장 선점**: 신규 지역·버티컬 진출 투자 여력 확보\n- [⚡ 액션] Vusion M&A 타겟 후보(기술 플랫폼, 지역 파트너사) 선제 파악 후 핵심 파트너십 조기 확보",
+        "pubDate": "2026-03-03",
+        "sourceUrl": "https://www.actusnews.com/en/vusiongroup/pr/2026/03/03/vusion-launch-of-a-eur-30-million-share-buyback-program",
+        "sourceName": "Actusnews Wire"
+      }
+    ],
+    "solutionProviders": [
+      {
+        "title": "SOLUM & Competera, AI 가격 최적화·ESL 통합으로 유럽 리테일 혁신",
+        "summary": "SOLUM·Competera, AI 동적 가격 자동화 통합 솔루션 유럽 공식 출시 (3월 2일)\n- **방식**: Competera ML 가격 추천 엔진 → API 연동 → SOLUM Newton ESL 실시간 반영\n- **효과**: 경쟁가·수요·재고 데이터 분석 후 수동 작업 없이 가격 **자동 업데이트**\n- **채널 확보**: Competera 기존 고객(Carrefour·Metro·Auchan) 통한 ESL 크로스셀링 기회\n- **시장**: 동적 가격 ESL 세그먼트 **연평균 20%+** 성장 전망 (2025~2030)",
+        "implications": "[🟢 기회] Competera 고객 네트워크 = 즉각 활용 가능한 유럽 영업 채널\n- Carrefour·Metro·Auchan 등 유럽 Top 유통사 크로스셀링 **우선 가동**\n- '완결형 동적 가격 자동화 패키지'로 번들링 → 중형 유통사 신규 공략\n- [⚡ 액션] 동적 가격 미도입 중형 유통사 대상 통합 제안서 및 ROI 계산기 개발",
+        "pubDate": "2026-03-02",
+        "sourceUrl": "https://www.retail-insight-network.com/news/solum-competera-ai-pricing-esl-integration/",
+        "sourceName": "Retail Insight Network"
+      }
+    ],
+    "technology": [
+      {
+        "title": "Simbe Tally 4.0, 향상된 엣지 컴퓨팅·비전 역량으로 ESL 통합 진화",
+        "summary": "Simbe Tally 4.0 출시 — 자율 로봇·ESL 통합 차세대 버전 (3월 초)\n- **배터리 연장**: 대형 하이퍼마켓 전체 커버리지 달성 가능\n- **엣지 컴퓨팅 강화**: 클라우드 의존 감소, 온디바이스 처리로 응답 속도 향상\n- **비전 정확도 향상**: 결품·오진열·가격 불일치 감지 정밀도 개선\n- **SOLUM 연동**: Newton ESL 직접 통합 — 가격 불일치 **자동 수정 루프** 구현\n- 현황: 미국 Schnucks·Giant Eagle·Wakefern 등 **500개+** 매장 운용, 유럽 확장 중\n- 시장: 소매 로봇 시장 **연평균 25%+** 성장 전망 (2025~2030)",
+        "implications": "[🔵 트렌드] 자율 로봇·ESL 통합, 대형마트 표준 인프라로 부상\n- ESL 역할: '가격 표시' → **'매장 운영 자동화 플랫폼'** 으로 격상\n- Simbe 유럽 확장과 함께 SOLUM 연동 사례 공동 레퍼런스화 기회\n- [⚡ 액션] 공동 레퍼런스 사이트·ROI 계산기 개발로 파트너십을 실질 세일즈 도구로 전환\n- **개방성 강화**: Badger Technologies·Brain Corp 등 추가 로봇 플랫폼 호환 확보",
+        "pubDate": "2026-03-04",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/3/5/solum-and-simbe-promote-expanded-european-partnership-at-euroshop-2026-in-germany",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "weekId": "2025-11-24",
+  "weekLabel": "2025.11.24 ~ 2025.11.30",
+  "sections": {
+    "industryTrends": [
+      {
+        "title": "Walmart, VusionGroup과 미국 2,300개 매장 ESL 확대 배포 계획 공개",
+        "summary": "월마트가 VusionGroup(현 Vusion)과의 파트너십을 통해 2026년까지 미국 내 2,300개 매장에 ESL을 확대 도입한다는 계획을 공개했습니다. 모바일 앱 연동으로 가격 업데이트 소요시간이 이틀에서 수 분으로 단축되며, 장기적으로는 전체 4,600개 미국 매장으로의 전면 확대도 추진 중입니다.",
+        "implications": "[🔴 위협] Vusion이 월마트 2,300개 매장이라는 북미 최대 레퍼런스를 독점 확보했습니다. SOLUM 입장에서는 월마트 2차 벤더 가능성을 탐색하거나, Target·Costco 등 경쟁 소매체인 대상 영업을 강화할 필요가 있습니다.",
+        "pubDate": "2025-11-26",
+        "sourceUrl": "https://www.digitimes.com/news/a20251126PD203/e-ink-color-e-paper-esl-demand-2026.html",
+        "sourceName": "Digitimes"
+      }
+    ],
+    "customerAdoption": {},
+    "majorCompanies": [],
+    "solutionProviders": [],
+    "technology": []
+  }
+}

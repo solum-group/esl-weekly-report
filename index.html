@@ -670,6 +670,8 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
         .toast.show { opacity: 1; transform: translateY(0) scale(1); }
+    
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -918,7 +920,7 @@ async function fetchReactionCount(articleId) {
         return typeof data === 'number' ? data : 0;
     } catch { return 0; }
 }
-// Firebase 서버사이드 increment/decrement — 동시 클릭 시 정확한 합산 보장
+// Firebase 현재값 읽기 후 업데이트
 async function incrementReactionCount(articleId, delta) {
     if (!FIREBASE_DB_URL) {
         try {
@@ -929,14 +931,15 @@ async function incrementReactionCount(articleId, delta) {
         } catch { return 0; }
     }
     try {
-        // Firebase REST API 서버사이드 atomic increment
+        const current = await fetchReactionCount(articleId);
+        const newCount = Math.max(0, current + delta);
         const res = await fetch(`${FIREBASE_DB_URL}/likes/${articleId}.json`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ '.sv': { 'increment': delta } })
+            body: JSON.stringify(newCount)
         });
-        const newVal = await res.json();
-        return Math.max(0, typeof newVal === 'number' ? newVal : await fetchReactionCount(articleId));
+        const result = await res.json();
+        return typeof result === 'number' ? result : newCount;
     } catch { return null; }
 }
 
@@ -1000,537 +1003,7 @@ function showToast(message) {
 }
 // =====================================================================
 
-// WEEKLY_REPORTS DATA - DO NOT MODIFY THIS LINE
-const WEEKLY_REPORTS = [
-  // ─────────────────────────────────────────────────
-  // WEEK 1: 2025-11-24 ~ 2025-11-30
-  // ─────────────────────────────────────────────────
-  {
-    weekId: "2025-11-24",
-    weekLabel: "2025.11.24 ~ 2025.11.30",
-    sections: {
-      industryTrends: [
-        {
-          title: "Walmart, VusionGroup과 미국 2,300개 매장 ESL 확대 배포 계획 공개",
-          summary: "월마트가 VusionGroup(현 Vusion)과의 파트너십을 통해 2026년까지 미국 내 2,300개 매장에 ESL을 확대 도입한다는 계획을 공개했습니다. 모바일 앱 연동으로 가격 업데이트 소요시간이 이틀에서 수 분으로 단축되며, 장기적으로는 전체 4,600개 미국 매장으로의 전면 확대도 추진 중입니다.",
-          implications: "[🔴 위협] Vusion이 월마트 2,300개 매장이라는 북미 최대 레퍼런스를 독점 확보했습니다. SOLUM 입장에서는 월마트 2차 벤더 가능성을 탐색하거나, Target·Costco 등 경쟁 소매체인 대상 영업을 강화할 필요가 있습니다.",
-          pubDate: "2025-11-26",
-          sourceUrl: "https://www.digitimes.com/news/a20251126PD203/e-ink-color-e-paper-esl-demand-2026.html",
-          sourceName: "Digitimes"
-        }
-      ],
-      customerAdoption: {},
-      majorCompanies: [],
-      solutionProviders: [],
-      technology: []
-    }
-  },
-  // ─────────────────────────────────────────────────
-  // WEEK 2: 2025-12-15 ~ 2025-12-21
-  // ─────────────────────────────────────────────────
-  {
-    weekId: "2025-12-15",
-    weekLabel: "2025.12.15 ~ 2025.12.21",
-    sections: {
-      industryTrends: [
-        {
-          title: "2026년 소매 기술 5대 트렌드 — ESL, AI와 함께 핵심 주류 기술로 선정",
-          summary: "Retail Technology Innovation Hub가 발표한 2026년 소매 기술 5대 트렌드에 ESL이 AI, 바코드 혁신, 개인화와 함께 선정됐습니다. 2025년의 빠른 도입 성장에 이어 2026년에는 ESL이 본격 주류 기술로 전환될 것으로 전망됐습니다. 특히 동적 가격 책정과의 연계가 핵심 활용 사례로 주목받고 있습니다.",
-          implications: "[🟢 기회] ESL이 AI·개인화와 함께 2026년 소매 5대 필수 기술로 선정되면서 미도입 소매업체들의 도입 결정이 가속화될 전망입니다. 이 시점에 적극적인 영업 활동과 ROI 기반 제안서를 준비하는 것이 유효한 전략입니다.",
-          pubDate: "2025-12-21",
-          sourceUrl: "https://retailtechinnovationhub.com/home/2025/12/21/retail-express-serves-up-five-key-technology-trends-that-will-affect-the-retail-sector-in-2026",
-          sourceName: "Retail Technology Innovation Hub"
-        }
-      ],
-      customerAdoption: {},
-      majorCompanies: [],
-      solutionProviders: [],
-      technology: []
-    }
-  },
-  // ─────────────────────────────────────────────────
-  // WEEK 3: 2026-01-05 ~ 2026-01-11
-  // ─────────────────────────────────────────────────
-  {
-    weekId: "2026-01-05",
-    weekLabel: "2026.01.05 ~ 2026.01.11",
-    sections: {
-      industryTrends: [],
-      customerAdoption: {},
-      majorCompanies: [
-        {
-          title: "VusionGroup, 사명 'Vusion'으로 단축 — AI 기반 디지털 소매 전문기업으로 재포지셔닝",
-          summary: "VusionGroup이 사명을 'Vusion'으로 단축하고 브랜드를 통합했습니다(1월 7일). AI 기반 디지털 소매 솔루션 전문기업으로서의 정체성을 명확히 하고, SES-imagotag 등 계열 브랜드를 Vusion 플랫폼 하에 통합 운영하는 전략입니다.",
-          implications: "[🔴 위협] Vusion의 브랜드 통합은 ESL 하드웨어 기업이 아닌 'AI 리테일 플랫폼'으로의 포지셔닝 전환을 선언한 것으로, 고객 인식과 경쟁 구도를 바꿀 수 있습니다. SOLUM도 플랫폼 사업(SSP) 메시지를 적극적으로 외부에 알려야 할 시점입니다.",
-          pubDate: "2026-01-07",
-          sourceUrl: "https://retailtechinnovationhub.com/home/2026/1/7/vusiongroup-opts-to-keep-it-simple-as-ai-powered-digital-retail-specialist-shortens-name-to-vusion",
-          sourceName: "Retail Technology Innovation Hub"
-        }
-      ],
-      solutionProviders: [],
-      technology: []
-    }
-  },
-  // ─────────────────────────────────────────────────
-  // WEEK 4: 2026-01-12 ~ 2026-01-18  (NRF 2026 week)
-  // ─────────────────────────────────────────────────
-  {
-    weekId: "2026-01-12",
-    weekLabel: "2026.01.12 ~ 2026.01.18",
-    sections: {
-      industryTrends: [
-        {
-          title: "NRF 2026: E-Paper, 소매업계 차세대 디스플레이 기술로 부상 — 13~32인치 중형 디스플레이가 주목",
-          summary: "NRF 2026 현장 분석에 따르면 전자종이(E-Paper)는 이번 전시에서 가장 광범위하게 전시된 디스플레이 기술이었습니다. 특히 13~32인치 중형 E-Paper 디스플레이가 진열대 상단에 배치되어 동적 가격 책정, 프로모션, 소매 미디어 네트워크를 연결하는 핵심 접점으로 주목받았습니다. Pricer, SOLUM, Hanshow 등 주요 ESL 기업들이 모두 E-Paper 기반 솔루션을 전면에 내세웠습니다.",
-          implications: "[🔵 트렌드] 중형 E-Paper 디스플레이가 소매 미디어 네트워크의 핵심 하드웨어로 부상하면서 ESL의 평균 판매 단가가 상승하고 있습니다. SOLUM의 대형 디스플레이 라인업 확장이 이 흐름에 부합하며, NRF 이후 관련 수주 가능성을 적극 타진할 시점입니다.",
-          pubDate: "2026-01-16",
-          sourceUrl: "https://invidis.com/news/2026/01/nrf-2026-retails-next-favorite-display-is-surprisingly-calm/",
-          sourceName: "Invidis"
-        }
-      ],
-      customerAdoption: {},
-      majorCompanies: [
-        {
-          title: "Hanshow, NRF 2026에서 차세대 스마트 선반 솔루션 NexShelf 공개",
-          summary: "Hanshow가 NRF 2026(1월 12~14일, 뉴욕)에서 차세대 스마트 선반 솔루션 NexShelf를 발표했습니다. 자체 저전력 프로토콜 HiLPC와 블루투스를 결합한 이중 모드 통신 아키텍처가 핵심으로, 높은 신뢰성과 개방형 통합 기능을 제공합니다.",
-          implications: "[🔴 위협] Hanshow가 개방형 이중 모드 통신을 앞세워 NRF에서 북미 시장을 공격적으로 공략하고 있습니다. SOLUM Newton 대비 통신 유연성 측면의 차별화 포인트를 점검하고 북미 고객 대상 대응 메시지를 강화할 필요가 있습니다.",
-          pubDate: "2026-01-12",
-          sourceUrl: "https://www.hanshow.com/en/news/hanshow-unveils-nexshelf-at-nrf-2026",
-          sourceName: "Hanshow 공식 뉴스"
-        },
-        {
-          title: "Hanshow-Microsoft, NRF 2026에서 스마트 스토어 Digital Twin 공동 개발 파트너십 발표",
-          summary: "Hanshow와 Microsoft가 NRF 2026에서 소매점 Store Digital Twin 미래 프레임워크 공동 개발 파트너십을 발표했습니다. Microsoft Azure AI와 클라우드 인프라를 기반으로 Hanshow의 ESL·IoT 솔루션을 통합하는 스마트 스토어 플랫폼 구축이 목표입니다.",
-          implications: "[🔴 위협] Hanshow-Microsoft Azure 파트너십은 대형 엔터프라이즈 고객에게 강력한 기술 신뢰도 시그널이 됩니다. SOLUM도 글로벌 클라우드·AI 파트너십을 확보하거나, 기존 화웨이 협력 등 파트너 생태계를 전면에 내세워야 할 시점입니다.",
-          pubDate: "2026-01-13",
-          sourceUrl: "https://www.hanshow.com/en/news/hanshow-collaborates-with-microsoft-to-explore-store-digital-twin-for-the-future-of-retail-at-nrf-2026",
-          sourceName: "Hanshow 공식 뉴스"
-        }
-      ],
-      solutionProviders: [
-        {
-          title: "SOLUM, NRF 2026에서 통합 점포 관리 플랫폼 Solum Store Platform(SSP) 발표",
-          summary: "SOLUM이 NRF 2026에서 재고·고객 트래픽·인력 효율성·매장 내 마케팅을 하나의 대시보드에서 관리하는 Solum Store Platform(SSP)을 발표했습니다. ESL을 데이터 수집·실행 접점으로 활용하여 매장 운영 전반을 최적화하는 통합 솔루션입니다.",
-          implications: "[🟢 기회] SOLUM Store Platform(SSP)은 재고·인력·마케팅을 통합한 매장 운영 플랫폼으로, ESL을 단순 교체 수요가 아닌 신규 플랫폼 도입으로 포지셔닝할 수 있습니다. 기존 고객 대상 SSP 업셀링 및 신규 고객 대상 플랫폼 번들 제안을 적극 추진할 필요가 있습니다.",
-          pubDate: "2026-01-13",
-          sourceUrl: "https://invidis.com/news/2026/01/nrf-2026-solum-introduces-store-management-platform/",
-          sourceName: "Invidis"
-        }
-      ],
-      technology: [
-        {
-          title: "SOLUM, NRF 2026에서 대형 포맷 E-Paper 디스플레이 라인업 공개 — '글로벌 소매 플랫폼'으로 진화 선언",
-          summary: "SOLUM이 NRF 2026에서 대형 포맷 E-Paper 디스플레이 신제품 라인업을 발표하며 글로벌 소매 플랫폼으로의 전략적 전환을 공식 선언했습니다. 고객 경험, 운영 효율성, 데이터 수익화, 지속가능성 등 4개 Experience Zone을 통해 통합 소매 솔루션의 가능성을 시연했습니다. 개방형 협력 생태계 전략을 통해 경쟁사와의 기술 통합도 추진합니다.",
-          implications: "[🟢 기회] NRF에서 SOLUM이 플랫폼 기업으로의 전환을 공식 선언하고 대형 E-Paper 라인업을 공개했습니다. 이 포지셔닝이 시장에 얼마나 전달되었는지 트래킹하고, NRF에서 접촉한 잠재 고객 대상 후속 영업 파이프라인 구축을 즉시 가동해야 합니다.",
-          pubDate: "2026-01-13",
-          sourceUrl: "https://www.businesswire.com/news/home/20260113068670/en/SOLUM-Unveils-Large-Format-E-Paper-Display-Lineup-at-NRF-2026-Evolving-into-a-Global-Retail-Platform",
-          sourceName: "Business Wire"
-        },
-        {
-          title: "E Ink, NRF 2026 리캡 — Vusion·Hanshow·SOLUM 등 파트너사와 컬러 E-Paper ESL 혁신 전시",
-          summary: "E Ink가 NRF 2026 참가 성과를 정리했습니다. Vusion, Hanshow, SOLUM, ZKONG, Netronix, Pricer 등 주요 파트너들이 E Ink Spectra 6 기반 컬러 ESL과 리테일 미디어 솔루션을 전시했습니다. 컬러 E-Paper가 소매 가격 표시의 새 표준으로 자리잡고 있음이 확인됐습니다.",
-          implications: "[🔵 트렌드] E Ink Spectra 6 기반 컬러 ESL이 업계 표준으로 빠르게 자리 잡고 있습니다. E Ink에 대한 공급망 의존도가 높아지는 만큼, SOLUM은 컬러 ESL 원가 경쟁력 확보와 대안 공급처 탐색을 병행할 필요가 있습니다.",
-          pubDate: "2026-01-17",
-          sourceUrl: "https://blog.eink.com/nrf-2026-recap-how-e-ink-and-our-partners-reimagined-retail-displays",
-          sourceName: "E Ink Blog"
-        }
-      ]
-    }
-  },
-  // ─────────────────────────────────────────────────
-  // WEEK 5: 2026-02-16 ~ 2026-02-22  (EuroShop 개막 주)
-  // ─────────────────────────────────────────────────
-  {
-    weekId: "2026-02-16",
-    weekLabel: "2026.02.16 ~ 2026.02.22",
-    sections: {
-      industryTrends: [],
-      customerAdoption: {
-        "슈퍼마켓": [
-          {
-            title: "Carrefour-Vusion, 2030년까지 프랑스 전 하이퍼마켓·슈퍼마켓 스마트 스토어화 전략 파트너십 체결",
-            summary: "까르푸와 Vusion이 2030년까지 프랑스 전역 모든 하이퍼마켓·슈퍼마켓을 디지털화하는 전략적 파트너십을 체결했습니다(2월 18일 발표). EdgeSense 선반 센서, Vusion Cloud 플랫폼, Captana AI 비전을 동시 배포하는 유럽 최초 대규모 통합 스마트 스토어 프로젝트이며, 공동 혁신 랩도 설립합니다.",
-            implications: "[🔴 위협] Vusion이 까르푸 전 매장 독점 계약을 체결하며 유럽 대형 유통 레퍼런스를 선점했습니다. 까르푸와 같은 유럽 Top 5 소매체인에 대한 SOLUM의 접근 가능성을 점검하고, Vusion이 아직 진입하지 못한 중·동유럽 채널 개척을 우선 검토해야 합니다.",
-            pubDate: "2026-02-18",
-            sourceUrl: "https://www.actusnews.com/en/vusiongroup/pr/2026/02/18/carrefour-and-vusion-join-forces-to-deploy-the-smart-store-at-scale",
-            sourceName: "Actusnews Wire"
-          }
-        ],
-        "협동조합/독립 소매": [
-          {
-            title: "East of England Co-op, Pricer Avenue™ 플랫폼 첫 상용 파일럿 성공적 완료",
-            summary: "영국 120개 매장 운영 협동조합 East of England Co-op이 Pricer Avenue™ 플랫폼의 첫 상용 파일럿을 성공적으로 마쳤습니다(EuroShop 2026 개막일 발표). 배터리리스 설계, Floating Canvas 대형 디스플레이, 스칸디나비안 디자인이 특징이며, 고객 경험과 매장 수익화 모두 개선됐습니다.",
-            implications: "[🔵 트렌드] 배터리리스 ESL이 ESG 관점에서 유럽 소매업체들의 구매 결정 요인으로 부상하고 있습니다. SOLUM 제품 라인업 중 배터리리스·저전력 모델의 유럽 시장 대응 현황을 점검하고 ESG 마케팅 메시지 강화를 검토할 필요가 있습니다.",
-            pubDate: "2026-02-22",
-            sourceUrl: "https://internationalsupermarketnews.com/pricer-announces-first-successful-pilot-of-pricer-avenue-platform-together-with-east-of-england-co-op-uk/",
-            sourceName: "International Supermarket News"
-          }
-        ]
-      },
-      majorCompanies: [
-        {
-          title: "Vusion, 까르푸와 프랑스 전 매장 스마트 스토어화 대형 파트너십 체결",
-          summary: "Vusion이 까르푸와 2030년까지 프랑스 전역 하이퍼마켓·슈퍼마켓을 디지털화하는 전략적 파트너십을 체결했습니다(2월 18일). EdgeSense, Vusion Cloud, Captana를 통합 배포하는 이번 계약은 Vusion 사상 최대 규모의 통합 솔루션 공급 프로젝트입니다.",
-          implications: "[🔴 위협] Vusion이 EuroShop에서 유럽 대형 유통사와의 통합 플랫폼 계약을 연이어 체결하며 유럽 시장 선점을 가속화하고 있습니다. SOLUM의 유럽 내 주요 파트너 및 고객사 관계를 재점검하고 이탈 방지 전략을 우선적으로 실행해야 합니다.",
-          pubDate: "2026-02-18",
-          sourceUrl: "https://www.actusnews.com/en/vusiongroup/pr/2026/02/18/carrefour-and-vusion-join-forces-to-deploy-the-smart-store-at-scale",
-          sourceName: "Actusnews Wire"
-        },
-        {
-          title: "Pricer, EuroShop 2026 개막과 함께 Pricer Avenue™ 플랫폼 공식 공개 및 영국 대형 고객사 계약 발표",
-          summary: "Pricer가 EuroShop 2026 개막일(2월 22일)에 배터리리스 설계의 Pricer Avenue™ 쉘프-엣지 커뮤니케이션 플랫폼을 공식 공개했습니다. 동시에 Waitrose, Currys, WHSmith 등 영국 주요 소매업체와의 신규 계약 체결과 East of England Co-op 파일럿 성공도 발표했습니다.",
-          implications: "[🔴 위협] Pricer가 영국 대형 고객 복수를 동시 확보하며 영국 시장 입지를 강화하고 있습니다. SOLUM의 영국 시장 현황 및 파이프라인을 점검하고, Pricer Avenue 대비 SOLUM 제품의 성능·가격 경쟁력 비교 자료를 영업팀에 제공할 필요가 있습니다.",
-          pubDate: "2026-02-22",
-          sourceUrl: "https://www.pricer.com/press-release/pricer-wants-retail-shelves-to-come-alive-with-new-pricer-avenue-platform-at-euroshop-2026",
-          sourceName: "Pricer 공식 보도자료"
-        },
-        {
-          title: "SOLUM, EuroShop 2026 개막에서 'Retail in Sync' 통합 소매 솔루션 및 신제품 공개",
-          summary: "SOLUM이 EuroShop 2026 개막일(2월 22일)에 'Retail in Sync' 컨셉의 통합 소매 솔루션을 발표했습니다. ESL·전자 종이 디스플레이·디지털 사이니지 통합 플랫폼과 함께 냉동 환경용 4색 ESL 등 신제품도 공개했습니다.",
-          implications: "[🟢 기회] SOLUM이 EuroShop에서 플랫폼 솔루션 전환을 공식화하고 유럽 파트너십을 확대했습니다. 전시에서 접촉한 유럽 잠재 고객 대상 팔로업을 즉시 실행하고, 플랫폼 제안 중심의 영업 방식으로 전환해 경쟁사 대비 차별화 기회를 극대화해야 합니다.",
-          pubDate: "2026-02-22",
-          sourceUrl: "https://www.businesswire.com/news/home/20260222220569/en/SOLUM-Brings-Retail-in-Sync-to-EuroShop-2026-with-Integrated-Retail-Innovations",
-          sourceName: "Business Wire"
-        }
-      ],
-      solutionProviders: [
-        {
-          title: "Vusion Cloud, 까르푸 전 매장 스마트 스토어 프로젝트 핵심 플랫폼으로 채택",
-          summary: "Vusion의 클라우드 플랫폼이 까르푸 전 매장 디지털화 프로젝트에서 ESL 관리·재고 인텔리전스·매장 분석을 통합 처리하는 핵심 솔루션으로 채택됐습니다(2월 18일). Vusion Cloud는 EdgeSense 선반 센서, Captana AI 비전과 함께 통합 운영됩니다.",
-          implications: "[🔴 위협] Vusion이 대형 유통사를 SaaS 구독 모델로 전환시키며 장기 반복 매출 구조를 구축하고 있습니다. SOLUM도 SSP 기반 구독 수익 모델 설계를 가속화하지 않으면 수익성 격차가 벌어질 수 있으며, 구독형 제안 가능 여부를 내부적으로 검토해야 합니다.",
-          pubDate: "2026-02-18",
-          sourceUrl: "https://www.actusnews.com/en/vusiongroup/pr/2026/02/18/carrefour-and-vusion-join-forces-to-deploy-the-smart-store-at-scale",
-          sourceName: "Actusnews Wire"
-        },
-        {
-          title: "SOLUM-EWQ, EuroShop 2026에서 통합 매장 디지털 커뮤니케이션 파트너십 확대 발표",
-          summary: "SOLUM과 디지털 사이니지 솔루션 기업 EWQ가 EuroShop 2026 사전 발표(2월 19일)에서 전략적 파트너십 확대를 알렸습니다. ESL, 대형 전자 종이 디스플레이, 디지털 사이니지를 하나의 통합 플랫폼으로 연결하는 솔루션을 공동 개발·공급합니다.",
-          implications: "[🔵 트렌드] ESL·사이니지·IoT 기기를 단일 플랫폼으로 통합 관리하는 솔루션이 소매업체의 새로운 기술 선택 기준이 되고 있습니다. SOLUM의 플랫폼이 타 기기와 어느 수준까지 통합 가능한지 API·SDK 개방 전략을 구체화할 필요가 있습니다.",
-          pubDate: "2026-02-19",
-          sourceUrl: "https://www.businesswire.com/news/home/20260219422813/en/SOLUM-and-EWQ-Announce-Strategic-Partnership-Expansion-at-EuroShop-to-Advance-Integrated-In-Store-Digital-Communication",
-          sourceName: "Business Wire"
-        },
-        {
-          title: "M-Cube×SOLUM, 유럽 소매 통합 디지털 사이니지·ESL 솔루션 파트너십 체결",
-          summary: "M-Cube와 SOLUM이 유럽 소매업체를 위한 통합 디지털 사이니지·ESL 솔루션 제공을 위한 전략적 파트너십을 체결했습니다. SOLUM의 ESL 및 대형 포맷 E-Paper 솔루션과 M-Cube의 DXP One 콘텐츠 관리 시스템·시스템 통합 전문성을 결합하며, 2026년 1분기 중 파일럿 배포를 시작할 예정입니다.",
-          implications: "[🔵 트렌드] ESL과 디지털 사이니지의 통합 플랫폼이 유럽 소매 시장에서 새로운 표준으로 부상하고 있습니다. SOLUM도 사이니지 전문업체와의 파트너십이나 플랫폼 통합 기능을 강화해 복합 솔루션 제안력을 높이는 방향을 검토해야 합니다.",
-          pubDate: "2026-02-20",
-          sourceUrl: "https://www.digitaltoday.co.kr/en/view/4178/solum-steps-up-push-into-european-retail-market",
-          sourceName: "Digital Today"
-        }
-      ],
-      technology: []
-    }
-  },
-  // ─────────────────────────────────────────────────
-  // WEEK 6: 2026-02-24 ~ 2026-03-02  (EuroShop 본 행사 주)
-  // ─────────────────────────────────────────────────
-  {
-    weekId: "2026-02-24",
-    weekLabel: "2026.02.24 ~ 2026.03.02",
-    sections: {
-      industryTrends: [
-        {
-          title: "IBM, 미국 국방부 commissary 전역 ESL 현대화 계약 1억1200만 달러 수주",
-          summary: "IBM이 미국 국방부 Defense Commissary Agency(DeCA)로부터 235개 전 세계 군 매점의 전자 가격표 시스템을 현대화하는 1억1200만 달러 규모의 5년 계약을 수주했습니다. 177개 미국 내 commissary와 12개국 58개 해외 위치를 포함하며, 이 계약에는 Pricer의 ESL 솔루션이 활용됩니다.",
-          implications: "[🟢 기회] 공공·군 기관의 ESL 도입은 ESG·자동화 수요 증가와 맞물려 새로운 성장 세그먼트로 부상하고 있습니다. SOLUM이 공공 부문 레퍼런스를 보유하고 있다면 이를 활용하고, 없다면 공공 조달 채널 진입 전략을 수립할 필요가 있습니다.",
-          pubDate: "2026-02-25",
-          sourceUrl: "https://newsroom.ibm.com/2026-02-25-ibm-awarded-defense-commissary-agency-contract-to-modernize-electronic-shelf-label-system",
-          sourceName: "IBM Newsroom"
-        },
-        {
-          title: "Vusion, 2025년 연간 실적 발표 — 매출 51% 성장, VAS 부문 2배 달성",
-          summary: "Vusion(SES-imagotag 모회사)이 2025년 연간 실적을 발표했습니다(2월 26일). 조정 매출 €15억2700만으로 전년 대비 51% 성장, 고마진 부가가치 서비스(VAS) 부문은 €2억1100만으로 두 배 증가했습니다. 2026년 가이던스는 매출 16~20% 성장, VAS 약 40% 성장입니다.",
-          implications: "[🔴 위협] Vusion의 VAS(부가가치 서비스) 부문 급성장은 하드웨어 마진 압박이 심화될수록 소프트웨어·서비스 수익이 핵심이 됨을 보여줍니다. SOLUM의 VAS 매출 비중과 성장 속도를 Vusion과 비교 분석하고, 소프트웨어 수익화 로드맵 가속화 여부를 전략적으로 검토해야 합니다.",
-          pubDate: "2026-02-26",
-          sourceUrl: "https://www.actusnews.com/en/vusiongroup/pr/2026/02/26/vusion-2025-annual-results-strong-growth-in-revenue-and-profitability",
-          sourceName: "Actusnews Wire"
-        },
-        {
-          title: "EuroShop 2026 결산 — AI 기반 스마트 스토어와 ESL의 결합이 핵심 트렌드로 부상",
-          summary: "뒤셀도르프 EuroShop 2026(2월 22~26일)이 마무리됐습니다. AI 동적 가격 책정, AI 재고 감지, 매장 디지털 트윈이 두드러진 트렌드로 나타났으며 Vusion, Pricer, Hanshow, SOLUM이 모두 관련 솔루션을 전시했습니다.",
-          implications: "[🔵 트렌드] AI 기반 소매 운영에서 ESL이 데이터 실행 접점으로 역할이 확장되고 있습니다. SOLUM의 AI 연동 기능(동적 가격·재고 알림 등)을 마케팅 자료에 적극 반영하고, AI 소매 솔루션 파트너와의 공동 제안 기회를 탐색해야 합니다.",
-          pubDate: "2026-02-26",
-          sourceUrl: "https://www.retaildetail.eu/news/general/euroshop-2026-how-ai-is-taking-the-smartification-of-stores-to-the-next-level/",
-          sourceName: "RetailDetail EU"
-        },
-        {
-          title: "EuroShop 2026 현장 분석 — AI·소매미디어·몰입형 기술이 3대 메가트렌드로 확인",
-          summary: "EuroShop 2026 폐막 직후 현장 분석에 따르면 1,900개 업체가 참가한 이번 전시에서 AI, 소매 미디어 네트워크(RMN), 몰입형 기술이 3대 메가트렌드로 부상했습니다. ESL 기반 동적 가격 책정과 RMN의 결합이 특히 주목받았으며, 디지털 소매 투자가 실질적 전환점을 맞이했다는 평가가 이어졌습니다.",
-          implications: "[🟢 기회] EuroShop 2026에서 AI·RMN과 ESL의 연계가 핵심 테마로 확인됐습니다. SOLUM은 이 전시에서의 고객 접촉 결과를 바탕으로 6개월 내 계약 전환 목표를 설정하고 후속 영업 활동을 체계화할 필요가 있습니다.",
-          pubDate: "2026-02-26",
-          sourceUrl: "https://invidis.com/news/2026/02/euroshop-2026-first-impressions-of-euroshop/",
-          sourceName: "Invidis"
-        }
-      ],
-      customerAdoption: {
-        "패션 소매": [
-          {
-            title: "독일 패션 소매업체 L&T, Vusion·GK Software 협력으로 2026 reta 어워드 스마트 스토어 부문 수상",
-            summary: "독일 패션 소매업체 Lengermann & Trieschmann(L&T)이 Vusion의 ESway 스마트 행택과 GK Software의 가격 최적화 솔루션을 결합한 스마트 스토어 프로젝트로 2026 reta 어워드 '스마트 스토어' 카테고리를 수상했습니다. 전자식 스마트 행태그와 AI 가격 최적화의 결합으로 재고 정확도와 가격 운영 효율성을 크게 향상시켰습니다.",
-            implications: "[🟢 기회] 패션·의류 업종에서 ESL 도입 우수 사례가 공식 인정받으면서 비식품 소매 버티컬로의 확장 기회가 열리고 있습니다. SOLUM의 패션·전문점 레퍼런스를 정리하고 해당 버티컬 전용 세일즈 자료를 마련해 신규 세그먼트 공략에 활용해야 합니다.",
-            pubDate: "2026-02-24",
-            sourceUrl: "https://retailtechinnovationhub.com/home/2026/2/24/german-fashion-retailer-landt-bags-reta-awards-2026-award-for-work-with-vusion-and-gk-software",
-            sourceName: "Retail Technology Innovation Hub"
-          }
-        ],
-        "슈퍼마켓": [
-          {
-            title: "PLUS Retail, Pricer와 함께 전국 440개 매장 ESL 4색 업그레이드 — 2026~2027년 순차 확대",
-            summary: "네덜란드 대형 슈퍼마켓 체인 PLUS Retail이 기존 Pricer 계약을 확대하여 440개 매장의 ESL을 3색에서 4색 Pricer Avenue 기반 라벨로 업그레이드합니다. 2026년 100개, 2027년 165개 매장으로 순차 확대할 예정입니다.",
-          implications: "[🟢 기회] ESL 교체·업그레이드 수요가 신규 도입과 병행하여 성장하는 구조가 형성되고 있습니다. SOLUM은 기존 고객 데이터베이스를 기반으로 도입 후 3~5년이 된 고객 대상 업그레이드 캠페인을 우선적으로 기획할 필요가 있습니다.",
-            pubDate: "2026-02-25",
-            sourceUrl: "https://internationalsupermarketnews.com/back-for-a-second-look-pricer-at-euroshop-2026/",
-            sourceName: "International Supermarket News"
-          },
-          {
-            title: "SPAR International, SOLUM과 ESL·디지털 사이니지 공급 계약 연장 발표",
-            summary: "SPAR International이 SOLUM과의 ESL 및 디지털 사이니지 공급 우선 협력사 계약을 연장했습니다(2월 23일 발표). Newton Core+, Newton E-Paper 32인치 시리즈를 포함한 최신 제품이 유럽 SPAR 가맹 매장에 계속 공급됩니다.",
-            implications: "[🟢 기회] SOLUM이 국제 슈퍼마켓 네트워크와의 장기 계약 연장에 성공했습니다. 이 레퍼런스를 유사 글로벌 슈퍼마켓 체인 영업에 적극 활용하고, 대형 디스플레이 확장 사례를 기존 고객 업셀링 자료로 패키징해야 합니다.",
-            pubDate: "2026-02-23",
-            sourceUrl: "https://www.businesswire.com/news/home/20260223240814/en/SOLUM-and-SPAR-International-extend-agreement-for-ESL-and-Digital-Signage",
-            sourceName: "Business Wire"
-          }
-        ]
-      },
-      majorCompanies: [
-        {
-          title: "Hanshow, EuroShop 2026에서 Store Digital Twin 솔루션 전시 — AI 카메라·ESL 통합 선반 관리",
-          summary: "Hanshow가 EuroShop 2026에서 NexShelf와 Smart Cart 기반의 Store Digital Twin 솔루션을 전시했습니다(2월 24일). Nebular Ultra ESL과 AI 카메라를 연결하여 실시간 재고 부족 감지, 진열 상태 모니터링, 자동 업데이트 기능을 구현했습니다.",
-          implications: "[🔵 트렌드] Digital Twin 기술이 ESL을 핵심 데이터 수집 노드로 활용하는 차세대 소매 운영 패러다임으로 부상하고 있습니다. SOLUM의 SSP가 Digital Twin 연동을 지원할 수 있는지 기술 로드맵에 포함시키고, 관련 파트너십 기회를 탐색해야 합니다.",
-          pubDate: "2026-02-24",
-          sourceUrl: "https://retailrewired.co.uk/2026/02/24/euroshop-2026-hanshow-showcases-dynamic-shelf-smart-cart-innovations-at-euroshop/",
-          sourceName: "Retail Rewired"
-        },
-        {
-          title: "Ithina Holdings, Displaydata·Altierre 인수 완료 — 5000만 개 연결 엔드포인트 보유 AI 플랫폼 출범",
-          summary: "Ithina Holdings Inc.가 영국의 Displaydata, 미국의 Agile Display Solutions, 유럽의 Altierre 인수를 완료하고 통합 AI 운영 플랫폼을 출범했습니다(2월 26일). 합산 5000만 개 이상의 소매·제조·물류 환경 연결 엔드포인트를 보유하게 됩니다.",
-          implications: "[⚡ 액션] Ithina라는 신규 통합 ESL 플레이어의 등장은 경쟁 구도 변화의 신호입니다. Ithina의 편입 기업 목록, 기술 스택, 고객 기반을 즉시 조사하고 SOLUM 영업 파이프라인과 겹치는 지역·고객 현황을 파악해야 합니다.",
-          pubDate: "2026-02-26",
-          sourceUrl: "https://www.morningstar.com/news/pr-newswire/20260226cl94986/ithina-forms-a-global-ai-operating-platform-for-physical-commerce-and-industrial-operations-through-strategic-acquisitions-surpassing-50-million-connected-endpoints",
-          sourceName: "Morningstar / PR Newswire"
-        },
-        {
-          title: "ZKONG, EuroShop 2026에서 차세대 Quantum Series ESL·Arrow Series 대형 디스플레이 공개",
-          summary: "ZKONG이 EuroShop 2026에서 초소형 베젤과 향상된 화면 비율을 갖춘 Quantum Series ESL과 길고 넓은 Arrow Series 대형 전자 선반 라벨을 공개했습니다. 같은 물리적 공간에서 더 많은 상품 정보를 표시할 수 있는 혁신적 디자인으로, 고밀도 진열 환경에 최적화됐습니다.",
-          implications: "[🔴 위협] ZKONG 등 중국 ESL 기업들이 하드웨어 혁신 속도를 높이며 글로벌 시장에서 가격·스펙 경쟁을 심화시키고 있습니다. SOLUM Newton 라인의 폼팩터 및 정보 밀도 경쟁력을 ZKONG 신제품과 직접 비교 분석하고 제품 로드맵 우선순위에 반영해야 합니다.",
-          pubDate: "2026-02-27",
-          sourceUrl: "https://www.prnewswire.com/news-releases/zkong-unveils-next-generation-smart-retail-solutions-at-euroshop-2026-302699567.html",
-          sourceName: "PR Newswire"
-        }
-      ],
-      solutionProviders: [
-        {
-          title: "M-Cube×SOLUM, 유럽 소매 통합 ESL·디지털 사이니지 전략 파트너십 공식 발표",
-          summary: "M-Cube와 SOLUM이 EuroShop 2026에서 유럽 소매업체를 위한 통합 ESL·디지털 사이니지 솔루션 전략 파트너십을 공식 발표했습니다. SOLUM의 Aims CMS와 M-Cube의 DXP One CMS를 통합하는 엔드투엔드 솔루션으로, 소매업체가 단일 플랫폼에서 ESL과 디지털 사이니지를 동시에 관리할 수 있습니다.",
-          implications: "[🔵 트렌드] ESL-사이니지 통합 플랫폼이 유럽 소매 시장에서 새로운 구매 기준으로 자리잡고 있습니다. SOLUM이 사이니지 파트너십을 통해 유사한 통합 제안을 할 수 있는지 검토하고, 단일 벤더 통합 솔루션 니즈를 가진 고객을 타겟으로 한 영업 전략을 수립해야 합니다.",
-          pubDate: "2026-02-25",
-          sourceUrl: "https://www.streetinsider.com/Business+Wire/M-Cube+and+SOLUM+Enter+Strategic+Partnership+to+Deliver+Integrated+Digital+Signage+and+ESL+Solutions+for+Retail+Across+Europe/26024831.html",
-          sourceName: "Business Wire"
-        },
-        {
-          title: "SOLUM-Competera, AI 가격 최적화와 실시간 ESL 실행 통합 협력 유럽으로 확대",
-          summary: "SOLUM과 AI 가격 책정 솔루션 기업 Competera가 AI 기반 가격 인텔리전스와 실시간 ESL 가격 업데이트를 통합하는 파트너십을 유럽 소매 네트워크로 확대했습니다. AI가 최적 가격을 산출하면 ESL을 통해 즉시 매장에 반영되는 엔드투엔드 자동화 솔루션입니다.",
-          implications: "[🟢 기회] AI 동적 가격 솔루션과 ESL의 통합이 소매업체의 핵심 구매 동인이 되고 있습니다. SOLUM이 AI 가격 엔진 파트너(예: Revionics, Intelligence Node 등)와 사전 통합된 솔루션을 번들 제안할 수 있다면 경쟁 차별화와 수주 속도 향상이 가능합니다.",
-          pubDate: "2026-02-25",
-          sourceUrl: "https://www.packaginginsights.com/news/solum-competera-ai-pricing-esl-retail.html",
-          sourceName: "Packaging Insights"
-        }
-      ],
-      technology: [
-        {
-          title: "Samsung, 32인치 컬러 E-Paper 디스플레이 글로벌 출시 — ESL·사이니지 시장 본격 진입",
-          summary: "삼성이 초저전력·고가시성의 32인치 컬러 E-Paper 디스플레이(EM32DX)를 글로벌 출시했습니다. 소매점 디지털 사이니지 및 대형 ESL 용도를 주요 타깃으로 하며, 기존 LCD 대비 에너지 소비가 대폭 낮습니다.",
-          implications: "[🔵 트렌드] 삼성 등 대형 전자기업의 E-Paper 시장 진입으로 컬러 ESL의 원가 하락이 예상됩니다. SOLUM 입장에서는 하드웨어 마진 압박을 대비해 소프트웨어·서비스 수익 비중을 높이는 사업 구조 전환을 더욱 가속화해야 합니다.",
-          pubDate: "2026-02-24",
-          sourceUrl: "https://news.samsung.com/global/samsung-launches-color-e-paper-delivering-high-impact-energy-efficient-digital-signage-for-businesses",
-          sourceName: "Samsung Global Newsroom"
-        },
-        {
-          title: "동적 가격 책정, EuroShop 2026을 계기로 유럽 소매 현장 도입 가속화",
-          summary: "EuroShop 2026에서 ESL 기반 동적 가격 책정의 소매 현장 도입이 빨라지고 있음이 확인됐습니다. 소비자 수용성과 규제 대응이 주요 과제로 부상했으며, 업계는 투명성 확보를 통한 신뢰 구축 방안을 모색하고 있습니다.",
-          implications: "[⚡ 액션] 동적 가격 책정에 대한 소비자 반발과 규제 움직임이 각국에서 나타나고 있습니다. SOLUM이 영업하는 주요 시장의 동적 가격 관련 규제 동향을 모니터링하고, 소매 고객에게 리스크 관리 가이드를 제공하는 것이 신뢰 구축에 도움이 됩니다.",
-          pubDate: "2026-02-25",
-          sourceUrl: "https://www.euroshop-tradefair.com/en/media-news/euroshopmag/retail-technology/dynamic-pricing-how-flexible-prices-are-changing-retail",
-          sourceName: "EuroShop Trade Fair"
-        },
-        {
-          title: "ESL 성공의 숨겨진 변수 — Wi-Fi·IoT 인프라가 도입 성패 좌우",
-          summary: "2026년 ESL 도입 성공을 위해서는 올바른 Wi-Fi 액세스 포인트 배치와 IoT 인프라 설계가 필수적이라는 분석이 주목받고 있습니다. 밀집 ESL 환경에 최적화된 네트워크 구조 없이 도입한 소매점들이 성능 저하를 경험하는 사례가 보고되고 있습니다.",
-          implications: "[🔵 트렌드] Wi-Fi 6 등 인프라 업그레이드 수요가 ESL 도입과 연동해 성장하고 있습니다. SOLUM이 통신 인프라 벤더(시스코, 화웨이 등)와 공동 영업 체계를 강화하면 ESL 프로젝트 초입 단계부터 개입하는 기회를 확보할 수 있습니다.",
-          pubDate: "2026-02-26",
-          sourceUrl: "https://vistasupport.com/insights/why-esl-success-starts-behind-the-shelf-the-hidden-infrastructure-retailers-cant-ignore-in-2026/",
-          sourceName: "Vista Support"
-        }
-      ]
-    }
-  }
-  ,
-  // WEEK: 2026-03-02 ~ 2026-03-08
-  {
-    weekId: "2026-03-02",
-    weekLabel: "2026.03.02 ~ 2026.03.08",
-    sections: {
-      industryTrends: [
-        {
-          title: "SOLUM, RetailTech Japan 2026서 '리테일 인 싱크' 비전 선보여",
-          summary: "SOLUM이 3월 3~6일 도쿄 빅사이트 'RetailTech Japan 2026'에서 **'리테일 인 싱크(Retail in Sync)'** 비전을 발표했다.\n- 일본 대형 SI 기업 **BIPROGY**와 공동 부스 운영\n- 4개 혁신 존 시연: 피부 진단 키오스크 연동 개인화 쇼핑 / ESL LED 블링킹 기반 Pick-by-Light / 선반 중량 센서 지능형 재고 관리 / SSP(Solum Store Platform) 통합 대시보드\n- RetailTech Japan은 연간 **약 3만 명** 방문, 아시아 최대 유통·IT 전문 전시회\n- 일본은 ESL 보급률이 낮아 성장 잠재력이 큰 신규 시장",
-          implications: "[🟢 기회] BIPROGY 채널 확보로 일본 엔터프라이즈 시장 진입 발판 마련\n- 일본은 Vusion·Hanshow 대비 SOLUM 선점 여지가 있는 시장\n- **단기 액션**: 전시 리드 기반으로 이온·세븐&아이·패밀리마트 등 주요 유통업체 후속 영업 즉시 가동\n- **채널 전략**: BIPROGY를 통한 간접 수주 파이프라인 구체화 필요",
-          pubDate: "2026-03-02",
-          sourceUrl: "https://www.businesswire.com/news/home/20260302882713/en/SOLUM-Accelerates-Japans-Retail-DX-at-RetailTech-Japan-2026",
-          sourceName: "Business Wire"
-        },
-        {
-          title: "Huawei, EuroShop 2026 총결산 발표… 스마트 리테일 디지털화 가속",
-          summary: "화웨이가 EuroShop 2026(2월 22~26일, 뒤셀도르프) 참가 결과 보고서를 3월 2일 공개했다. 전시 참관객 약 **94,000명**, 역대 최대 규모.\n- 3대 전략 축: 실시간 데이터 스마트 스토어 / 인지형 공급망 자동화 / AI 개인화 고객 경험\n- 핵심 역량 부각: Wi-Fi 6/6E·5G 사설망 기반 IoT 통합 인프라\n- **SOLUM과의 파트너십** 포함 에코시스템 확장 강조\n- 유럽 유통 시장을 화웨이의 전략적 핵심 공략 무대로 공식화",
-          implications: "[🔵 트렌드] 대형 ICT 기업의 리테일 진입으로 네트워크+ESL 번들 솔루션이 새로운 시장 표준으로 부상 중\n- SOLUM은 이미 MWC에서 화웨이와 공동 솔루션 발표 — 단순 기술 협력을 넘어 공동 영업 채널화 필요\n- **GTM 전략**: 화웨이 유럽·아시아 엔터프라이즈 고객 네트워크를 SOLUM ESL 영업에 직접 활용하는 방안 수립\n- **리스크 점검**: 화웨이 협력이 미국·영국·호주 등 서방 시장 조달에 미치는 영향 별도 검토",
-          pubDate: "2026-03-02",
-          sourceUrl: "https://www.prnewswire.com/news-releases/huawei-unveils-latest-smart-retail-solutions-at-euroshop-2026-to-accelerate-digital-transformation-302700957.html",
-          sourceName: "PR Newswire"
-        }
-      ],
-      customerAdoption: {},
-      majorCompanies: [
-        {
-          title: "SOLUM & Simbe, 유럽 자율 매장 인텔리전스 협력 확대",
-          summary: "SOLUM과 자율 선반 스캐닝 로봇 선두 기업 **Simbe(미국)**가 유럽 시장 협력 확대를 3월 4일 발표했다.\n- 통합 방식: Simbe Tally 로봇의 실시간 선반 데이터(결품·오진열·가격 불일치) → **뉴턴 ESL 자동 반영**\n- 효과: 수동 매장 감사 대폭 감소, OSA(On-Shelf Availability) 실시간 유지\n- Simbe 기존 고객: 미국 Schnucks·Giant Eagle·Wakefern 등 **500개 이상** 매장\n- EuroShop 2026을 기점으로 유럽 시장 공동 공략 본격화\n- SOLUM ESL을 '자율 재고 관리 시스템의 실행 노드'로 포지셔닝하는 핵심 레퍼런스",
-          implications: "[🟢 기회] Simbe 통합으로 ESL 부가가치를 '자율 재고 관리'까지 확장 — 단순 가격 표시 대비 ROI 기대치 대폭 상승\n- Vusion·Hanshow가 자체 AI 플랫폼 중심인 반면, SOLUM은 **개방형 파트너 통합 전략**으로 차별화 가능\n- **단기 액션**: 유럽 대형 슈퍼마켓 체인 대상 Simbe 공동 영업 제안서 신속 개발\n- **확장 검토**: Badger Technologies·Brain Corp 등 경쟁 로봇 플랫폼과의 호환성 확보로 개방형 전략 강화",
-          pubDate: "2026-03-04",
-          sourceUrl: "https://www.businesswire.com/news/home/20260304620371/en/SOLUM-and-Simbe-Expand-European-Collaboration-to-Advance-Intelligent-Store-Operations",
-          sourceName: "Business Wire"
-        },
-        {
-          title: "Huawei & SOLUM, MWC 2026서 숍인숍 스마트 컨버지드 네트워크 솔루션 공개",
-          summary: "화웨이와 SOLUM이 MWC 바르셀로나 2026(3월 3~6일)에서 **SiS(Shop-in-Shop) 스마트 컨버지드 네트워크 솔루션**을 공동 발표했다.\n- 대상: 쇼핑몰·공항·전시장 등 복합공간 내 숍인숍 매장\n- 핵심: 화웨이 Wi-Fi 6/6E 네트워크 + SOLUM 뉴턴 ESL + 디지털 사이니지를 단일 인프라로 통합\n- 비용 효과: TCO(총소유비용) 최대 **55% 절감**, 대형 매장 기준 **33% 절감** 검증\n- MWC 참석자 약 **10만 명**, 세계 최대 통신·ICT 전시회에서 공동 발표 — 파트너십 전략적 격상 의미",
-          implications: "[🟢 기회] TCO 55% 절감 수치는 비용 민감도 높은 복합상업시설·공항 운영사 세그먼트 공략의 강력한 무기\n- 화웨이 인프라 채널(170개국 이상)을 통해 중동·아프리카·동남아시아 등 기존 접근 어려운 시장 진입 가능\n- **단기 액션**: MWC 접촉 기업 대상 SiS 솔루션 후속 영업 즉시 실행\n- **리스크**: 화웨이 협력이 미국·영국·호주 등 서방 시장 공공 조달에 미치는 영향 별도 점검 필요",
-          pubDate: "2026-03-05",
-          sourceUrl: "https://www.prnewswire.com/apac/news-releases/huawei-and-solum-unveil-shop-in-shop-smart-converged-network-solution-to-accelerate-retail-intelligence-302705297.html",
-          sourceName: "PR Newswire"
-        },
-        {
-          title: "Vusion(SES-imagotag), €3,000만 자사주 매입 프로그램 공식 개시",
-          summary: "Vusion, 최대 **€3,000만(약 430억 원)** 규모 자사주 매입 프로그램 공식 개시 (3월 3일)\n- **목적**: 임직원 무상주(free share award) 희석 상쇄 — 2025년 주총 결의 이행\n- **운영**: 독립 투자기관 위임, 매입 내역 파리 증권거래소 주 단위 공시\n- **배경**: 2025년 연매출 **€10억** 돌파·수익성 개선으로 현금 창출 능력 공식 확인\n- **의미**: ESL 시장 1위로서 M&A·R&D 투자 여력을 시장에 공개 선언",
-          implications: "[🔴 위협] Vusion, 재무 여유 공개 선언 — 중장기 경쟁 심화 예고\n- **M&A 가속**: 신흥 ESL 기업·지역 채널 파트너 흡수 가능성 증가\n- **가격 공세**: 잉여 현금 활용한 공격적 가격 경쟁 리스크\n- **시장 선점**: 신규 지역·버티컬 진출 투자 여력 확보\n- [⚡ 액션] Vusion M&A 타겟 후보(기술 플랫폼, 지역 파트너사) 선제 파악 후 핵심 파트너십 조기 확보",
-          pubDate: "2026-03-03",
-          sourceUrl: "https://www.actusnews.com/en/vusiongroup/pr/2026/03/03/vusion-launch-of-a-eur-30-million-share-buyback-program",
-          sourceName: "Actusnews Wire"
-        }
-      ],
-      solutionProviders: [
-        {
-          title: "SOLUM & Competera, AI 가격 최적화·ESL 통합으로 유럽 리테일 혁신",
-          summary: "SOLUM·Competera, AI 동적 가격 자동화 통합 솔루션 유럽 공식 출시 (3월 2일)\n- **방식**: Competera ML 가격 추천 엔진 → API 연동 → SOLUM Newton ESL 실시간 반영\n- **효과**: 경쟁가·수요·재고 데이터 분석 후 수동 작업 없이 가격 **자동 업데이트**\n- **채널 확보**: Competera 기존 고객(Carrefour·Metro·Auchan) 통한 ESL 크로스셀링 기회\n- **시장**: 동적 가격 ESL 세그먼트 **연평균 20%+** 성장 전망 (2025~2030)",
-          implications: "[🟢 기회] Competera 고객 네트워크 = 즉각 활용 가능한 유럽 영업 채널\n- Carrefour·Metro·Auchan 등 유럽 Top 유통사 크로스셀링 **우선 가동**\n- '완결형 동적 가격 자동화 패키지'로 번들링 → 중형 유통사 신규 공략\n- [⚡ 액션] 동적 가격 미도입 중형 유통사 대상 통합 제안서 및 ROI 계산기 개발",
-          pubDate: "2026-03-02",
-          sourceUrl: "https://www.retail-insight-network.com/news/solum-competera-ai-pricing-esl-integration/",
-          sourceName: "Retail Insight Network"
-        }
-      ],
-      technology: [
-        {
-          title: "Simbe Tally 4.0, 향상된 엣지 컴퓨팅·비전 역량으로 ESL 통합 진화",
-          summary: "Simbe Tally 4.0 출시 — 자율 로봇·ESL 통합 차세대 버전 (3월 초)\n- **배터리 연장**: 대형 하이퍼마켓 전체 커버리지 달성 가능\n- **엣지 컴퓨팅 강화**: 클라우드 의존 감소, 온디바이스 처리로 응답 속도 향상\n- **비전 정확도 향상**: 결품·오진열·가격 불일치 감지 정밀도 개선\n- **SOLUM 연동**: Newton ESL 직접 통합 — 가격 불일치 **자동 수정 루프** 구현\n- 현황: 미국 Schnucks·Giant Eagle·Wakefern 등 **500개+** 매장 운용, 유럽 확장 중\n- 시장: 소매 로봇 시장 **연평균 25%+** 성장 전망 (2025~2030)",
-          implications: "[🔵 트렌드] 자율 로봇·ESL 통합, 대형마트 표준 인프라로 부상\n- ESL 역할: '가격 표시' → **'매장 운영 자동화 플랫폼'** 으로 격상\n- Simbe 유럽 확장과 함께 SOLUM 연동 사례 공동 레퍼런스화 기회\n- [⚡ 액션] 공동 레퍼런스 사이트·ROI 계산기 개발로 파트너십을 실질 세일즈 도구로 전환\n- **개방성 강화**: Badger Technologies·Brain Corp 등 추가 로봇 플랫폼 호환 확보",
-          pubDate: "2026-03-04",
-          sourceUrl: "https://retailtechinnovationhub.com/home/2026/3/5/solum-and-simbe-promote-expanded-european-partnership-at-euroshop-2026-in-germany",
-          sourceName: "Retail Technology Innovation Hub"
-        }
-      ]
-    }
-  },
-  // WEEK: 2026-03-09 ~ 2026-03-15
-  {
-    weekId: "2026-03-09",
-    weekLabel: "2026.03.09 ~ 2026.03.15",
-    sections: {
-      industryTrends: [
-        {
-          title: "월마트, 미국 전체 4,600개 매장 ESL 전면 확대 공식화",
-          summary: "월마트가 기존 2,300개 매장 ESL 배포를 넘어 미국 전체 약 4,600개 매장으로의 전면 확대를 공식화했습니다(3월 9일).\n- 공급사: VusionGroup의 디지털 선반 라벨(DSL) 활용\n- 핵심 효과: 가격 변경 소요 시간이 **이틀 → 수 시간**으로 단축\n- 월마트는 ESL이 '매일 낮은 가격(EDLP)' 유지를 위한 가격 정확도 강화 목적임을 강조하며 동적 가격 책정 우려 불식\n- 직원들은 가격 라벨 교체 업무에서 해방되어 고객 서비스에 집중 가능",
-          implications: "[🔴 위협] Vusion이 월마트 미국 전 매장을 독점 공급하는 레퍼런스를 공식 완성했습니다.\n- **즉각 대응**: Target·Kroger·Costco 등 주요 경쟁 소매체인 대상 영업 파이프라인 점검 및 우선순위 재설정\n- **모니터링**: 월마트 배포 완료 후 Vusion의 후속 대형 수주 공시 가능성 예측 및 대응 준비\n- SOLUM은 월마트 외 대형 소매체인 대상 '첫 번째 선택지' 포지셔닝 강화 필요",
-          imageUrl: "",
-          pubDate: "2026-03-09",
-          sourceUrl: "https://www.retailbrew.com/stories/2026/03/09/walmart-expands-digital-shelf-labels-nationwide",
-          sourceName: "Retail Brew"
-        },
-        {
-          title: "미국 노조·주 의원들, 월마트 ESL 확대에 반발 — 감시 가격 책정 금지 입법 가속화",
-          summary: "미국 식품상업노조(UFCW)와 뉴욕 주 의원들이 월마트의 전국 ESL 확대 발표에 즉각 반발했습니다(3월 9일 전후).\n- 뉴욕 상원 Michael Gianaris 의원, '차별적 가격 책정 금지법(Protecting Consumers and Jobs from Discriminatory Pricing Act)' 발의\n- 해당 법안: **10,000 sq ft 이상 식품·약국 매장의 ESL 사용 전면 금지** 및 감시 가격 책정 금지 포함\n- UFCW: ESL이 AI 기반 실시간 동적 가격 책정을 가능하게 하는 '감시 도구'가 될 수 있다고 주장\n- 연방 수준에서는 Luján-Merkley 상원의원이 2월 12일 유사 법안 이미 발의",
-          implications: "[⚡ 액션] 미국 내 ESL 규제 움직임이 월마트 전국 확대와 동시에 가속화되고 있습니다.\n- **단기 대응**: 미국 소매 고객에게 규제 동향 정보 제공 및 '투명한 가격 관리' 메시지 강화\n- SOLUM 미국 영업팀은 ESL=동적 가격 책정이라는 오해를 불식시키는 교육 자료 제공 필요\n- **모니터링**: 뉴욕·애리조나·네브라스카 등 주별 ESL 관련 법안 진행 상황 지속 추적",
-          imageUrl: "",
-          pubDate: "2026-03-09",
-          sourceUrl: "https://dailyvoice.com/ny/albany/union-urges-ny-to-ban-walmart-digital-price-tags/",
-          sourceName: "Daily Voice"
-        }
-      ],
-      customerAdoption: {
-        "슈퍼마켓": [
-          {
-            title: "월마트, 미국 전 4,600개 매장 ESL 전면 도입 확정 — 세계 최대 단일 ESL 배포 프로젝트",
-            summary: "월마트가 VusionGroup과 계약 연장을 통해 기존 2,300개 배포를 넘어 미국 전체 약 4,600개 매장에 ESL을 1년 내 완전히 배포하기로 확정했습니다(3월 9일).\n- 공급사: VusionGroup (계약 규모 약 **10억 달러** 규모로 알려진 계약 연장 기반)\n- 가격 변경 소요 시간: 이틀 → 수 시간 / 재고 관리 및 온라인 주문 피킹 효율도 개선\n- 동적 가격 책정 미사용, Everyday Low Price 유지 목적임을 공식 확인\n- 대형마트·슈퍼센터 포함 전 업태 적용",
-            implications: "[🔴 위협] 월마트 전 매장 Vusion 독점 배포 완성은 미국 시장에서 SOLUM의 대형 소매 진입 기회를 제한합니다.\n- 월마트 외 미국 대형 소매 체인(Target, Kroger, Costco, Home Depot 등) 대상 ESL 수주 가능성 집중 탐색 필요\n- SOLUM의 북미 채널 파트너십 및 파이프라인 현황 긴급 점검 권고",
-            imageUrl: "",
-            pubDate: "2026-03-09",
-            sourceUrl: "https://www.retaildive.com/news/walmart-expands-digital-shelf-labels-all-us-stores/813654/",
-            sourceName: "Retail Dive"
-          }
-        ]
-      },
-      majorCompanies: [
-        {
-          title: "Berenberg, Vusion에 '매수 축적' 유지 — 주가 43% 급락에도 목표가 €250, 상승 여력 110% 제시",
-          summary: "독일 투자은행 Berenberg가 3월 11일 Vusion에 대한 '매수 축적(Accumulate)' 투자의견을 재확인했습니다.\n- 목표 주가 **€252 → €250**으로 소폭 하향 (현재 주가 €117.50 기준 **+113% 상승 여력**)\n- Vusion 주가는 최근 3개월간 약 **43% 하락**, 연초 대비 약 -45%\n- Berenberg 분석: 주문량·수익성·잉여현금흐름 모두 사상 최고치, 월마트를 '가장 신뢰할 수 있는 파트너'로 평가\n- Captana(AI 비전 시스템) 월마트 추가 배포 가능성 시사 (2027년 전면 배포 목표)\n- 전체 TAM의 85%가 미개척 상태로 2026년 내 대형 배포 발표 기대 / 2026년 1분기 실적 발표일: **4월 21일**",
-          implications: "[🔵 트렌드] Vusion의 주가 급락은 2026~2027년 월마트 배포 완료 후 성장 둔화 우려에서 비롯된 것으로, 펀더멘털보다 투자 심리가 선반영된 상태입니다.\n- SOLUM 입장에서는 Vusion 주가 하락이 역설적으로 일부 고객의 '1등 업체 의존 리스크' 인식을 높여주는 기회가 될 수 있음\n- **단기 모니터링**: Vusion 4월 21일 Q1 실적 발표 — 2026년 월마트 외 신규 수주 공시 여부 추적 필수",
-          imageUrl: "",
-          pubDate: "2026-03-11",
-          sourceUrl: "https://uk.marketscreener.com/news/berenberg-maintains-buy-rating-on-vusion-after-share-s-recent-fall-ce7d59d8d98bf522",
-          sourceName: "MarketScreener UK"
-        }
-      ],
-      solutionProviders: [
-        {
-          title: "Swiftly-MDI 파트너십, 독립 식품 소매업체 600개에 AI 디지털 전단지·광고 솔루션 제공",
-          summary: "독립 소매업체 디지털화 플랫폼 기업 Swiftly가 미국 남동부 지역 도매 유통업체 MDI(Merchants Distributors)와 전략적 파트너십을 체결했습니다(3월 9일, BusinessWire).\n- 대상: MDI 공급망에 속한 **600개 이상** 독립 식품 소매업체\n- 제공 솔루션: ① Swiftly 리테일 웹사이트 플랫폼 ② SmartCircular(디지털 전단지) ③ Audience Optimizer(AI 타겟팅 광고)\n- 독립 소매업체들이 대형 체인의 리테일 미디어 네트워크(RMN)와 경쟁할 수 있는 도구 제공\n- 2026년 초 단계적 배포 시작 예정",
-          implications: "[🔵 트렌드] 독립 식품 소매업체들도 AI 기반 디지털 마케팅 도구를 도입하는 민주화 흐름이 확산되고 있습니다.\n- 독립 소매 디지털화가 진행될수록 ESL 수요도 연계 증가 가능 — SOLUM은 MDI 같은 도매 유통망을 통한 ESL 채널 파트너십 가능성 탐색\n- **액션**: 독립 소매 체인 대상 중소형 ESL 번들 제안 기회 검토",
-          imageUrl: "",
-          pubDate: "2026-03-09",
-          sourceUrl: "https://www.businesswire.com/news/home/20260309397243/en/Swiftly-Announces-Partnership-with-Merchants-Distributors-MDI-to-Power-Next-Generation-Shopper-Engagement-Technology-and-Enhance-Digital-Experience-for-Independent-Grocers",
-          sourceName: "Business Wire"
-        },
-        {
-          title: "VenHub, Stripe 통합 확대 — AI 기반 자율 스마트 스토어 글로벌 결제 네트워크 구축",
-          summary: "무인 자율 소매 기업 VenHub Global(NASDAQ: VHUB)이 Stripe와의 통합을 확대하여 AI 기반 스마트 스토어의 글로벌 결제 네트워크를 강화한다고 3월 10일 발표했습니다(GlobeNewswire).\n- 24시간 무인 운영 스마트 스토어에 Stripe의 글로벌 결제 인프라 통합\n- 라스베이거스 6개 신규 매장 포함 글로벌 확장 병행 추진 중 (3월 5일 발표)\n- AI 기반 재고 관리, 모바일 우선 결제, 자율 운영을 단일 플랫폼으로 통합\n- 특허 출원 중인 스마트 스토어 인프라·디스플레이 시스템 기술도 확보",
-          implications: "[🔵 트렌드] AI 기반 자율 소매(Autonomous Retail)가 결제·재고·운영을 통합하는 방향으로 빠르게 발전하고 있습니다.\n- 자율 소매 환경에서도 실시간 가격 표시 도구로서 ESL의 역할은 유지되거나 확대됨\n- SOLUM은 무인 편의점·자판기형 매장 운영업체를 새로운 ESL 고객 세그먼트로 탐색 가능",
-          imageUrl: "",
-          pubDate: "2026-03-10",
-          sourceUrl: "https://www.globenewswire.com/news-release/2026/03/10/3252682/0/en/VenHub-Expands-Stripe-Integration-to-Power-Global-Network-of-AI-Driven-Smart-Stores.html",
-          sourceName: "GlobeNewswire"
-        }
-      ],
-      technology: [
-        {
-          title: "\"ESL은 AI 가격 전략의 실행 레이어\" — 동적 가격 시대의 필수 매장 인프라로 재조명",
-          summary: "영국 소매 기술 전문매체 Intelligent Retail이 AI 가격 최적화 솔루션의 실제 가치 실현을 위한 핵심 실행 도구로 ESL을 재조명한 심층 분석을 3월 12일 발표했습니다.\n- AI 가격 엔진이 추천한 가격을 **실시간으로 매장 선반에 반영**하는 기술 연결 고리로서 ESL의 불가결성 강조\n- 동적 가격 책정 = ESL 인프라가 전제 조건이 되는 트렌드가 소매 운영의 새 기준으로 확산 중\n- 종이 라벨 기반으로는 AI 가격 인텔리전스의 가치를 현장에서 구현 불가능하다고 지적\n- 미국 월마트 전국 ESL 확대 발표와 맞물려 업계 관심 급증",
-          implications: "[🟢 기회] AI 가격 최적화가 확산될수록 ESL의 채택 필요성이 기술적으로 불가피해지는 구조가 형성되고 있습니다.\n- SOLUM은 AI 가격 솔루션 파트너(Competera, Revionics, Intelligence Node 등)와 공동 제안 패키지를 강화하여 AI 소매 혁신 프로젝트의 필수 인프라로 포지셔닝\n- '**AI 없는 ESL, ESL 없는 AI 가격 전략은 미완성**'이라는 메시지를 영업 자료에 반영 권장",
-          imageUrl: "",
-          pubDate: "2026-03-12",
-          sourceUrl: "https://www.intelligentretail.tech/2026/03/12/pricing-on-the-front-line-why-electronic-shelf-edge-labelling-is-critical/",
-          sourceName: "Intelligent Retail"
-        },
-        {
-          title: "Epson Robots, Shoptalk Spring 2026서 소매 자동화 솔루션 대규모 쇼케이스 예고",
-          summary: "Epson Robots가 오는 3월 24~26일 라스베이거스 Shoptalk Spring 2026에서 소매 분야 자동화 솔루션을 대거 공개할 계획이라고 3월 12일 발표했습니다(PR Newswire).\n- 경량 풀필먼트·패키징·키오스크 자동화 등 소매 백오피스 자동화 솔루션\n- 라스베이거스 만달레이 베이 컨벤션 센터(#2082 부스)에서 라이브 시연 예정\n- Shoptalk Spring 2026 테마: **'AI 시대의 리테일(Retail in the Age of AI)'** — 180명 이상 연사, 10,000명 이상 참석 예정\n- 소매 자동화 로봇이 피킹·패킹·라벨링·키오스크 등 다양한 현장 업무에 투입되는 흐름",
-          implications: "[🔵 트렌드] Shoptalk 2026에서 AI 기반 소매 자동화가 핵심 의제로 확정됐습니다. 소매 자동화 흐름 속에서 ESL은 로봇·AI와 통합되는 핵심 인프라로 자리잡고 있습니다.\n- SOLUM이 Shoptalk 결과를 모니터링하여 북미 소매업체의 자동화 투자 동향을 파악하고 후속 영업 기회를 발굴해야 함\n- 로봇+ESL 통합 솔루션 포지셔닝이 Shoptalk 이후 북미 고객 미팅에서 효과적일 수 있음",
-          imageUrl: "",
-          pubDate: "2026-03-12",
-          sourceUrl: "https://www.prnewswire.com/news-releases/epson-robots-to-showcase-scalable-retail-automation-at-shoptalk-spring-2026-302711758.html",
-          sourceName: "PR Newswire"
-        }
-      ]
-    }
-  }
-];
-// END_WEEKLY_REPORTS - DO NOT MODIFY THIS LINE
+// DATA LOADED FROM ./data/ VIA FETCH
 // =====================================================================
 
 // ── SECTION 3D ICONS ──────────────────────────────────────────────────────
@@ -1581,15 +1054,63 @@ const SECTION_CONFIG = [
 
 let currentWeekId = null;
 let currentSection = 'industryTrends';
+let weekIndex = []; // data/index.json 로드 후 채워짐
 
 const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 
-// Initialize
-window.addEventListener('DOMContentLoaded', () => {
-    populateYearSelect();
-    if (WEEKLY_REPORTS.length > 0) {
-        const latestWeekId = WEEKLY_REPORTS[WEEKLY_REPORTS.length - 1].weekId;
-        loadWeek(latestWeekId);
+// ── 캐시 헬퍼 ─────────────────────────────────────────
+const CACHE_PREFIX = 'esl_data_';
+const CACHE_TTL_INDEX = 60 * 60 * 1000;          // index: 1시간
+const CACHE_TTL_WEEK  = 7 * 24 * 60 * 60 * 1000; // 주차 데이터: 7일
+
+function getCache(key, ttl) {
+    try {
+        const item = JSON.parse(localStorage.getItem(key));
+        if (!item || Date.now() - item.ts > ttl) return null;
+        return item.data;
+    } catch { return null; }
+}
+function setCache(key, data) {
+    try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), data })); } catch {}
+}
+
+// ── 데이터 fetch ───────────────────────────────────────
+async function fetchIndex() {
+    const cached = getCache(CACHE_PREFIX + 'index', CACHE_TTL_INDEX);
+    if (cached) return cached;
+    const res = await fetch('./data/index.json');
+    const data = await res.json();
+    setCache(CACHE_PREFIX + 'index', data);
+    return data;
+}
+async function fetchWeekData(weekId) {
+    const cached = getCache(CACHE_PREFIX + weekId, CACHE_TTL_WEEK);
+    if (cached) return cached;
+    const res = await fetch(`./data/${weekId}.json`);
+    const data = await res.json();
+    setCache(CACHE_PREFIX + weekId, data);
+    return data;
+}
+
+// ── 로딩 표시 ──────────────────────────────────────────
+function showLoading(on) {
+    const el = document.getElementById('mainContent');
+    if (on) el.innerHTML = `<div style="display:flex;justify-content:center;align-items:center;height:300px;color:var(--text-tertiary);font-size:0.95rem;gap:10px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        데이터를 불러오는 중...</div>`;
+}
+
+// ── 초기화 ─────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+    try {
+        weekIndex = await fetchIndex();
+        populateYearSelect();
+        if (weekIndex.length > 0) {
+            await loadWeek(weekIndex[weekIndex.length - 1].weekId);
+        }
+    } catch(e) {
+        document.getElementById('mainContent').innerHTML =
+            '<div style="text-align:center;padding:60px;color:#ef4444;">데이터를 불러오지 못했습니다. 잠시 후 새로고침해주세요.</div>';
     }
     updateNavButtons();
 });
@@ -1597,9 +1118,9 @@ window.addEventListener('DOMContentLoaded', () => {
 function populateYearSelect() {
     const yearSelect = document.getElementById('yearSelect');
     const count = document.getElementById('reportCount');
-    count.textContent = `총 ${WEEKLY_REPORTS.length}개 리포트`;
+    count.textContent = `총 ${weekIndex.length}개 리포트`;
 
-    const years = [...new Set(WEEKLY_REPORTS.map(r => r.weekId.substring(0, 4)))].sort().reverse();
+    const years = [...new Set(weekIndex.map(r => r.weekId.substring(0, 4)))].sort().reverse();
     years.forEach(year => {
         const opt = document.createElement('option');
         opt.value = year;
@@ -1616,13 +1137,10 @@ function onYearChange(year) {
     weekSelect.innerHTML = '<option value="">주간 선택</option>';
     weekSelect.disabled = true;
 
-    if (!year) {
-        monthSelect.disabled = true;
-        return;
-    }
+    if (!year) { monthSelect.disabled = true; return; }
 
     const months = [...new Set(
-        WEEKLY_REPORTS.filter(r => r.weekId.startsWith(year)).map(r => parseInt(r.weekId.substring(5, 7)))
+        weekIndex.filter(r => r.weekId.startsWith(year)).map(r => parseInt(r.weekId.substring(5, 7)))
     )].sort((a, b) => b - a);
 
     months.forEach(m => {
@@ -1640,26 +1158,22 @@ function onMonthChange(month) {
     const year = yearSelect.value;
 
     weekSelect.innerHTML = '<option value="">주간 선택</option>';
-    if (!month || !year) {
-        weekSelect.disabled = true;
-        return;
-    }
+    if (!month || !year) { weekSelect.disabled = true; return; }
 
     const prefix = `${year}-${month}`;
-    const weeks = WEEKLY_REPORTS
+    weekIndex
         .filter(r => r.weekId.startsWith(prefix))
-        .sort((a, b) => b.weekId.localeCompare(a.weekId));
-
-    weeks.forEach(r => {
-        const opt = document.createElement('option');
-        opt.value = r.weekId;
-        opt.textContent = r.weekLabel;
-        weekSelect.appendChild(opt);
-    });
+        .sort((a, b) => b.weekId.localeCompare(a.weekId))
+        .forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = r.weekId;
+            opt.textContent = r.weekLabel;
+            weekSelect.appendChild(opt);
+        });
     weekSelect.disabled = false;
 }
 
-function loadWeek(weekId) {
+async function loadWeek(weekId) {
     if (!weekId) {
         currentWeekId = null;
         document.getElementById('mainContent').innerHTML = `
@@ -1672,8 +1186,15 @@ function loadWeek(weekId) {
         return;
     }
 
-    const report = WEEKLY_REPORTS.find(r => r.weekId === weekId);
-    if (!report) return;
+    showLoading(true);
+    let report;
+    try {
+        report = await fetchWeekData(weekId);
+    } catch(e) {
+        document.getElementById('mainContent').innerHTML =
+            '<div style="text-align:center;padding:60px;color:#ef4444;">데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</div>';
+        return;
+    }
 
     currentWeekId = weekId;
 
@@ -1684,11 +1205,10 @@ function loadWeek(weekId) {
     const yearSelect = document.getElementById('yearSelect');
     yearSelect.value = year;
 
-    // Rebuild month options for this year
     const monthSelect = document.getElementById('monthSelect');
     monthSelect.innerHTML = '<option value="">월 선택</option>';
     const months = [...new Set(
-        WEEKLY_REPORTS.filter(r => r.weekId.startsWith(year)).map(r => parseInt(r.weekId.substring(5, 7)))
+        weekIndex.filter(r => r.weekId.startsWith(year)).map(r => parseInt(r.weekId.substring(5, 7)))
     )].sort((a, b) => b - a);
     months.forEach(m => {
         const opt = document.createElement('option');
@@ -1699,19 +1219,18 @@ function loadWeek(weekId) {
     monthSelect.value = month;
     monthSelect.disabled = false;
 
-    // Rebuild week options for this year+month
     const weekSelect = document.getElementById('weekSelect');
     weekSelect.innerHTML = '<option value="">주간 선택</option>';
     const prefix = `${year}-${month}`;
-    const weeks = WEEKLY_REPORTS
+    weekIndex
         .filter(r => r.weekId.startsWith(prefix))
-        .sort((a, b) => b.weekId.localeCompare(a.weekId));
-    weeks.forEach(r => {
-        const opt = document.createElement('option');
-        opt.value = r.weekId;
-        opt.textContent = r.weekLabel;
-        weekSelect.appendChild(opt);
-    });
+        .sort((a, b) => b.weekId.localeCompare(a.weekId))
+        .forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = r.weekId;
+            opt.textContent = r.weekLabel;
+            weekSelect.appendChild(opt);
+        });
     weekSelect.value = weekId;
     weekSelect.disabled = false;
 
@@ -1882,19 +1401,19 @@ function switchSection(sectionKey) {
 
 function navigateWeek(direction) {
     if (!currentWeekId) return;
-    const idx = WEEKLY_REPORTS.findIndex(r => r.weekId === currentWeekId);
+    const idx = weekIndex.findIndex(r => r.weekId === currentWeekId);
     const newIdx = idx + direction;
-    if (newIdx >= 0 && newIdx < WEEKLY_REPORTS.length) {
-        loadWeek(WEEKLY_REPORTS[newIdx].weekId);
+    if (newIdx >= 0 && newIdx < weekIndex.length) {
+        loadWeek(weekIndex[newIdx].weekId);
     }
 }
 
 function updateNavButtons() {
-    const idx = WEEKLY_REPORTS.findIndex(r => r.weekId === currentWeekId);
+    const idx = weekIndex.findIndex(r => r.weekId === currentWeekId);
     const prevBtn = document.getElementById('prevWeek');
     const nextBtn = document.getElementById('nextWeek');
     if (prevBtn) prevBtn.disabled = idx <= 0;
-    if (nextBtn) nextBtn.disabled = idx < 0 || idx >= WEEKLY_REPORTS.length - 1;
+    if (nextBtn) nextBtn.disabled = idx < 0 || idx >= weekIndex.length - 1;
 }
 
 function countArticles(report) {
@@ -1997,7 +1516,7 @@ function trackView(weekId) {
     }
     // GTM: 주간 리포트 조회 이벤트 (매번 전송)
     window.dataLayer = window.dataLayer || [];
-    const report = WEEKLY_REPORTS.find(r => r.weekId === weekId);
+    const report = weekIndex.find(r => r.weekId === weekId);
     window.dataLayer.push({
         event: 'esl_report_view',
         week_id: weekId,
@@ -2011,7 +1530,7 @@ function getViewCount(weekId) {
 }
 
 function renderViewSummaryHTML() {
-    const items = [...WEEKLY_REPORTS].reverse().map(r => {
+    const items = [...weekIndex].reverse().map(r => {
         const cnt = getViewCount(r.weekId);
         return `<div class="view-summary-item" onclick="loadWeek('${r.weekId}')">
             <span class="v-label">${r.weekLabel.replace(' ~ ', '~')}</span>

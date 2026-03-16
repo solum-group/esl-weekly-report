@@ -1,0 +1,63 @@
+{
+  "weekId": "2026-01-12",
+  "weekLabel": "2026.01.12 ~ 2026.01.18",
+  "sections": {
+    "industryTrends": [
+      {
+        "title": "NRF 2026: E-Paper, 소매업계 차세대 디스플레이 기술로 부상 — 13~32인치 중형 디스플레이가 주목",
+        "summary": "NRF 2026 현장 분석에 따르면 전자종이(E-Paper)는 이번 전시에서 가장 광범위하게 전시된 디스플레이 기술이었습니다. 특히 13~32인치 중형 E-Paper 디스플레이가 진열대 상단에 배치되어 동적 가격 책정, 프로모션, 소매 미디어 네트워크를 연결하는 핵심 접점으로 주목받았습니다. Pricer, SOLUM, Hanshow 등 주요 ESL 기업들이 모두 E-Paper 기반 솔루션을 전면에 내세웠습니다.",
+        "implications": "[🔵 트렌드] 중형 E-Paper 디스플레이가 소매 미디어 네트워크의 핵심 하드웨어로 부상하면서 ESL의 평균 판매 단가가 상승하고 있습니다. SOLUM의 대형 디스플레이 라인업 확장이 이 흐름에 부합하며, NRF 이후 관련 수주 가능성을 적극 타진할 시점입니다.",
+        "pubDate": "2026-01-16",
+        "sourceUrl": "https://invidis.com/news/2026/01/nrf-2026-retails-next-favorite-display-is-surprisingly-calm/",
+        "sourceName": "Invidis"
+      }
+    ],
+    "customerAdoption": {},
+    "majorCompanies": [
+      {
+        "title": "Hanshow, NRF 2026에서 차세대 스마트 선반 솔루션 NexShelf 공개",
+        "summary": "Hanshow가 NRF 2026(1월 12~14일, 뉴욕)에서 차세대 스마트 선반 솔루션 NexShelf를 발표했습니다. 자체 저전력 프로토콜 HiLPC와 블루투스를 결합한 이중 모드 통신 아키텍처가 핵심으로, 높은 신뢰성과 개방형 통합 기능을 제공합니다.",
+        "implications": "[🔴 위협] Hanshow가 개방형 이중 모드 통신을 앞세워 NRF에서 북미 시장을 공격적으로 공략하고 있습니다. SOLUM Newton 대비 통신 유연성 측면의 차별화 포인트를 점검하고 북미 고객 대상 대응 메시지를 강화할 필요가 있습니다.",
+        "pubDate": "2026-01-12",
+        "sourceUrl": "https://www.hanshow.com/en/news/hanshow-unveils-nexshelf-at-nrf-2026",
+        "sourceName": "Hanshow 공식 뉴스"
+      },
+      {
+        "title": "Hanshow-Microsoft, NRF 2026에서 스마트 스토어 Digital Twin 공동 개발 파트너십 발표",
+        "summary": "Hanshow와 Microsoft가 NRF 2026에서 소매점 Store Digital Twin 미래 프레임워크 공동 개발 파트너십을 발표했습니다. Microsoft Azure AI와 클라우드 인프라를 기반으로 Hanshow의 ESL·IoT 솔루션을 통합하는 스마트 스토어 플랫폼 구축이 목표입니다.",
+        "implications": "[🔴 위협] Hanshow-Microsoft Azure 파트너십은 대형 엔터프라이즈 고객에게 강력한 기술 신뢰도 시그널이 됩니다. SOLUM도 글로벌 클라우드·AI 파트너십을 확보하거나, 기존 화웨이 협력 등 파트너 생태계를 전면에 내세워야 할 시점입니다.",
+        "pubDate": "2026-01-13",
+        "sourceUrl": "https://www.hanshow.com/en/news/hanshow-collaborates-with-microsoft-to-explore-store-digital-twin-for-the-future-of-retail-at-nrf-2026",
+        "sourceName": "Hanshow 공식 뉴스"
+      }
+    ],
+    "solutionProviders": [
+      {
+        "title": "SOLUM, NRF 2026에서 통합 점포 관리 플랫폼 Solum Store Platform(SSP) 발표",
+        "summary": "SOLUM이 NRF 2026에서 재고·고객 트래픽·인력 효율성·매장 내 마케팅을 하나의 대시보드에서 관리하는 Solum Store Platform(SSP)을 발표했습니다. ESL을 데이터 수집·실행 접점으로 활용하여 매장 운영 전반을 최적화하는 통합 솔루션입니다.",
+        "implications": "[🟢 기회] SOLUM Store Platform(SSP)은 재고·인력·마케팅을 통합한 매장 운영 플랫폼으로, ESL을 단순 교체 수요가 아닌 신규 플랫폼 도입으로 포지셔닝할 수 있습니다. 기존 고객 대상 SSP 업셀링 및 신규 고객 대상 플랫폼 번들 제안을 적극 추진할 필요가 있습니다.",
+        "pubDate": "2026-01-13",
+        "sourceUrl": "https://invidis.com/news/2026/01/nrf-2026-solum-introduces-store-management-platform/",
+        "sourceName": "Invidis"
+      }
+    ],
+    "technology": [
+      {
+        "title": "SOLUM, NRF 2026에서 대형 포맷 E-Paper 디스플레이 라인업 공개 — '글로벌 소매 플랫폼'으로 진화 선언",
+        "summary": "SOLUM이 NRF 2026에서 대형 포맷 E-Paper 디스플레이 신제품 라인업을 발표하며 글로벌 소매 플랫폼으로의 전략적 전환을 공식 선언했습니다. 고객 경험, 운영 효율성, 데이터 수익화, 지속가능성 등 4개 Experience Zone을 통해 통합 소매 솔루션의 가능성을 시연했습니다. 개방형 협력 생태계 전략을 통해 경쟁사와의 기술 통합도 추진합니다.",
+        "implications": "[🟢 기회] NRF에서 SOLUM이 플랫폼 기업으로의 전환을 공식 선언하고 대형 E-Paper 라인업을 공개했습니다. 이 포지셔닝이 시장에 얼마나 전달되었는지 트래킹하고, NRF에서 접촉한 잠재 고객 대상 후속 영업 파이프라인 구축을 즉시 가동해야 합니다.",
+        "pubDate": "2026-01-13",
+        "sourceUrl": "https://www.businesswire.com/news/home/20260113068670/en/SOLUM-Unveils-Large-Format-E-Paper-Display-Lineup-at-NRF-2026-Evolving-into-a-Global-Retail-Platform",
+        "sourceName": "Business Wire"
+      },
+      {
+        "title": "E Ink, NRF 2026 리캡 — Vusion·Hanshow·SOLUM 등 파트너사와 컬러 E-Paper ESL 혁신 전시",
+        "summary": "E Ink가 NRF 2026 참가 성과를 정리했습니다. Vusion, Hanshow, SOLUM, ZKONG, Netronix, Pricer 등 주요 파트너들이 E Ink Spectra 6 기반 컬러 ESL과 리테일 미디어 솔루션을 전시했습니다. 컬러 E-Paper가 소매 가격 표시의 새 표준으로 자리잡고 있음이 확인됐습니다.",
+        "implications": "[🔵 트렌드] E Ink Spectra 6 기반 컬러 ESL이 업계 표준으로 빠르게 자리 잡고 있습니다. E Ink에 대한 공급망 의존도가 높아지는 만큼, SOLUM은 컬러 ESL 원가 경쟁력 확보와 대안 공급처 탐색을 병행할 필요가 있습니다.",
+        "pubDate": "2026-01-17",
+        "sourceUrl": "https://blog.eink.com/nrf-2026-recap-how-e-ink-and-our-partners-reimagined-retail-displays",
+        "sourceName": "E Ink Blog"
+      }
+    ]
+  }
+}

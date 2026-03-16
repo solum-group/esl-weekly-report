@@ -1,0 +1,20 @@
+{
+  "weekId": "2026-01-05",
+  "weekLabel": "2026.01.05 ~ 2026.01.11",
+  "sections": {
+    "industryTrends": [],
+    "customerAdoption": {},
+    "majorCompanies": [
+      {
+        "title": "VusionGroup, 사명 'Vusion'으로 단축 — AI 기반 디지털 소매 전문기업으로 재포지셔닝",
+        "summary": "VusionGroup이 사명을 'Vusion'으로 단축하고 브랜드를 통합했습니다(1월 7일). AI 기반 디지털 소매 솔루션 전문기업으로서의 정체성을 명확히 하고, SES-imagotag 등 계열 브랜드를 Vusion 플랫폼 하에 통합 운영하는 전략입니다.",
+        "implications": "[🔴 위협] Vusion의 브랜드 통합은 ESL 하드웨어 기업이 아닌 'AI 리테일 플랫폼'으로의 포지셔닝 전환을 선언한 것으로, 고객 인식과 경쟁 구도를 바꿀 수 있습니다. SOLUM도 플랫폼 사업(SSP) 메시지를 적극적으로 외부에 알려야 할 시점입니다.",
+        "pubDate": "2026-01-07",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/1/7/vusiongroup-opts-to-keep-it-simple-as-ai-powered-digital-retail-specialist-shortens-name-to-vusion",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ],
+    "solutionProviders": [],
+    "technology": []
+  }
+}

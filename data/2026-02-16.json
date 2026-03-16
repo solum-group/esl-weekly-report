@@ -1,0 +1,82 @@
+{
+  "weekId": "2026-02-16",
+  "weekLabel": "2026.02.16 ~ 2026.02.22",
+  "sections": {
+    "industryTrends": [],
+    "customerAdoption": {
+      "슈퍼마켓": [
+        {
+          "title": "Carrefour-Vusion, 2030년까지 프랑스 전 하이퍼마켓·슈퍼마켓 스마트 스토어화 전략 파트너십 체결",
+          "summary": "까르푸와 Vusion이 2030년까지 프랑스 전역 모든 하이퍼마켓·슈퍼마켓을 디지털화하는 전략적 파트너십을 체결했습니다(2월 18일 발표). EdgeSense 선반 센서, Vusion Cloud 플랫폼, Captana AI 비전을 동시 배포하는 유럽 최초 대규모 통합 스마트 스토어 프로젝트이며, 공동 혁신 랩도 설립합니다.",
+          "implications": "[🔴 위협] Vusion이 까르푸 전 매장 독점 계약을 체결하며 유럽 대형 유통 레퍼런스를 선점했습니다. 까르푸와 같은 유럽 Top 5 소매체인에 대한 SOLUM의 접근 가능성을 점검하고, Vusion이 아직 진입하지 못한 중·동유럽 채널 개척을 우선 검토해야 합니다.",
+          "pubDate": "2026-02-18",
+          "sourceUrl": "https://www.actusnews.com/en/vusiongroup/pr/2026/02/18/carrefour-and-vusion-join-forces-to-deploy-the-smart-store-at-scale",
+          "sourceName": "Actusnews Wire"
+        }
+      ],
+      "협동조합/독립 소매": [
+        {
+          "title": "East of England Co-op, Pricer Avenue™ 플랫폼 첫 상용 파일럿 성공적 완료",
+          "summary": "영국 120개 매장 운영 협동조합 East of England Co-op이 Pricer Avenue™ 플랫폼의 첫 상용 파일럿을 성공적으로 마쳤습니다(EuroShop 2026 개막일 발표). 배터리리스 설계, Floating Canvas 대형 디스플레이, 스칸디나비안 디자인이 특징이며, 고객 경험과 매장 수익화 모두 개선됐습니다.",
+          "implications": "[🔵 트렌드] 배터리리스 ESL이 ESG 관점에서 유럽 소매업체들의 구매 결정 요인으로 부상하고 있습니다. SOLUM 제품 라인업 중 배터리리스·저전력 모델의 유럽 시장 대응 현황을 점검하고 ESG 마케팅 메시지 강화를 검토할 필요가 있습니다.",
+          "pubDate": "2026-02-22",
+          "sourceUrl": "https://internationalsupermarketnews.com/pricer-announces-first-successful-pilot-of-pricer-avenue-platform-together-with-east-of-england-co-op-uk/",
+          "sourceName": "International Supermarket News"
+        }
+      ]
+    },
+    "majorCompanies": [
+      {
+        "title": "Vusion, 까르푸와 프랑스 전 매장 스마트 스토어화 대형 파트너십 체결",
+        "summary": "Vusion이 까르푸와 2030년까지 프랑스 전역 하이퍼마켓·슈퍼마켓을 디지털화하는 전략적 파트너십을 체결했습니다(2월 18일). EdgeSense, Vusion Cloud, Captana를 통합 배포하는 이번 계약은 Vusion 사상 최대 규모의 통합 솔루션 공급 프로젝트입니다.",
+        "implications": "[🔴 위협] Vusion이 EuroShop에서 유럽 대형 유통사와의 통합 플랫폼 계약을 연이어 체결하며 유럽 시장 선점을 가속화하고 있습니다. SOLUM의 유럽 내 주요 파트너 및 고객사 관계를 재점검하고 이탈 방지 전략을 우선적으로 실행해야 합니다.",
+        "pubDate": "2026-02-18",
+        "sourceUrl": "https://www.actusnews.com/en/vusiongroup/pr/2026/02/18/carrefour-and-vusion-join-forces-to-deploy-the-smart-store-at-scale",
+        "sourceName": "Actusnews Wire"
+      },
+      {
+        "title": "Pricer, EuroShop 2026 개막과 함께 Pricer Avenue™ 플랫폼 공식 공개 및 영국 대형 고객사 계약 발표",
+        "summary": "Pricer가 EuroShop 2026 개막일(2월 22일)에 배터리리스 설계의 Pricer Avenue™ 쉘프-엣지 커뮤니케이션 플랫폼을 공식 공개했습니다. 동시에 Waitrose, Currys, WHSmith 등 영국 주요 소매업체와의 신규 계약 체결과 East of England Co-op 파일럿 성공도 발표했습니다.",
+        "implications": "[🔴 위협] Pricer가 영국 대형 고객 복수를 동시 확보하며 영국 시장 입지를 강화하고 있습니다. SOLUM의 영국 시장 현황 및 파이프라인을 점검하고, Pricer Avenue 대비 SOLUM 제품의 성능·가격 경쟁력 비교 자료를 영업팀에 제공할 필요가 있습니다.",
+        "pubDate": "2026-02-22",
+        "sourceUrl": "https://www.pricer.com/press-release/pricer-wants-retail-shelves-to-come-alive-with-new-pricer-avenue-platform-at-euroshop-2026",
+        "sourceName": "Pricer 공식 보도자료"
+      },
+      {
+        "title": "SOLUM, EuroShop 2026 개막에서 'Retail in Sync' 통합 소매 솔루션 및 신제품 공개",
+        "summary": "SOLUM이 EuroShop 2026 개막일(2월 22일)에 'Retail in Sync' 컨셉의 통합 소매 솔루션을 발표했습니다. ESL·전자 종이 디스플레이·디지털 사이니지 통합 플랫폼과 함께 냉동 환경용 4색 ESL 등 신제품도 공개했습니다.",
+        "implications": "[🟢 기회] SOLUM이 EuroShop에서 플랫폼 솔루션 전환을 공식화하고 유럽 파트너십을 확대했습니다. 전시에서 접촉한 유럽 잠재 고객 대상 팔로업을 즉시 실행하고, 플랫폼 제안 중심의 영업 방식으로 전환해 경쟁사 대비 차별화 기회를 극대화해야 합니다.",
+        "pubDate": "2026-02-22",
+        "sourceUrl": "https://www.businesswire.com/news/home/20260222220569/en/SOLUM-Brings-Retail-in-Sync-to-EuroShop-2026-with-Integrated-Retail-Innovations",
+        "sourceName": "Business Wire"
+      }
+    ],
+    "solutionProviders": [
+      {
+        "title": "Vusion Cloud, 까르푸 전 매장 스마트 스토어 프로젝트 핵심 플랫폼으로 채택",
+        "summary": "Vusion의 클라우드 플랫폼이 까르푸 전 매장 디지털화 프로젝트에서 ESL 관리·재고 인텔리전스·매장 분석을 통합 처리하는 핵심 솔루션으로 채택됐습니다(2월 18일). Vusion Cloud는 EdgeSense 선반 센서, Captana AI 비전과 함께 통합 운영됩니다.",
+        "implications": "[🔴 위협] Vusion이 대형 유통사를 SaaS 구독 모델로 전환시키며 장기 반복 매출 구조를 구축하고 있습니다. SOLUM도 SSP 기반 구독 수익 모델 설계를 가속화하지 않으면 수익성 격차가 벌어질 수 있으며, 구독형 제안 가능 여부를 내부적으로 검토해야 합니다.",
+        "pubDate": "2026-02-18",
+        "sourceUrl": "https://www.actusnews.com/en/vusiongroup/pr/2026/02/18/carrefour-and-vusion-join-forces-to-deploy-the-smart-store-at-scale",
+        "sourceName": "Actusnews Wire"
+      },
+      {
+        "title": "SOLUM-EWQ, EuroShop 2026에서 통합 매장 디지털 커뮤니케이션 파트너십 확대 발표",
+        "summary": "SOLUM과 디지털 사이니지 솔루션 기업 EWQ가 EuroShop 2026 사전 발표(2월 19일)에서 전략적 파트너십 확대를 알렸습니다. ESL, 대형 전자 종이 디스플레이, 디지털 사이니지를 하나의 통합 플랫폼으로 연결하는 솔루션을 공동 개발·공급합니다.",
+        "implications": "[🔵 트렌드] ESL·사이니지·IoT 기기를 단일 플랫폼으로 통합 관리하는 솔루션이 소매업체의 새로운 기술 선택 기준이 되고 있습니다. SOLUM의 플랫폼이 타 기기와 어느 수준까지 통합 가능한지 API·SDK 개방 전략을 구체화할 필요가 있습니다.",
+        "pubDate": "2026-02-19",
+        "sourceUrl": "https://www.businesswire.com/news/home/20260219422813/en/SOLUM-and-EWQ-Announce-Strategic-Partnership-Expansion-at-EuroShop-to-Advance-Integrated-In-Store-Digital-Communication",
+        "sourceName": "Business Wire"
+      },
+      {
+        "title": "M-Cube×SOLUM, 유럽 소매 통합 디지털 사이니지·ESL 솔루션 파트너십 체결",
+        "summary": "M-Cube와 SOLUM이 유럽 소매업체를 위한 통합 디지털 사이니지·ESL 솔루션 제공을 위한 전략적 파트너십을 체결했습니다. SOLUM의 ESL 및 대형 포맷 E-Paper 솔루션과 M-Cube의 DXP One 콘텐츠 관리 시스템·시스템 통합 전문성을 결합하며, 2026년 1분기 중 파일럿 배포를 시작할 예정입니다.",
+        "implications": "[🔵 트렌드] ESL과 디지털 사이니지의 통합 플랫폼이 유럽 소매 시장에서 새로운 표준으로 부상하고 있습니다. SOLUM도 사이니지 전문업체와의 파트너십이나 플랫폼 통합 기능을 강화해 복합 솔루션 제안력을 높이는 방향을 검토해야 합니다.",
+        "pubDate": "2026-02-20",
+        "sourceUrl": "https://www.digitaltoday.co.kr/en/view/4178/solum-steps-up-push-into-european-retail-market",
+        "sourceName": "Digital Today"
+      }
+    ],
+    "technology": []
+  }
+}
