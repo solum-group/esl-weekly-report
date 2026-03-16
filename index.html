@@ -1326,7 +1326,14 @@ function renderReport(report) {
 
     const viewSummaryHTML = renderViewSummaryHTML();
 
-    document.getElementById('mainContent').innerHTML = weekHeaderHTML + viewSummaryHTML + statsHTML + sectionsHTML;
+    const searchAnalysisHTML = report.searchAnalysis
+        ? `<div style="background:#f8f9ff;border:1.5px solid #e0e4f5;border-radius:var(--radius-xl);padding:16px 20px;margin-bottom:20px;">
+            <div style="font-size:0.68rem;color:var(--text-tertiary);font-weight:800;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">🔍 이번 주 검색 분석</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.65;">${renderMarkdown(report.searchAnalysis)}</div>
+           </div>`
+        : '';
+
+    document.getElementById('mainContent').innerHTML = weekHeaderHTML + searchAnalysisHTML + viewSummaryHTML + statsHTML + sectionsHTML;
     // 렌더링 후 좋아요 카운트 비동기 로드
     loadReactionCounts();
 }
