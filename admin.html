@@ -210,6 +210,107 @@
         }
         .loading-row td { text-align: center; padding: 48px 24px; color: var(--text-tertiary); font-size: 0.85rem; }
 
+        /* ── TABS ── */
+        .tab-nav {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+        }
+        .tab-nav-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: flex; gap: 0;
+        }
+        .tab-btn {
+            padding: 14px 20px;
+            font-size: 0.85rem; font-weight: 700;
+            color: var(--text-tertiary);
+            border: none; border-bottom: 2.5px solid transparent;
+            background: none; cursor: pointer; font-family: inherit;
+            transition: color 0.15s, border-color 0.15s;
+            letter-spacing: -0.2px;
+        }
+        .tab-btn:hover { color: var(--text-primary); }
+        .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── ACCOUNT MANAGEMENT ── */
+        .create-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            border: 1.5px solid var(--border);
+            padding: 24px 28px;
+            margin-bottom: 20px;
+        }
+        .create-card-title {
+            font-size: 0.9rem; font-weight: 800;
+            color: var(--text-primary); margin-bottom: 4px;
+        }
+        .create-card-desc {
+            font-size: 0.75rem; color: var(--text-tertiary);
+            margin-bottom: 18px; font-weight: 500;
+        }
+        .create-row {
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+        .create-input {
+            flex: 1;
+            padding: 11px 15px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem; font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg-base);
+            outline: none;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .create-input:focus { border-color: var(--blue); background: #fff; }
+        .create-input.error { border-color: #f04452; }
+        .create-error { font-size: 0.73rem; color: #f04452; margin-top: 6px; font-weight: 600; }
+        .create-btn {
+            padding: 11px 22px;
+            background: var(--blue); color: white;
+            border: none; border-radius: var(--radius-md);
+            font-size: 0.85rem; font-weight: 700;
+            cursor: pointer; font-family: inherit;
+            white-space: nowrap;
+            transition: background 0.15s, transform 0.1s;
+        }
+        .create-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+        .create-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .action-btn {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.73rem; font-weight: 700;
+            cursor: pointer; font-family: inherit;
+            border: 1.5px solid; transition: all 0.15s;
+        }
+        .action-btn.reset {
+            background: #fff7ed; color: #ea580c; border-color: #fdba74;
+        }
+        .action-btn.reset:hover { background: #ffedd5; }
+        .action-btn.delete {
+            background: #fff1f2; color: #e11d48; border-color: #fca5a5;
+        }
+        .action-btn.delete:hover { background: #ffe4e6; }
+
+        .pw-status-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 0.7rem; font-weight: 700;
+            padding: 3px 9px; border-radius: var(--radius-full);
+        }
+        .pw-status-badge.need-change {
+            background: #fef3c7; color: #d97706;
+            border: 1px solid #fcd34d;
+        }
+        .pw-status-badge.normal {
+            background: #f0fdf4; color: #16a34a;
+            border: 1px solid #86efac;
+        }
+        .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+
         /* ── FOOTER ── */
         .footer {
             text-align: center; padding: 24px;
@@ -220,8 +321,11 @@
 
         @media (max-width: 768px) {
             .header { padding: 0 20px; }
+            .tab-nav { padding: 0 20px; }
             .container { padding: 20px; }
             .stats-row { grid-template-columns: 1fr 1fr; }
+            .create-row { flex-direction: column; }
+            .create-btn { width: 100%; }
         }
     </style>
 </head>
@@ -272,73 +376,147 @@
     </div>
 </div>
 
+<!-- TAB NAV -->
+<div class="tab-nav">
+    <div class="tab-nav-inner">
+        <button class="tab-btn active" id="tab-access" onclick="switchTab('access')">접속 현황</button>
+        <button class="tab-btn" id="tab-accounts" onclick="switchTab('accounts')">계정 관리</button>
+    </div>
+</div>
+
 <!-- MAIN -->
 <div class="container">
-    <!-- Stat cards -->
-    <div class="stats-row">
-        <div class="stat-card">
-            <div class="stat-label">총 접속자 수</div>
-            <div class="stat-value" id="statUsers">—</div>
-            <div class="stat-sub">고유 이메일 기준</div>
+
+    <!-- ── 접속 현황 탭 ── -->
+    <div class="tab-panel active" id="panel-access">
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">총 접속자 수</div>
+                <div class="stat-value" id="statUsers">—</div>
+                <div class="stat-sub">고유 이메일 기준</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">총 접속 횟수</div>
+                <div class="stat-value" id="statTotal">—</div>
+                <div class="stat-sub">누적 로그인 이벤트</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">가장 최근 접속</div>
+                <div class="stat-value" style="font-size:1.1rem;line-height:1.35;" id="statLatest">—</div>
+                <div class="stat-sub" id="statLatestTime">—</div>
+            </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-label">총 접속 횟수</div>
-            <div class="stat-value" id="statTotal">—</div>
-            <div class="stat-sub">누적 로그인 이벤트</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">가장 최근 접속</div>
-            <div class="stat-value" style="font-size:1.1rem;line-height:1.35;" id="statLatest">—</div>
-            <div class="stat-sub" id="statLatestTime">—</div>
+        <div class="table-card">
+            <div class="table-header">
+                <div>
+                    <div class="table-title">이메일별 접속 현황</div>
+                    <div class="table-meta">접속 횟수 많은 순 정렬 · Firebase Realtime Database 연동</div>
+                </div>
+                <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="23 4 23 10 17 10"/>
+                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                    </svg>
+                    새로고침
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:48px;">#</th>
+                        <th>이메일</th>
+                        <th class="right" style="width:120px;">접속 횟수</th>
+                        <th style="width:180px;">마지막 접속</th>
+                        <th style="width:180px;">최초 접속</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr class="loading-row"><td colspan="5">데이터 로딩 중…</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Table -->
-    <div class="table-card">
-        <div class="table-header">
-            <div>
-                <div class="table-title">이메일별 접속 현황</div>
-                <div class="table-meta">접속 횟수 많은 순 정렬 · Firebase Realtime Database 연동</div>
+    <!-- ── 계정 관리 탭 ── -->
+    <div class="tab-panel" id="panel-accounts">
+        <!-- 계정 생성 -->
+        <div class="create-card">
+            <div class="create-card-title">신규 계정 생성</div>
+            <div class="create-card-desc">생성된 계정은 초기 비밀번호(thffndpa2026)로 설정되며, 최초 로그인 시 비밀번호 변경을 요구합니다.</div>
+            <div class="create-row">
+                <input class="create-input" type="email" id="newAccountEmail"
+                    placeholder="name@solum-group.com"
+                    onkeydown="if(event.key==='Enter') createAccount()">
+                <button class="create-btn" id="createBtn" onclick="createAccount()">계정 생성</button>
             </div>
-            <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                    <polyline points="23 4 23 10 17 10"/>
-                    <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
-                </svg>
-                새로고침
-            </button>
+            <div class="create-error" id="createError"></div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th style="width:48px;">#</th>
-                    <th>이메일</th>
-                    <th class="right" style="width:120px;">접속 횟수</th>
-                    <th style="width:180px;">마지막 접속</th>
-                    <th style="width:180px;">최초 접속</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <tr class="loading-row"><td colspan="5">데이터 로딩 중…</td></tr>
-            </tbody>
-        </table>
+
+        <!-- 계정 목록 -->
+        <div class="table-card">
+            <div class="table-header">
+                <div>
+                    <div class="table-title">계정 목록</div>
+                    <div class="table-meta">생성일 기준 최신 순 · 비밀번호는 암호화(SHA-256) 저장</div>
+                </div>
+                <button class="refresh-btn" id="refreshAccountsBtn" onclick="loadAccounts()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="23 4 23 10 17 10"/>
+                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                    </svg>
+                    새로고침
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:48px;">#</th>
+                        <th>이메일</th>
+                        <th style="width:160px;">비밀번호 상태</th>
+                        <th style="width:180px;">생성일</th>
+                        <th style="width:200px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody id="accountsTableBody">
+                    <tr class="loading-row"><td colspan="5">데이터 로딩 중…</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
 </div>
 
 <div class="footer">ESL 리포트 어드민 · SOLUM Group · 관리자 전용</div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────────────────
-// index.html의 FIREBASE_DB_URL과 동일한 값을 입력하세요.
-const FIREBASE_DB_URL = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app'; // ← Firebase Realtime Database URL
-
-// 어드민 비밀번호 (변경 가능)
-const ADMIN_PW = 'solum_admin_2026';
-// ────────────────────────────────────────────────────────────────────
+// ── CONFIG ───────────────────────────────────────────────────────────
+const FIREBASE_DB_URL = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app';
+const ADMIN_PW        = 'solum_admin_2026';
+const INIT_PW         = 'thffndpa2026';
+// ─────────────────────────────────────────────────────────────────────
 
 const ADMIN_AUTH_KEY = 'esl_admin_auth';
 
-// ── 인증 ──
+// ── SHA-256 (Web Crypto API) ──────────────────────────────────────────
+async function sha256(text) {
+    const encoder = new TextEncoder();
+    const data    = encoder.encode(text);
+    const hashBuf = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hashBuf))
+        .map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ── 탭 전환 ──────────────────────────────────────────────────────────
+function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+    if (name === 'accounts') loadAccounts();
+    if (name === 'access')   loadData();
+}
+
+// ── 어드민 인증 ───────────────────────────────────────────────────────
 function doAdminLogin() {
     const pw    = document.getElementById('adminPw').value;
     const errEl = document.getElementById('adminPwErr');
@@ -354,7 +532,6 @@ function doAdminLogout() {
     document.getElementById('adminPwErr').textContent = '';
     document.getElementById('loginOverlay').classList.remove('hidden');
 }
-
 (function initAuth() {
     if (sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true') {
         document.getElementById('loginOverlay').classList.add('hidden');
@@ -362,7 +539,7 @@ function doAdminLogout() {
     }
 })();
 
-// ── 날짜 포맷 ──
+// ── 날짜 포맷 ─────────────────────────────────────────────────────────
 function fmtDate(iso) {
     if (!iso) return '—';
     const d = new Date(iso);
@@ -380,22 +557,11 @@ function relTime(iso) {
     return `${Math.floor(h / 24)}일 전`;
 }
 
-// ── 데이터 로드 ──
+// ── 접속 현황 로드 ────────────────────────────────────────────────────
 async function loadData() {
-    const btn = document.getElementById('refreshBtn');
-    btn.classList.add('spinning');
-    btn.disabled = true;
-
+    const btn   = document.getElementById('refreshBtn');
     const tbody = document.getElementById('tableBody');
-
-    if (!FIREBASE_DB_URL) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">
-            ⚠️ FIREBASE_DB_URL이 설정되지 않았습니다.<br>
-            <span style="font-size:0.8rem;margin-top:8px;display:block;">admin.html 상단의 FIREBASE_DB_URL에 Firebase Realtime Database URL을 입력하세요.</span>
-        </td></tr>`;
-        btn.classList.remove('spinning'); btn.disabled = false;
-        return;
-    }
+    btn.classList.add('spinning'); btn.disabled = true;
 
     try {
         const res  = await fetch(`${FIREBASE_DB_URL}/logins.json`);
@@ -403,43 +569,33 @@ async function loadData() {
 
         if (!data || typeof data !== 'object') {
             tbody.innerHTML = `<tr class="empty-row"><td colspan="5">아직 접속 기록이 없습니다.</td></tr>`;
-            updateStats([], null);
-            return;
+            updateStats([], null); return;
         }
-
-        // 객체 → 배열 변환 후 count 내림차순 정렬
         const rows = Object.values(data)
             .filter(r => r && r.email)
             .sort((a, b) => (b.count || 0) - (a.count || 0));
 
         updateStats(rows, data);
         renderTable(rows);
-
-        // 마지막 업데이트 시각 표시
-        document.getElementById('lastUpdated').textContent =
-            '업데이트: ' + fmtDate(new Date().toISOString());
+        document.getElementById('lastUpdated').textContent = '업데이트: ' + fmtDate(new Date().toISOString());
 
     } catch (e) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다. Firebase URL 또는 보안 규칙을 확인하세요.</td></tr>`;
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다.</td></tr>`;
         console.error(e);
     }
-
     btn.classList.remove('spinning'); btn.disabled = false;
 }
 
-function updateStats(rows, raw) {
-    document.getElementById('statUsers').textContent  = rows.length.toLocaleString();
+function updateStats(rows) {
+    document.getElementById('statUsers').textContent = rows.length.toLocaleString();
     const total = rows.reduce((s, r) => s + (r.count || 0), 0);
-    document.getElementById('statTotal').textContent  = total.toLocaleString();
-
+    document.getElementById('statTotal').textContent = total.toLocaleString();
     if (rows.length > 0) {
-        // 가장 최근 lastSeen
-        const latest = rows.slice().sort((a,b) =>
-            new Date(b.lastSeen) - new Date(a.lastSeen))[0];
-        document.getElementById('statLatest').textContent  = latest.email;
+        const latest = rows.slice().sort((a,b) => new Date(b.lastSeen) - new Date(a.lastSeen))[0];
+        document.getElementById('statLatest').textContent     = latest.email;
         document.getElementById('statLatestTime').textContent = relTime(latest.lastSeen);
     } else {
-        document.getElementById('statLatest').textContent    = '—';
+        document.getElementById('statLatest').textContent     = '—';
         document.getElementById('statLatestTime').textContent = '—';
     }
 }
@@ -454,16 +610,165 @@ function renderTable(rows) {
         <tr>
             <td class="rank">${i + 1}</td>
             <td class="email-cell">${r.email}</td>
-            <td class="right">
-                <span class="count-badge">${(r.count || 0).toLocaleString()}회</span>
-            </td>
-            <td class="date-cell">
-                ${fmtDate(r.lastSeen)}<br>
-                <span style="color:#b0bac5;font-size:0.72rem;">${relTime(r.lastSeen)}</span>
-            </td>
+            <td class="right"><span class="count-badge">${(r.count||0).toLocaleString()}회</span></td>
+            <td class="date-cell">${fmtDate(r.lastSeen)}<br>
+                <span style="color:#b0bac5;font-size:0.72rem;">${relTime(r.lastSeen)}</span></td>
             <td class="date-cell">${fmtDate(r.firstSeen)}</td>
-        </tr>
-    `).join('');
+        </tr>`).join('');
+}
+
+// ── 계정 관리 ─────────────────────────────────────────────────────────
+async function loadAccounts() {
+    const btn   = document.getElementById('refreshAccountsBtn');
+    const tbody = document.getElementById('accountsTableBody');
+    btn.classList.add('spinning'); btn.disabled = true;
+
+    try {
+        const res  = await fetch(`${FIREBASE_DB_URL}/accounts.json`);
+        const data = await res.json();
+
+        if (!data || typeof data !== 'object') {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">생성된 계정이 없습니다.</td></tr>`;
+            return;
+        }
+        const rows = Object.entries(data)
+            .filter(([, v]) => v && v.email)
+            .map(([key, v]) => ({ key, ...v }))
+            .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+        if (rows.length === 0) {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">생성된 계정이 없습니다.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = rows.map((r, i) => `
+            <tr>
+                <td class="rank">${i + 1}</td>
+                <td class="email-cell">${r.email}</td>
+                <td>
+                    ${r.mustChangePassword
+                        ? `<span class="pw-status-badge need-change">⚠ 변경 필요</span>`
+                        : `<span class="pw-status-badge normal">✓ 정상</span>`}
+                </td>
+                <td class="date-cell">${fmtDate(r.createdAt)}</td>
+                <td>
+                    <div class="actions-cell">
+                        <button class="action-btn reset"
+                            onclick="resetPassword('${r.key}', '${r.email}')">🔄 초기화</button>
+                        <button class="action-btn delete"
+                            onclick="deleteAccount('${r.key}', '${r.email}')">🗑 삭제</button>
+                    </div>
+                </td>
+            </tr>`).join('');
+
+    } catch (e) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다.</td></tr>`;
+        console.error(e);
+    }
+    btn.classList.remove('spinning'); btn.disabled = false;
+}
+
+async function createAccount() {
+    const emailEl  = document.getElementById('newAccountEmail');
+    const errorEl  = document.getElementById('createError');
+    const btn      = document.getElementById('createBtn');
+    const email    = emailEl.value.trim().toLowerCase();
+
+    emailEl.classList.remove('error');
+    errorEl.textContent = '';
+
+    if (!email) {
+        emailEl.classList.add('error');
+        errorEl.textContent = '이메일을 입력하세요.';
+        return;
+    }
+    if (!email.includes('@') || !email.includes('.')) {
+        emailEl.classList.add('error');
+        errorEl.textContent = '올바른 이메일 형식을 입력하세요.';
+        return;
+    }
+
+    btn.textContent = '생성 중…'; btn.disabled = true;
+
+    try {
+        const key = email.replace(/[@.]/g, '_');
+        // 이미 존재하는 계정 확인
+        const chk = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        const existing = chk.ok ? await chk.json() : null;
+        if (existing && existing.email) {
+            emailEl.classList.add('error');
+            errorEl.textContent = '이미 존재하는 계정입니다.';
+            btn.textContent = '계정 생성'; btn.disabled = false;
+            return;
+        }
+
+        const initHash = await sha256(INIT_PW);
+        const now      = new Date().toISOString();
+        const res      = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                email,
+                passwordHash:       initHash,
+                mustChangePassword: true,
+                createdAt:          now
+            })
+        });
+
+        if (!res.ok) throw new Error(`PUT ${res.status}`);
+
+        emailEl.value       = '';
+        errorEl.textContent = '';
+        errorEl.style.color = '#16a34a';
+        errorEl.textContent = `✓ ${email} 계정이 생성되었습니다.`;
+        setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 3000);
+        loadAccounts();
+
+    } catch (e) {
+        errorEl.textContent = '계정 생성 중 오류가 발생했습니다.';
+        console.error(e);
+    }
+    btn.textContent = '계정 생성'; btn.disabled = false;
+}
+
+async function resetPassword(key, email) {
+    if (!confirm(`${email} 계정의 비밀번호를 초기화하시겠습니까?\n\n초기화 후 다음 로그인 시 비밀번호 변경을 요구합니다.`)) return;
+
+    try {
+        const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        const account = getRes.ok ? await getRes.json() : {};
+        const initHash = await sha256(INIT_PW);
+
+        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ ...account, passwordHash: initHash, mustChangePassword: true })
+        });
+
+        if (!res.ok) throw new Error(`PUT ${res.status}`);
+        alert(`${email} 계정의 비밀번호가 초기화되었습니다.`);
+        loadAccounts();
+
+    } catch (e) {
+        alert('초기화 중 오류가 발생했습니다.');
+        console.error(e);
+    }
+}
+
+async function deleteAccount(key, email) {
+    if (!confirm(`${email} 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로는 로그인할 수 없습니다.`)) return;
+
+    try {
+        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
+            method: 'DELETE'
+        });
+        if (!res.ok) throw new Error(`DELETE ${res.status}`);
+        alert(`${email} 계정이 삭제되었습니다.`);
+        loadAccounts();
+
+    } catch (e) {
+        alert('삭제 중 오류가 발생했습니다.');
+        console.error(e);
+    }
 }
 </script>
 </body>

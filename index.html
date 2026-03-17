@@ -449,6 +449,51 @@
             padding: 24px;
         }
         #loginOverlay.hidden { display: none; }
+        /* ── PASSWORD CHANGE OVERLAY ── */
+        #changePwOverlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        #changePwOverlay.hidden { display: none; }
+        .pw-requirements {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin: 4px 0 14px;
+        }
+        .pw-req {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.25);
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .pw-req.met {
+            color: #4ade80;
+            background: rgba(74,222,128,0.08);
+            border-color: rgba(74,222,128,0.25);
+        }
+        .change-pw-badge {
+            display: inline-block;
+            background: rgba(251,191,36,0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251,191,36,0.3);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
         .login-box {
             background: #111;
             border: 1px solid rgba(255,255,255,0.1);
@@ -779,6 +824,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <button class="login-btn" onclick="doLogin()">로그인</button>
         <div class="login-hint">※ 로그인 관련 문의는 관리자에게 연락하세요</div>
+    </div>
+</div>
+
+<!-- PASSWORD CHANGE OVERLAY -->
+<div id="changePwOverlay" class="hidden">
+    <div class="login-box">
+        <div class="login-logo">
+            <div style="font-size:2.2rem;margin-bottom:12px;">🔐</div>
+            <span class="change-pw-badge">보안 설정 필요</span>
+            <div class="login-title">비밀번호 변경</div>
+            <div class="login-subtitle">초기 비밀번호는 보안상 변경이 필요합니다<br>새 비밀번호를 설정해야 서비스를 이용할 수 있습니다</div>
+        </div>
+        <div class="login-field">
+            <label>새 비밀번호</label>
+            <input type="password" id="newPassword" placeholder="새 비밀번호 입력"
+                autocomplete="new-password"
+                oninput="checkPwRequirements(this.value)"
+                onkeydown="if(event.key==='Enter') document.getElementById('newPasswordConfirm').focus()">
+            <div class="login-error" id="newPwError"></div>
+        </div>
+        <div class="pw-requirements">
+            <div class="pw-req" id="req-length">✓ 8자 이상</div>
+            <div class="pw-req" id="req-letter">✓ 영문자 포함</div>
+            <div class="pw-req" id="req-number">✓ 숫자 포함</div>
+            <div class="pw-req" id="req-special">✓ 특수문자 포함</div>
+        </div>
+        <div class="login-field">
+            <label>새 비밀번호 확인</label>
+            <input type="password" id="newPasswordConfirm" placeholder="비밀번호 재입력"
+                autocomplete="new-password"
+                onkeydown="if(event.key==='Enter') doChangePassword()">
+            <div class="login-error" id="newPwConfirmError"></div>
+        </div>
+        <button class="login-btn" id="changePwBtn" onclick="doChangePassword()">비밀번호 변경</button>
+        <div class="login-hint">※ 변경 완료 후 새 비밀번호로 서비스를 이용하실 수 있습니다</div>
     </div>
 </div>
 
@@ -1598,76 +1678,218 @@ async function recordLogin(email) {
     }
 }
 
-const AUTH_KEY   = 'esl_auth_v1';
-const VALID_DOMAIN = '@solum-group.com';
-const VALID_PW   = 'thffndpa2026';
+// ── AUTH CONSTANTS ──────────────────────────────────────
+const AUTH_KEY        = 'esl_auth_v1';
+const AUTH_EMAIL_KEY  = 'esl_auth_email';
+const MUST_CHANGE_KEY = 'esl_must_change_pw';
+const INIT_PW         = 'thffndpa2026';
 
+// SHA-256 해시 (Web Crypto API — 브라우저 내장)
+async function sha256(text) {
+    const encoder = new TextEncoder();
+    const data    = encoder.encode(text);
+    const hashBuf = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hashBuf))
+        .map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// 비밀번호 강도 검사 (8자+영문+숫자+특수문자)
+function isStrongPassword(pw) {
+    return pw.length >= 8 &&
+           /[a-zA-Z]/.test(pw) &&
+           /[0-9]/.test(pw) &&
+           /[!@#$%^&*()\-_=+\[\]{};':",.<>/?\\|`~]/.test(pw);
+}
+
+// 비밀번호 조건 실시간 체크 (UI 업데이트)
+function checkPwRequirements(pw) {
+    const set = (id, ok) => document.getElementById(id).classList.toggle('met', ok);
+    set('req-length',  pw.length >= 8);
+    set('req-letter',  /[a-zA-Z]/.test(pw));
+    set('req-number',  /[0-9]/.test(pw));
+    set('req-special', /[!@#$%^&*()\-_=+\[\]{};':",.<>/?\\|`~]/.test(pw));
+}
+
+// ── 초기 인증 상태 확인 ──────────────────────────────────
 (function initAuth() {
     if (sessionStorage.getItem(AUTH_KEY) === 'true') {
         document.getElementById('loginOverlay').classList.add('hidden');
+        if (sessionStorage.getItem(MUST_CHANGE_KEY) === 'true') {
+            showChangePwOverlay();
+        }
     } else {
         setTimeout(() => document.getElementById('loginEmail').focus(), 100);
     }
 })();
 
-function doLogin() {
-    const emailEl = document.getElementById('loginEmail');
-    const pwEl    = document.getElementById('loginPassword');
+// ── 로그인 ───────────────────────────────────────────────
+async function doLogin() {
+    const emailEl  = document.getElementById('loginEmail');
+    const pwEl     = document.getElementById('loginPassword');
     const emailErr = document.getElementById('emailError');
     const pwErr    = document.getElementById('passwordError');
+    const loginBtn = document.querySelector('#loginOverlay .login-btn');
 
     emailEl.classList.remove('error');
     pwEl.classList.remove('error');
     emailErr.textContent = '';
-    pwErr.textContent = '';
+    pwErr.textContent    = '';
 
     const email = emailEl.value.trim().toLowerCase();
     const pw    = pwEl.value;
 
-    let valid = true;
-
     if (!email) {
         emailEl.classList.add('error');
         emailErr.textContent = '이메일을 입력하세요.';
-        valid = false;
-    } else if (!email.endsWith(VALID_DOMAIN) || email.indexOf('@') === 0) {
-        emailEl.classList.add('error');
-        emailErr.textContent = `@solum-group.com 형식의 이메일만 사용 가능합니다.`;
-        valid = false;
+        return;
     }
-
     if (!pw) {
         pwEl.classList.add('error');
         pwErr.textContent = '비밀번호를 입력하세요.';
-        valid = false;
-    } else if (valid && pw !== VALID_PW) {
-        pwEl.classList.add('error');
-        pwErr.textContent = '비밀번호가 올바르지 않습니다.';
-        valid = false;
+        return;
     }
 
-    if (!valid) return;
+    loginBtn.textContent = '확인 중…';
+    loginBtn.disabled    = true;
 
-    sessionStorage.setItem(AUTH_KEY, 'true');
-    recordLogin(email);  // Firebase 접속 로그 기록
-    // GTM: 로그인 이벤트
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'esl_login', user_email: document.getElementById('loginEmail').value.trim().toLowerCase() });
-    const overlay = document.getElementById('loginOverlay');
-    overlay.style.transition = 'opacity 0.3s';
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.classList.add('hidden'), 300);
+    try {
+        // Firebase에서 계정 조회
+        const key     = email.replace(/[@.]/g, '_');
+        const res     = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        const account = (res.ok) ? await res.json() : null;
+
+        if (!account) {
+            emailEl.classList.add('error');
+            emailErr.textContent = '등록되지 않은 계정입니다. 관리자에게 문의하세요.';
+            loginBtn.textContent = '로그인';
+            loginBtn.disabled    = false;
+            return;
+        }
+
+        // 비밀번호 해시 비교
+        const inputHash = await sha256(pw);
+        if (inputHash !== account.passwordHash) {
+            pwEl.classList.add('error');
+            pwErr.textContent = '비밀번호가 올바르지 않습니다.';
+            loginBtn.textContent = '로그인';
+            loginBtn.disabled    = false;
+            return;
+        }
+
+        // 인증 성공 처리
+        sessionStorage.setItem(AUTH_KEY, 'true');
+        sessionStorage.setItem(AUTH_EMAIL_KEY, email);
+        recordLogin(email);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'esl_login', user_email: email });
+
+        const overlay = document.getElementById('loginOverlay');
+        overlay.style.transition = 'opacity 0.3s';
+        overlay.style.opacity    = '0';
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+
+        // 최초 로그인 / 비밀번호 초기화 시 변경 강제
+        if (account.mustChangePassword) {
+            sessionStorage.setItem(MUST_CHANGE_KEY, 'true');
+            setTimeout(() => showChangePwOverlay(), 320);
+        }
+
+    } catch (e) {
+        pwErr.textContent = '네트워크 오류가 발생했습니다. 다시 시도해주세요.';
+        console.error('Login error:', e);
+    }
+
+    loginBtn.textContent = '로그인';
+    loginBtn.disabled    = false;
 }
 
+// ── 비밀번호 변경 오버레이 표시 ─────────────────────────
+function showChangePwOverlay() {
+    const overlay = document.getElementById('changePwOverlay');
+    overlay.classList.remove('hidden');
+    overlay.style.opacity = '1';
+    setTimeout(() => document.getElementById('newPassword').focus(), 100);
+}
+
+// ── 비밀번호 변경 처리 ───────────────────────────────────
+async function doChangePassword() {
+    const newPwEl    = document.getElementById('newPassword');
+    const confirmEl  = document.getElementById('newPasswordConfirm');
+    const newPwErr   = document.getElementById('newPwError');
+    const confirmErr = document.getElementById('newPwConfirmError');
+    const btn        = document.getElementById('changePwBtn');
+
+    newPwErr.textContent  = '';
+    confirmErr.textContent = '';
+
+    const newPw   = newPwEl.value;
+    const confirm = confirmEl.value;
+
+    if (!isStrongPassword(newPw)) {
+        newPwErr.textContent = '비밀번호는 8자 이상, 영문자+숫자+특수문자 조합이어야 합니다.';
+        return;
+    }
+    if (newPw !== confirm) {
+        confirmErr.textContent = '비밀번호가 일치하지 않습니다.';
+        return;
+    }
+
+    btn.textContent = '변경 중…';
+    btn.disabled    = true;
+
+    try {
+        const email   = sessionStorage.getItem(AUTH_EMAIL_KEY);
+        const key     = email.replace(/[@.]/g, '_');
+        const newHash = await sha256(newPw);
+
+        // 기존 계정 데이터 유지하면서 해시만 교체
+        const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        const account = getRes.ok ? await getRes.json() : {};
+
+        const putRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ ...account, passwordHash: newHash, mustChangePassword: false })
+        });
+
+        if (!putRes.ok) {
+            const body = await putRes.text();
+            throw new Error(`PUT failed: ${putRes.status} ${body}`);
+        }
+
+        sessionStorage.removeItem(MUST_CHANGE_KEY);
+        const overlay = document.getElementById('changePwOverlay');
+        overlay.style.transition = 'opacity 0.3s';
+        overlay.style.opacity    = '0';
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+
+    } catch (e) {
+        newPwErr.textContent = '변경 중 오류가 발생했습니다. 다시 시도해주세요.';
+        console.error('Change password error:', e);
+    }
+
+    btn.textContent = '비밀번호 변경';
+    btn.disabled    = false;
+}
+
+// ── 로그아웃 ─────────────────────────────────────────────
 function doLogout() {
     sessionStorage.removeItem(AUTH_KEY);
-    document.getElementById('loginEmail').value = '';
+    sessionStorage.removeItem(AUTH_EMAIL_KEY);
+    sessionStorage.removeItem(MUST_CHANGE_KEY);
+    document.getElementById('loginEmail').value    = '';
     document.getElementById('loginPassword').value = '';
-    document.getElementById('emailError').textContent = '';
+    document.getElementById('emailError').textContent    = '';
     document.getElementById('passwordError').textContent = '';
     const overlay = document.getElementById('loginOverlay');
     overlay.style.opacity = '1';
     overlay.classList.remove('hidden');
+    // 비밀번호 변경 오버레이도 초기화
+    const cpOverlay = document.getElementById('changePwOverlay');
+    cpOverlay.style.opacity = '1';
+    cpOverlay.classList.add('hidden');
+    document.getElementById('newPassword').value        = '';
+    document.getElementById('newPasswordConfirm').value = '';
     setTimeout(() => document.getElementById('loginEmail').focus(), 100);
 }
 // ──────────────────────────────────────────────────────
