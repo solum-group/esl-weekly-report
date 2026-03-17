@@ -42,6 +42,38 @@
             padding: 24px;
         }
         #loginOverlay.hidden { display: none; }
+        #setupOverlay, #adminChangePwOverlay {
+            position: fixed; inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+        }
+        #setupOverlay.hidden, #adminChangePwOverlay.hidden { display: none; }
+        .pw-requirements {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 6px; margin: 4px 0 14px;
+        }
+        .pw-req {
+            font-size: 0.72rem; font-weight: 600;
+            color: rgba(255,255,255,0.25);
+            padding: 5px 10px; border-radius: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .pw-req.met {
+            color: #4ade80;
+            background: rgba(74,222,128,0.08);
+            border-color: rgba(74,222,128,0.25);
+        }
+        .change-pw-badge {
+            display: inline-block;
+            background: rgba(251,191,36,0.15); color: #fbbf24;
+            border: 1px solid rgba(251,191,36,0.3);
+            border-radius: 20px; font-size: 0.7rem; font-weight: 700;
+            padding: 3px 10px; margin-bottom: 12px; letter-spacing: 0.3px;
+        }
         .login-box {
             background: #111;
             border: 1px solid rgba(255,255,255,0.1);
@@ -342,15 +374,99 @@
                 </svg>
             </div>
             <div class="login-title">어드민 대시보드</div>
-            <div class="login-subtitle">ESL 리포트 접속 현황 관리자 페이지</div>
+            <div class="login-subtitle">ESL 리포트 관리자 전용 페이지</div>
         </div>
         <div class="login-field">
-            <label>어드민 비밀번호</label>
+            <label>어드민 이메일</label>
+            <input type="email" id="adminEmail" placeholder="admin@solum-group.com"
+                   autocomplete="username"
+                   onkeydown="if(event.key==='Enter') document.getElementById('adminPw').focus()">
+            <div class="login-error" id="adminEmailErr"></div>
+        </div>
+        <div class="login-field">
+            <label>비밀번호</label>
             <input type="password" id="adminPw" placeholder="비밀번호 입력"
+                   autocomplete="current-password"
                    onkeydown="if(event.key==='Enter') doAdminLogin()">
             <div class="login-error" id="adminPwErr"></div>
         </div>
-        <button class="login-btn" onclick="doAdminLogin()">로그인</button>
+        <button class="login-btn" id="adminLoginBtn" onclick="doAdminLogin()">로그인</button>
+    </div>
+</div>
+
+<!-- BOOTSTRAP SETUP OVERLAY (어드민 계정 0개일 때) -->
+<div id="setupOverlay" class="hidden">
+    <div class="login-box">
+        <div class="login-logo">
+            <div style="font-size:2rem;margin-bottom:12px;">⚙️</div>
+            <span class="change-pw-badge" style="background:rgba(139,92,246,0.15);color:#7c3aed;border-color:rgba(139,92,246,0.3);">최초 설정</span>
+            <div class="login-title">어드민 계정 초기 설정</div>
+            <div class="login-subtitle">등록된 어드민이 없습니다<br>첫 번째 어드민 계정을 생성하세요</div>
+        </div>
+        <div class="login-field">
+            <label>부트스트랩 코드</label>
+            <input type="password" id="bootstrapCode" placeholder="초기 설정 코드 입력"
+                   onkeydown="if(event.key==='Enter') document.getElementById('setupEmail').focus()">
+            <div class="login-error" id="bootstrapCodeErr"></div>
+        </div>
+        <div class="login-field">
+            <label>어드민 이메일</label>
+            <input type="email" id="setupEmail" placeholder="admin@solum-group.com"
+                   onkeydown="if(event.key==='Enter') document.getElementById('setupPw').focus()">
+            <div class="login-error" id="setupEmailErr"></div>
+        </div>
+        <div class="login-field">
+            <label>비밀번호 <span style="color:rgba(255,255,255,0.3);font-weight:500;">(8자 이상, 영문+숫자+특수문자)</span></label>
+            <input type="password" id="setupPw" placeholder="새 비밀번호 입력"
+                   oninput="checkAdminPwReq(this.value)"
+                   onkeydown="if(event.key==='Enter') document.getElementById('setupPwConfirm').focus()">
+            <div class="pw-requirements" style="margin-top:8px;">
+                <div class="pw-req" id="srq-length">✓ 8자 이상</div>
+                <div class="pw-req" id="srq-letter">✓ 영문자</div>
+                <div class="pw-req" id="srq-number">✓ 숫자</div>
+                <div class="pw-req" id="srq-special">✓ 특수문자</div>
+            </div>
+            <div class="login-error" id="setupPwErr"></div>
+        </div>
+        <div class="login-field">
+            <label>비밀번호 확인</label>
+            <input type="password" id="setupPwConfirm" placeholder="비밀번호 재입력"
+                   onkeydown="if(event.key==='Enter') doSetupFirstAdmin()">
+            <div class="login-error" id="setupPwConfirmErr"></div>
+        </div>
+        <button class="login-btn" id="setupBtn" onclick="doSetupFirstAdmin()">어드민 계정 생성</button>
+    </div>
+</div>
+
+<!-- ADMIN PASSWORD CHANGE OVERLAY -->
+<div id="adminChangePwOverlay" class="hidden">
+    <div class="login-box">
+        <div class="login-logo">
+            <div style="font-size:2rem;margin-bottom:12px;">🔐</div>
+            <span class="change-pw-badge">보안 설정 필요</span>
+            <div class="login-title">어드민 비밀번호 변경</div>
+            <div class="login-subtitle">초기 비밀번호는 보안상 변경이 필요합니다</div>
+        </div>
+        <div class="login-field">
+            <label>새 비밀번호 <span style="color:rgba(255,255,255,0.3);font-weight:500;">(8자 이상, 영문+숫자+특수문자)</span></label>
+            <input type="password" id="adminNewPw" placeholder="새 비밀번호 입력"
+                   oninput="checkAdminNewPwReq(this.value)"
+                   onkeydown="if(event.key==='Enter') document.getElementById('adminNewPwConfirm').focus()">
+            <div class="pw-requirements" style="margin-top:8px;">
+                <div class="pw-req" id="anrq-length">✓ 8자 이상</div>
+                <div class="pw-req" id="anrq-letter">✓ 영문자</div>
+                <div class="pw-req" id="anrq-number">✓ 숫자</div>
+                <div class="pw-req" id="anrq-special">✓ 특수문자</div>
+            </div>
+            <div class="login-error" id="adminNewPwErr"></div>
+        </div>
+        <div class="login-field">
+            <label>비밀번호 확인</label>
+            <input type="password" id="adminNewPwConfirm" placeholder="비밀번호 재입력"
+                   onkeydown="if(event.key==='Enter') doAdminChangePassword()">
+            <div class="login-error" id="adminNewPwConfirmErr"></div>
+        </div>
+        <button class="login-btn" id="adminChangePwBtn" onclick="doAdminChangePassword()">비밀번호 변경</button>
     </div>
 </div>
 
@@ -370,6 +486,7 @@
             </div>
         </div>
         <div class="header-right">
+            <span class="badge-pill" id="adminEmailBadge" style="display:none;"></span>
             <span class="badge-pill" id="lastUpdated">—</span>
             <button class="logout-btn" onclick="doAdminLogout()">로그아웃</button>
         </div>
@@ -380,7 +497,8 @@
 <div class="tab-nav">
     <div class="tab-nav-inner">
         <button class="tab-btn active" id="tab-access" onclick="switchTab('access')">접속 현황</button>
-        <button class="tab-btn" id="tab-accounts" onclick="switchTab('accounts')">계정 관리</button>
+        <button class="tab-btn" id="tab-accounts" onclick="switchTab('accounts')">사용자 계정</button>
+        <button class="tab-btn" id="tab-admins" onclick="switchTab('admins')">어드민 관리</button>
     </div>
 </div>
 
@@ -484,18 +602,64 @@
         </div>
     </div>
 
+    <!-- ── 어드민 관리 탭 ── -->
+    <div class="tab-panel" id="panel-admins">
+        <div class="create-card">
+            <div class="create-card-title">신규 어드민 계정 생성</div>
+            <div class="create-card-desc">생성된 어드민은 초기 비밀번호(thffndpa2026)로 설정되며, 최초 로그인 시 비밀번호 변경을 요구합니다.</div>
+            <div class="create-row">
+                <input class="create-input" type="email" id="newAdminEmail"
+                    placeholder="admin@solum-group.com"
+                    onkeydown="if(event.key==='Enter') createAdmin()">
+                <button class="create-btn" id="createAdminBtn" onclick="createAdmin()">어드민 생성</button>
+            </div>
+            <div class="create-error" id="createAdminError"></div>
+        </div>
+        <div class="table-card">
+            <div class="table-header">
+                <div>
+                    <div class="table-title">어드민 계정 목록</div>
+                    <div class="table-meta">생성일 기준 최신 순 · 비밀번호 SHA-256 암호화 저장</div>
+                </div>
+                <button class="refresh-btn" id="refreshAdminsBtn" onclick="loadAdmins()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="23 4 23 10 17 10"/>
+                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                    </svg>
+                    새로고침
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:48px;">#</th>
+                        <th>이메일</th>
+                        <th style="width:160px;">비밀번호 상태</th>
+                        <th style="width:180px;">생성일</th>
+                        <th style="width:200px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody id="adminsTableBody">
+                    <tr class="loading-row"><td colspan="5">데이터 로딩 중…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <div class="footer">ESL 리포트 어드민 · SOLUM Group · 관리자 전용</div>
 
 <script>
 // ── CONFIG ───────────────────────────────────────────────────────────
-const FIREBASE_DB_URL = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app';
-const ADMIN_PW        = 'solum_admin_2026';
-const INIT_PW         = 'thffndpa2026';
+const FIREBASE_DB_URL  = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app';
+const BOOTSTRAP_CODE   = 'solum_admin_2026';   // 어드민 0개일 때만 유효
+const INIT_PW          = 'thffndpa2026';
 // ─────────────────────────────────────────────────────────────────────
 
-const ADMIN_AUTH_KEY = 'esl_admin_auth';
+const ADMIN_AUTH_KEY       = 'esl_admin_auth';
+const ADMIN_EMAIL_KEY      = 'esl_admin_email';
+const ADMIN_MUST_CHANGE_KEY = 'esl_admin_must_change';
 
 // ── SHA-256 (Web Crypto API) ──────────────────────────────────────────
 async function sha256(text) {
@@ -506,6 +670,28 @@ async function sha256(text) {
         .map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// ── 비밀번호 강도 검사 ───────────────────────────────────────────────
+function isStrongPw(pw) {
+    return pw.length >= 8 &&
+           /[a-zA-Z]/.test(pw) &&
+           /[0-9]/.test(pw) &&
+           /[!@#$%^&*()\-_=+\[\]{};':",.<>/?\\|`~]/.test(pw);
+}
+function checkAdminPwReq(pw) {
+    const set = (id, ok) => document.getElementById(id).classList.toggle('met', ok);
+    set('srq-length',  pw.length >= 8);
+    set('srq-letter',  /[a-zA-Z]/.test(pw));
+    set('srq-number',  /[0-9]/.test(pw));
+    set('srq-special', /[!@#$%^&*()\-_=+\[\]{};':",.<>/?\\|`~]/.test(pw));
+}
+function checkAdminNewPwReq(pw) {
+    const set = (id, ok) => document.getElementById(id).classList.toggle('met', ok);
+    set('anrq-length',  pw.length >= 8);
+    set('anrq-letter',  /[a-zA-Z]/.test(pw));
+    set('anrq-number',  /[0-9]/.test(pw));
+    set('anrq-special', /[!@#$%^&*()\-_=+\[\]{};':",.<>/?\\|`~]/.test(pw));
+}
+
 // ── 탭 전환 ──────────────────────────────────────────────────────────
 function switchTab(name) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -514,30 +700,212 @@ function switchTab(name) {
     document.getElementById('panel-' + name).classList.add('active');
     if (name === 'accounts') loadAccounts();
     if (name === 'access')   loadData();
+    if (name === 'admins')   loadAdmins();
 }
 
-// ── 어드민 인증 ───────────────────────────────────────────────────────
-function doAdminLogin() {
-    const pw    = document.getElementById('adminPw').value;
-    const errEl = document.getElementById('adminPwErr');
-    if (!pw) { errEl.textContent = '비밀번호를 입력하세요.'; return; }
-    if (pw !== ADMIN_PW) { errEl.textContent = '비밀번호가 올바르지 않습니다.'; return; }
-    sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
-    document.getElementById('loginOverlay').classList.add('hidden');
-    loadData();
-}
-function doAdminLogout() {
-    sessionStorage.removeItem(ADMIN_AUTH_KEY);
-    document.getElementById('adminPw').value = '';
-    document.getElementById('adminPwErr').textContent = '';
-    document.getElementById('loginOverlay').classList.remove('hidden');
-}
-(function initAuth() {
+// ── 초기화 ───────────────────────────────────────────────────────────
+(async function initAuth() {
     if (sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true') {
-        document.getElementById('loginOverlay').classList.add('hidden');
-        loadData();
+        const email = sessionStorage.getItem(ADMIN_EMAIL_KEY);
+        showDashboard(email);
+        if (sessionStorage.getItem(ADMIN_MUST_CHANGE_KEY) === 'true') {
+            showAdminChangePwOverlay();
+        } else {
+            loadData();
+        }
+        return;
+    }
+    // 어드민이 한 명도 없으면 부트스트랩 설정 화면 표시
+    try {
+        const res  = await fetch(`${FIREBASE_DB_URL}/admins.json`);
+        const data = res.ok ? await res.json() : null;
+        const hasAdmins = data && typeof data === 'object' && Object.keys(data).length > 0;
+        if (!hasAdmins) {
+            document.getElementById('loginOverlay').classList.add('hidden');
+            document.getElementById('setupOverlay').classList.remove('hidden');
+        } else {
+            setTimeout(() => document.getElementById('adminEmail').focus(), 100);
+        }
+    } catch (e) {
+        setTimeout(() => document.getElementById('adminEmail').focus(), 100);
     }
 })();
+
+function showDashboard(email) {
+    document.getElementById('loginOverlay').classList.add('hidden');
+    document.getElementById('setupOverlay').classList.add('hidden');
+    const badge = document.getElementById('adminEmailBadge');
+    badge.textContent = email || '';
+    badge.style.display = email ? '' : 'none';
+}
+
+// ── 어드민 로그인 (Firebase 계정 기반) ──────────────────────────────
+async function doAdminLogin() {
+    const emailEl    = document.getElementById('adminEmail');
+    const pwEl       = document.getElementById('adminPw');
+    const emailErrEl = document.getElementById('adminEmailErr');
+    const pwErrEl    = document.getElementById('adminPwErr');
+    const btn        = document.getElementById('adminLoginBtn');
+
+    emailEl.classList.remove('error');
+    pwEl.classList.remove('error');
+    emailErrEl.textContent = '';
+    pwErrEl.textContent    = '';
+
+    const email = emailEl.value.trim().toLowerCase();
+    const pw    = pwEl.value;
+
+    if (!email) { emailEl.classList.add('error'); emailErrEl.textContent = '이메일을 입력하세요.'; return; }
+    if (!pw)    { pwEl.classList.add('error');    pwErrEl.textContent    = '비밀번호를 입력하세요.'; return; }
+
+    btn.textContent = '확인 중…'; btn.disabled = true;
+
+    try {
+        const key     = email.replace(/[@.]/g, '_');
+        const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        const account = res.ok ? await res.json() : null;
+
+        if (!account) {
+            emailEl.classList.add('error');
+            emailErrEl.textContent = '등록되지 않은 어드민 계정입니다.';
+            btn.textContent = '로그인'; btn.disabled = false; return;
+        }
+        const inputHash = await sha256(pw);
+        if (inputHash !== account.passwordHash) {
+            pwEl.classList.add('error');
+            pwErrEl.textContent = '비밀번호가 올바르지 않습니다.';
+            btn.textContent = '로그인'; btn.disabled = false; return;
+        }
+
+        // 로그인 성공
+        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+        sessionStorage.setItem(ADMIN_EMAIL_KEY, email);
+        showDashboard(email);
+
+        if (account.mustChangePassword) {
+            sessionStorage.setItem(ADMIN_MUST_CHANGE_KEY, 'true');
+            showAdminChangePwOverlay();
+        } else {
+            loadData();
+        }
+    } catch (e) {
+        pwErrEl.textContent = '네트워크 오류가 발생했습니다.';
+        console.error(e);
+    }
+    btn.textContent = '로그인'; btn.disabled = false;
+}
+
+// ── 부트스트랩: 첫 어드민 생성 ──────────────────────────────────────
+async function doSetupFirstAdmin() {
+    const codeEl   = document.getElementById('bootstrapCode');
+    const emailEl  = document.getElementById('setupEmail');
+    const pwEl     = document.getElementById('setupPw');
+    const pwCfEl   = document.getElementById('setupPwConfirm');
+    const codeErr  = document.getElementById('bootstrapCodeErr');
+    const emailErr = document.getElementById('setupEmailErr');
+    const pwErr    = document.getElementById('setupPwErr');
+    const pwCfErr  = document.getElementById('setupPwConfirmErr');
+    const btn      = document.getElementById('setupBtn');
+
+    [codeErr, emailErr, pwErr, pwCfErr].forEach(el => el.textContent = '');
+
+    const code  = codeEl.value;
+    const email = emailEl.value.trim().toLowerCase();
+    const pw    = pwEl.value;
+    const pwCf  = pwCfEl.value;
+
+    if (code !== BOOTSTRAP_CODE) { codeErr.textContent  = '부트스트랩 코드가 올바르지 않습니다.'; return; }
+    if (!email || !email.includes('@')) { emailErr.textContent = '올바른 이메일을 입력하세요.'; return; }
+    if (!isStrongPw(pw)) { pwErr.textContent = '8자 이상, 영문+숫자+특수문자 조합이어야 합니다.'; return; }
+    if (pw !== pwCf)      { pwCfErr.textContent = '비밀번호가 일치하지 않습니다.'; return; }
+
+    btn.textContent = '생성 중…'; btn.disabled = true;
+
+    try {
+        const key  = email.replace(/[@.]/g, '_');
+        const hash = await sha256(pw);
+        const res  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                email,
+                passwordHash:       hash,
+                mustChangePassword: false,
+                createdAt:          new Date().toISOString()
+            })
+        });
+        if (!res.ok) throw new Error(`PUT ${res.status}`);
+
+        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+        sessionStorage.setItem(ADMIN_EMAIL_KEY, email);
+        document.getElementById('setupOverlay').classList.add('hidden');
+        showDashboard(email);
+        loadData();
+    } catch (e) {
+        pwErr.textContent = '생성 중 오류가 발생했습니다.';
+        console.error(e);
+    }
+    btn.textContent = '어드민 계정 생성'; btn.disabled = false;
+}
+
+// ── 어드민 비밀번호 변경 ─────────────────────────────────────────────
+function showAdminChangePwOverlay() {
+    document.getElementById('adminChangePwOverlay').classList.remove('hidden');
+    setTimeout(() => document.getElementById('adminNewPw').focus(), 100);
+}
+async function doAdminChangePassword() {
+    const newPwEl  = document.getElementById('adminNewPw');
+    const cfEl     = document.getElementById('adminNewPwConfirm');
+    const newPwErr = document.getElementById('adminNewPwErr');
+    const cfErr    = document.getElementById('adminNewPwConfirmErr');
+    const btn      = document.getElementById('adminChangePwBtn');
+
+    newPwErr.textContent = ''; cfErr.textContent = '';
+    const newPw = newPwEl.value;
+    const cf    = cfEl.value;
+
+    if (!isStrongPw(newPw)) { newPwErr.textContent = '8자 이상, 영문+숫자+특수문자 조합이어야 합니다.'; return; }
+    if (newPw !== cf)        { cfErr.textContent    = '비밀번호가 일치하지 않습니다.'; return; }
+
+    btn.textContent = '변경 중…'; btn.disabled = true;
+
+    try {
+        const email   = sessionStorage.getItem(ADMIN_EMAIL_KEY);
+        const key     = email.replace(/[@.]/g, '_');
+        const newHash = await sha256(newPw);
+        const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        const account = getRes.ok ? await getRes.json() : {};
+        const putRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ ...account, passwordHash: newHash, mustChangePassword: false })
+        });
+        if (!putRes.ok) throw new Error(`PUT ${putRes.status}`);
+
+        sessionStorage.removeItem(ADMIN_MUST_CHANGE_KEY);
+        document.getElementById('adminChangePwOverlay').classList.add('hidden');
+        loadData();
+    } catch (e) {
+        newPwErr.textContent = '변경 중 오류가 발생했습니다.';
+        console.error(e);
+    }
+    btn.textContent = '비밀번호 변경'; btn.disabled = false;
+}
+
+// ── 어드민 로그아웃 ──────────────────────────────────────────────────
+function doAdminLogout() {
+    sessionStorage.removeItem(ADMIN_AUTH_KEY);
+    sessionStorage.removeItem(ADMIN_EMAIL_KEY);
+    sessionStorage.removeItem(ADMIN_MUST_CHANGE_KEY);
+    document.getElementById('adminEmail').value = '';
+    document.getElementById('adminPw').value    = '';
+    document.getElementById('adminEmailErr').textContent = '';
+    document.getElementById('adminPwErr').textContent    = '';
+    document.getElementById('adminEmailBadge').style.display = 'none';
+    document.getElementById('adminChangePwOverlay').classList.add('hidden');
+    document.getElementById('loginOverlay').classList.remove('hidden');
+    setTimeout(() => document.getElementById('adminEmail').focus(), 100);
+}
 
 // ── 날짜 포맷 ─────────────────────────────────────────────────────────
 function fmtDate(iso) {
@@ -756,15 +1124,152 @@ async function resetPassword(key, email) {
 
 async function deleteAccount(key, email) {
     if (!confirm(`${email} 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로는 로그인할 수 없습니다.`)) return;
-
     try {
-        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
-            method: 'DELETE'
-        });
+        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, { method: 'DELETE' });
         if (!res.ok) throw new Error(`DELETE ${res.status}`);
         alert(`${email} 계정이 삭제되었습니다.`);
         loadAccounts();
+    } catch (e) {
+        alert('삭제 중 오류가 발생했습니다.');
+        console.error(e);
+    }
+}
 
+// ── 어드민 계정 관리 ─────────────────────────────────────────────────
+async function loadAdmins() {
+    const btn   = document.getElementById('refreshAdminsBtn');
+    const tbody = document.getElementById('adminsTableBody');
+    btn.classList.add('spinning'); btn.disabled = true;
+
+    try {
+        const res  = await fetch(`${FIREBASE_DB_URL}/admins.json`);
+        const data = await res.json();
+
+        if (!data || typeof data !== 'object') {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">생성된 어드민이 없습니다.</td></tr>`;
+            return;
+        }
+        const myEmail = sessionStorage.getItem(ADMIN_EMAIL_KEY);
+        const rows = Object.entries(data)
+            .filter(([, v]) => v && v.email)
+            .map(([key, v]) => ({ key, ...v }))
+            .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+        if (rows.length === 0) {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">생성된 어드민이 없습니다.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = rows.map((r, i) => `
+            <tr>
+                <td class="rank">${i + 1}</td>
+                <td class="email-cell">
+                    ${r.email}
+                    ${r.email === myEmail ? '<span style="font-size:0.68rem;background:#f0e6ff;color:#7c3aed;border:1px solid #c084fc;border-radius:20px;padding:2px 8px;margin-left:6px;font-weight:700;">나</span>' : ''}
+                </td>
+                <td>
+                    ${r.mustChangePassword
+                        ? `<span class="pw-status-badge need-change">⚠ 변경 필요</span>`
+                        : `<span class="pw-status-badge normal">✓ 정상</span>`}
+                </td>
+                <td class="date-cell">${fmtDate(r.createdAt)}</td>
+                <td>
+                    <div class="actions-cell">
+                        <button class="action-btn reset"
+                            onclick="resetAdminPassword('${r.key}', '${r.email}')">🔄 초기화</button>
+                        ${r.email !== myEmail
+                            ? `<button class="action-btn delete"
+                                onclick="deleteAdmin('${r.key}', '${r.email}')">🗑 삭제</button>`
+                            : `<span style="font-size:0.72rem;color:#b0bac5;">자신은 삭제 불가</span>`}
+                    </div>
+                </td>
+            </tr>`).join('');
+
+    } catch (e) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다.</td></tr>`;
+        console.error(e);
+    }
+    btn.classList.remove('spinning'); btn.disabled = false;
+}
+
+async function createAdmin() {
+    const emailEl = document.getElementById('newAdminEmail');
+    const errorEl = document.getElementById('createAdminError');
+    const btn     = document.getElementById('createAdminBtn');
+    const email   = emailEl.value.trim().toLowerCase();
+
+    emailEl.classList.remove('error');
+    errorEl.textContent  = '';
+    errorEl.style.color  = '';
+
+    if (!email) { emailEl.classList.add('error'); errorEl.textContent = '이메일을 입력하세요.'; return; }
+    if (!email.includes('@') || !email.includes('.')) {
+        emailEl.classList.add('error'); errorEl.textContent = '올바른 이메일 형식을 입력하세요.'; return;
+    }
+
+    btn.textContent = '생성 중…'; btn.disabled = true;
+
+    try {
+        const key = email.replace(/[@.]/g, '_');
+        const chk = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        const existing = chk.ok ? await chk.json() : null;
+        if (existing && existing.email) {
+            emailEl.classList.add('error');
+            errorEl.textContent = '이미 존재하는 어드민 계정입니다.';
+            btn.textContent = '어드민 생성'; btn.disabled = false; return;
+        }
+
+        const initHash = await sha256(INIT_PW);
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                email,
+                passwordHash:       initHash,
+                mustChangePassword: true,
+                createdAt:          new Date().toISOString()
+            })
+        });
+        if (!res.ok) throw new Error(`PUT ${res.status}`);
+
+        emailEl.value       = '';
+        errorEl.style.color = '#16a34a';
+        errorEl.textContent = `✓ ${email} 어드민 계정이 생성되었습니다.`;
+        setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 3000);
+        loadAdmins();
+    } catch (e) {
+        errorEl.textContent = '생성 중 오류가 발생했습니다.';
+        console.error(e);
+    }
+    btn.textContent = '어드민 생성'; btn.disabled = false;
+}
+
+async function resetAdminPassword(key, email) {
+    if (!confirm(`${email} 어드민의 비밀번호를 초기화하시겠습니까?\n\n초기화 후 다음 로그인 시 비밀번호 변경을 요구합니다.`)) return;
+    try {
+        const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        const account = getRes.ok ? await getRes.json() : {};
+        const initHash = await sha256(INIT_PW);
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ ...account, passwordHash: initHash, mustChangePassword: true })
+        });
+        if (!res.ok) throw new Error(`PUT ${res.status}`);
+        alert(`${email} 어드민의 비밀번호가 초기화되었습니다.`);
+        loadAdmins();
+    } catch (e) {
+        alert('초기화 중 오류가 발생했습니다.');
+        console.error(e);
+    }
+}
+
+async function deleteAdmin(key, email) {
+    if (!confirm(`${email} 어드민 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로 어드민 로그인이 불가합니다.`)) return;
+    try {
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, { method: 'DELETE' });
+        if (!res.ok) throw new Error(`DELETE ${res.status}`);
+        alert(`${email} 어드민 계정이 삭제되었습니다.`);
+        loadAdmins();
     } catch (e) {
         alert('삭제 중 오류가 발생했습니다.');
         console.error(e);
