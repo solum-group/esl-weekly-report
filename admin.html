@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESL 리포트 어드민</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --blue: #2F006DCC;
+            --blue-dark: #1e0047;
+            --blue-light: #f0e6ff;
+            --text-primary: #191f28;
+            --text-secondary: #4e5968;
+            --text-tertiary: #8b95a1;
+            --bg-base: #f9fafb;
+            --bg-white: #ffffff;
+            --border: #e5e8eb;
+            --green: #1aba7b;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-full: 100px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── LOGIN ── */
+        #loginOverlay {
+            position: fixed; inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+        }
+        #loginOverlay.hidden { display: none; }
+        .login-box {
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-xl);
+            padding: 44px 40px;
+            width: 100%; max-width: 380px;
+        }
+        .login-logo { text-align: center; margin-bottom: 32px; }
+        .login-icon {
+            width: 56px; height: 56px;
+            background: rgba(47,0,109,0.5);
+            border-radius: var(--radius-lg);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            border: 1px solid rgba(192,132,252,0.3);
+        }
+        .login-icon svg { width: 28px; height: 28px; }
+        .login-title { font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.4px; margin-bottom: 4px; }
+        .login-subtitle { font-size: 0.78rem; color: rgba(255,255,255,0.38); }
+        .login-field { margin-bottom: 14px; }
+        .login-field label { display: block; font-size: 0.73rem; font-weight: 700; color: rgba(255,255,255,0.45); margin-bottom: 7px; letter-spacing: 0.2px; }
+        .login-field input {
+            width: 100%; padding: 12px 15px;
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem; color: #fff;
+            background: rgba(255,255,255,0.06);
+            font-family: inherit; outline: none;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .login-field input::placeholder { color: rgba(255,255,255,0.22); }
+        .login-field input:focus { border-color: var(--blue); background: rgba(47,0,109,0.1); }
+        .login-field input.error { border-color: #f04452; }
+        .login-error { font-size: 0.73rem; color: #ff6b75; margin-top: 5px; min-height: 16px; font-weight: 600; }
+        .login-btn {
+            width: 100%; padding: 13px;
+            background: var(--blue); color: white; border: none;
+            border-radius: var(--radius-md); font-size: 0.9rem; font-weight: 700;
+            cursor: pointer; margin-top: 8px; font-family: inherit;
+            transition: background 0.15s, transform 0.1s;
+        }
+        .login-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+        /* ── HEADER ── */
+        .header {
+            background: #000; color: #fff;
+            padding: 0 40px; height: 64px;
+            display: flex; align-items: center;
+            position: sticky; top: 0; z-index: 200;
+        }
+        .header-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; max-width: 1100px; margin: 0 auto;
+        }
+        .header-brand { display: flex; align-items: center; gap: 10px; }
+        .header-icon {
+            width: 32px; height: 32px;
+            background: rgba(192,132,252,0.2);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(192,132,252,0.3);
+        }
+        .header-icon svg { width: 18px; height: 18px; }
+        .brand-name { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.3px; }
+        .brand-sub { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+        .badge-pill {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: var(--radius-full);
+            padding: 4px 12px; font-size: 0.7rem;
+            color: rgba(255,255,255,0.55);
+        }
+        .logout-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.7);
+            border-radius: var(--radius-full);
+            padding: 6px 14px; font-size: 0.76rem; font-weight: 600;
+            cursor: pointer; font-family: inherit; transition: all 0.15s;
+        }
+        .logout-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+        /* ── MAIN ── */
+        .container { max-width: 1100px; margin: 0 auto; padding: 32px 40px; }
+
+        /* ── STAT CARDS ── */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 12px; margin-bottom: 28px;
+        }
+        .stat-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            border: 1.5px solid var(--border);
+            padding: 20px 22px;
+        }
+        .stat-label { font-size: 0.72rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--blue); letter-spacing: -1px; }
+        .stat-sub { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 4px; font-weight: 500; }
+
+        /* ── TABLE CARD ── */
+        .table-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+        }
+        .table-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 24px 18px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap; gap: 12px;
+        }
+        .table-title { font-size: 1rem; font-weight: 800; letter-spacing: -0.3px; }
+        .table-meta { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 2px; font-weight: 500; }
+        .refresh-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--bg-base);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-full);
+            padding: 7px 16px; font-size: 0.78rem; font-weight: 700;
+            color: var(--text-secondary); cursor: pointer; font-family: inherit;
+            transition: all 0.15s;
+        }
+        .refresh-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+        .refresh-btn svg { width: 14px; height: 14px; transition: transform 0.4s; }
+        .refresh-btn.spinning svg { transform: rotate(360deg); }
+        table { width: 100%; border-collapse: collapse; }
+        thead th {
+            text-align: left;
+            font-size: 0.7rem; font-weight: 800;
+            color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            padding: 12px 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-base);
+            white-space: nowrap;
+        }
+        thead th.right { text-align: right; }
+        tbody tr { transition: background 0.12s; }
+        tbody tr:hover { background: #fafafa; }
+        tbody tr + tr { border-top: 1px solid var(--border); }
+        tbody td {
+            padding: 14px 24px;
+            font-size: 0.875rem; font-weight: 500;
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+        tbody td.right { text-align: right; }
+        .rank { font-weight: 800; color: var(--text-tertiary); font-size: 0.8rem; width: 32px; }
+        .email-cell { font-weight: 700; color: var(--text-primary); }
+        .count-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--blue-light);
+            color: var(--blue);
+            border-radius: var(--radius-full);
+            padding: 3px 12px;
+            font-size: 0.82rem; font-weight: 800;
+            min-width: 44px;
+        }
+        .date-cell { font-size: 0.78rem; color: var(--text-tertiary); }
+        .empty-row td {
+            text-align: center; padding: 64px 24px;
+            color: var(--text-tertiary); font-size: 0.875rem;
+        }
+        .loading-row td { text-align: center; padding: 48px 24px; color: var(--text-tertiary); font-size: 0.85rem; }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center; padding: 24px;
+            color: var(--text-tertiary); font-size: 0.73rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px; background: var(--bg-white);
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 0 20px; }
+            .container { padding: 20px; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginOverlay">
+    <div class="login-box">
+        <div class="login-logo">
+            <div class="login-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C084FC" stroke-width="2" stroke-linecap="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div class="login-title">어드민 대시보드</div>
+            <div class="login-subtitle">ESL 리포트 접속 현황 관리자 페이지</div>
+        </div>
+        <div class="login-field">
+            <label>어드민 비밀번호</label>
+            <input type="password" id="adminPw" placeholder="비밀번호 입력"
+                   onkeydown="if(event.key==='Enter') doAdminLogin()">
+            <div class="login-error" id="adminPwErr"></div>
+        </div>
+        <button class="login-btn" onclick="doAdminLogin()">로그인</button>
+    </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="header-inner">
+        <div class="header-brand">
+            <div class="header-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C084FC" stroke-width="2" stroke-linecap="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div>
+                <div class="brand-name">어드민 대시보드</div>
+                <div class="brand-sub">ESL News 주간 리포트</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="badge-pill" id="lastUpdated">—</span>
+            <button class="logout-btn" onclick="doAdminLogout()">로그아웃</button>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+    <!-- Stat cards -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">총 접속자 수</div>
+            <div class="stat-value" id="statUsers">—</div>
+            <div class="stat-sub">고유 이메일 기준</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">총 접속 횟수</div>
+            <div class="stat-value" id="statTotal">—</div>
+            <div class="stat-sub">누적 로그인 이벤트</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">가장 최근 접속</div>
+            <div class="stat-value" style="font-size:1.1rem;line-height:1.35;" id="statLatest">—</div>
+            <div class="stat-sub" id="statLatestTime">—</div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+        <div class="table-header">
+            <div>
+                <div class="table-title">이메일별 접속 현황</div>
+                <div class="table-meta">접속 횟수 많은 순 정렬 · Firebase Realtime Database 연동</div>
+            </div>
+            <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                </svg>
+                새로고침
+            </button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:48px;">#</th>
+                    <th>이메일</th>
+                    <th class="right" style="width:120px;">접속 횟수</th>
+                    <th style="width:180px;">마지막 접속</th>
+                    <th style="width:180px;">최초 접속</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr class="loading-row"><td colspan="5">데이터 로딩 중…</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="footer">ESL 리포트 어드민 · SOLUM Group · 관리자 전용</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────
+// index.html의 FIREBASE_DB_URL과 동일한 값을 입력하세요.
+const FIREBASE_DB_URL = ''; // ← Firebase Realtime Database URL
+
+// 어드민 비밀번호 (변경 가능)
+const ADMIN_PW = 'solum_admin_2026';
+// ────────────────────────────────────────────────────────────────────
+
+const ADMIN_AUTH_KEY = 'esl_admin_auth';
+
+// ── 인증 ──
+function doAdminLogin() {
+    const pw    = document.getElementById('adminPw').value;
+    const errEl = document.getElementById('adminPwErr');
+    if (!pw) { errEl.textContent = '비밀번호를 입력하세요.'; return; }
+    if (pw !== ADMIN_PW) { errEl.textContent = '비밀번호가 올바르지 않습니다.'; return; }
+    sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+    document.getElementById('loginOverlay').classList.add('hidden');
+    loadData();
+}
+function doAdminLogout() {
+    sessionStorage.removeItem(ADMIN_AUTH_KEY);
+    document.getElementById('adminPw').value = '';
+    document.getElementById('adminPwErr').textContent = '';
+    document.getElementById('loginOverlay').classList.remove('hidden');
+}
+
+(function initAuth() {
+    if (sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true') {
+        document.getElementById('loginOverlay').classList.add('hidden');
+        loadData();
+    }
+})();
+
+// ── 날짜 포맷 ──
+function fmtDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function relTime(iso) {
+    if (!iso) return '';
+    const diff = Date.now() - new Date(iso).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1)  return '방금 전';
+    if (m < 60) return `${m}분 전`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}시간 전`;
+    return `${Math.floor(h / 24)}일 전`;
+}
+
+// ── 데이터 로드 ──
+async function loadData() {
+    const btn = document.getElementById('refreshBtn');
+    btn.classList.add('spinning');
+    btn.disabled = true;
+
+    const tbody = document.getElementById('tableBody');
+
+    if (!FIREBASE_DB_URL) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">
+            ⚠️ FIREBASE_DB_URL이 설정되지 않았습니다.<br>
+            <span style="font-size:0.8rem;margin-top:8px;display:block;">admin.html 상단의 FIREBASE_DB_URL에 Firebase Realtime Database URL을 입력하세요.</span>
+        </td></tr>`;
+        btn.classList.remove('spinning'); btn.disabled = false;
+        return;
+    }
+
+    try {
+        const res  = await fetch(`${FIREBASE_DB_URL}/logins.json`);
+        const data = await res.json();
+
+        if (!data || typeof data !== 'object') {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">아직 접속 기록이 없습니다.</td></tr>`;
+            updateStats([], null);
+            return;
+        }
+
+        // 객체 → 배열 변환 후 count 내림차순 정렬
+        const rows = Object.values(data)
+            .filter(r => r && r.email)
+            .sort((a, b) => (b.count || 0) - (a.count || 0));
+
+        updateStats(rows, data);
+        renderTable(rows);
+
+        // 마지막 업데이트 시각 표시
+        document.getElementById('lastUpdated').textContent =
+            '업데이트: ' + fmtDate(new Date().toISOString());
+
+    } catch (e) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다. Firebase URL 또는 보안 규칙을 확인하세요.</td></tr>`;
+        console.error(e);
+    }
+
+    btn.classList.remove('spinning'); btn.disabled = false;
+}
+
+function updateStats(rows, raw) {
+    document.getElementById('statUsers').textContent  = rows.length.toLocaleString();
+    const total = rows.reduce((s, r) => s + (r.count || 0), 0);
+    document.getElementById('statTotal').textContent  = total.toLocaleString();
+
+    if (rows.length > 0) {
+        // 가장 최근 lastSeen
+        const latest = rows.slice().sort((a,b) =>
+            new Date(b.lastSeen) - new Date(a.lastSeen))[0];
+        document.getElementById('statLatest').textContent  = latest.email;
+        document.getElementById('statLatestTime').textContent = relTime(latest.lastSeen);
+    } else {
+        document.getElementById('statLatest').textContent    = '—';
+        document.getElementById('statLatestTime').textContent = '—';
+    }
+}
+
+function renderTable(rows) {
+    const tbody = document.getElementById('tableBody');
+    if (rows.length === 0) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">아직 접속 기록이 없습니다.</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = rows.map((r, i) => `
+        <tr>
+            <td class="rank">${i + 1}</td>
+            <td class="email-cell">${r.email}</td>
+            <td class="right">
+                <span class="count-badge">${(r.count || 0).toLocaleString()}회</span>
+            </td>
+            <td class="date-cell">
+                ${fmtDate(r.lastSeen)}<br>
+                <span style="color:#b0bac5;font-size:0.72rem;">${relTime(r.lastSeen)}</span>
+            </td>
+            <td class="date-cell">${fmtDate(r.firstSeen)}</td>
+        </tr>
+    `).join('');
+}
+</script>
+</body>
+</html>

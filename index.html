@@ -1563,6 +1563,28 @@ function renderViewSummaryHTML() {
 // ──────────────────────────────────────────────────────
 
 // ── LOGIN ──────────────────────────────────────────────
+// Firebase에 로그인 이력 기록 (이메일별 접속 횟수 + 시각)
+async function recordLogin(email) {
+    if (!FIREBASE_DB_URL) return;
+    const key = email.replace(/[@.]/g, '_');
+    const url = `${FIREBASE_DB_URL}/logins/${key}.json`;
+    try {
+        const res  = await fetch(url);
+        const data = await res.json();
+        const now  = new Date().toISOString();
+        await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email,
+                count:     ((data && data.count) || 0) + 1,
+                lastSeen:  now,
+                firstSeen: (data && data.firstSeen) || now
+            })
+        });
+    } catch (e) { console.warn('Login tracking failed:', e); }
+}
+
 const AUTH_KEY   = 'esl_auth_v1';
 const VALID_DOMAIN = '@solum-group.com';
 const VALID_PW   = 'thffndpa2026';
@@ -1614,6 +1636,7 @@ function doLogin() {
     if (!valid) return;
 
     sessionStorage.setItem(AUTH_KEY, 'true');
+    recordLogin(email);  // Firebase 접속 로그 기록
     // GTM: 로그인 이벤트
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'esl_login', user_email: document.getElementById('loginEmail').value.trim().toLowerCase() });
