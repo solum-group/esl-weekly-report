@@ -1569,10 +1569,15 @@ async function recordLogin(email) {
     const key = email.replace(/[@.]/g, '_');
     const url = `${FIREBASE_DB_URL}/logins/${key}.json`;
     try {
-        const res  = await fetch(url);
+        const res = await fetch(url);
+        if (!res.ok) {
+            const body = await res.text();
+            console.error(`[recordLogin] GET failed: ${res.status} ${res.statusText}`, body);
+            return;
+        }
         const data = await res.json();
         const now  = new Date().toISOString();
-        await fetch(url, {
+        const putRes = await fetch(url, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1582,7 +1587,15 @@ async function recordLogin(email) {
                 firstSeen: (data && data.firstSeen) || now
             })
         });
-    } catch (e) { console.warn('Login tracking failed:', e); }
+        if (!putRes.ok) {
+            const body = await putRes.text();
+            console.error(`[recordLogin] PUT failed: ${putRes.status} ${putRes.statusText}`, body);
+        } else {
+            console.log(`[recordLogin] OK — ${email} (count: ${((data && data.count) || 0) + 1})`);
+        }
+    } catch (e) {
+        console.error('[recordLogin] Network error:', e);
+    }
 }
 
 const AUTH_KEY   = 'esl_auth_v1';
