@@ -242,6 +242,110 @@
         }
         .loading-row td { text-align: center; padding: 48px 24px; color: var(--text-tertiary); font-size: 0.85rem; }
 
+        /* ── FILTER BAR ── */
+        .filter-card {
+            background: var(--bg-white);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 20px 24px;
+            margin-bottom: 20px;
+        }
+        .filter-top {
+            display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+        }
+        .filter-title {
+            font-size: 0.75rem; font-weight: 700;
+            color: var(--text-tertiary); white-space: nowrap; letter-spacing: 0.3px;
+        }
+        .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+        .filter-pill {
+            padding: 6px 14px; border-radius: var(--radius-full);
+            font-size: 0.78rem; font-weight: 700;
+            border: 1.5px solid var(--border);
+            background: var(--bg-base); color: var(--text-secondary);
+            cursor: pointer; font-family: inherit; transition: all 0.15s;
+        }
+        .filter-pill:hover  { border-color: var(--blue); color: var(--blue); }
+        .filter-pill.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .custom-range {
+            display: none; align-items: center; gap: 8px;
+            margin-top: 14px; flex-wrap: wrap;
+        }
+        .custom-range.show { display: flex; }
+        .date-input {
+            padding: 7px 12px;
+            border: 1.5px solid var(--border); border-radius: var(--radius-md);
+            font-size: 0.82rem; font-family: inherit;
+            color: var(--text-primary); background: var(--bg-base); outline: none;
+        }
+        .date-input:focus { border-color: var(--blue); background: #fff; }
+        .date-sep { color: var(--text-tertiary); font-weight: 700; }
+        .apply-btn {
+            padding: 7px 16px;
+            background: var(--blue); color: white; border: none;
+            border-radius: var(--radius-md); font-size: 0.8rem; font-weight: 700;
+            cursor: pointer; font-family: inherit; transition: background 0.15s;
+        }
+        .apply-btn:hover { background: var(--blue-dark); }
+        .filter-desc {
+            font-size: 0.72rem; color: var(--text-tertiary);
+            margin-top: 10px; font-weight: 500;
+        }
+
+        /* ── TREND CHART ── */
+        .chart-toggle {
+            display: flex; gap: 3px;
+            background: var(--bg-base); border: 1.5px solid var(--border);
+            border-radius: var(--radius-full); padding: 3px;
+        }
+        .chart-toggle-btn {
+            padding: 5px 14px; border-radius: var(--radius-full);
+            font-size: 0.75rem; font-weight: 700;
+            border: none; background: none; color: var(--text-tertiary);
+            cursor: pointer; font-family: inherit; transition: all 0.15s;
+        }
+        .chart-toggle-btn.active {
+            background: #fff; color: var(--blue);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .chart-area { padding: 20px 24px 24px; min-height: 180px; }
+        .chart-empty {
+            text-align: center; color: var(--text-tertiary);
+            font-size: 0.85rem; padding: 40px 0;
+        }
+        .chart-bars { display: flex; flex-direction: column; gap: 8px; }
+        .chart-bar-row {
+            display: grid;
+            grid-template-columns: 72px 1fr 52px;
+            align-items: center; gap: 12px;
+        }
+        .chart-bar-label {
+            font-size: 0.73rem; font-weight: 700;
+            color: var(--text-secondary); text-align: right; white-space: nowrap;
+        }
+        .chart-bar-track {
+            background: var(--bg-base); border-radius: 4px;
+            height: 22px; overflow: hidden; position: relative;
+        }
+        .chart-bar-fill {
+            height: 100%; border-radius: 4px;
+            background: linear-gradient(90deg, rgba(47,0,109,0.55), rgba(47,0,109,0.85));
+            transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+            min-width: 3px;
+        }
+        .chart-bar-fill.highlight {
+            background: linear-gradient(90deg, #7c3aed, #2F006D);
+        }
+        .chart-bar-value {
+            font-size: 0.78rem; font-weight: 800; color: var(--text-primary);
+        }
+        .chart-summary {
+            display: flex; gap: 20px; padding: 0 0 16px;
+            border-bottom: 1px solid var(--border); margin-bottom: 16px;
+        }
+        .chart-summary-item { font-size: 0.75rem; color: var(--text-tertiary); font-weight: 500; }
+        .chart-summary-item strong { color: var(--text-primary); font-weight: 800; }
+
         /* ── TABS ── */
         .tab-nav {
             background: var(--bg-white);
@@ -507,16 +611,40 @@
 
     <!-- ── 접속 현황 탭 ── -->
     <div class="tab-panel active" id="panel-access">
+
+        <!-- 기간 필터 -->
+        <div class="filter-card">
+            <div class="filter-top">
+                <span class="filter-title">기간 필터</span>
+                <div class="filter-pills">
+                    <button class="filter-pill active" id="pill-all"        onclick="setFilter('all')">전체</button>
+                    <button class="filter-pill"        id="pill-this-month" onclick="setFilter('this-month')">이번 달</button>
+                    <button class="filter-pill"        id="pill-last-month" onclick="setFilter('last-month')">지난 달</button>
+                    <button class="filter-pill"        id="pill-this-week"  onclick="setFilter('this-week')">이번 주</button>
+                    <button class="filter-pill"        id="pill-last-week"  onclick="setFilter('last-week')">지난 주</button>
+                    <button class="filter-pill"        id="pill-custom"     onclick="setFilter('custom')">기간 지정</button>
+                </div>
+            </div>
+            <div class="custom-range" id="customRange">
+                <input type="date" id="dateFrom" class="date-input">
+                <span class="date-sep">~</span>
+                <input type="date" id="dateTo" class="date-input">
+                <button class="apply-btn" onclick="applyCustomFilter()">적용</button>
+            </div>
+            <div class="filter-desc" id="filterDesc">전체 기간 · 누적 데이터 기준</div>
+        </div>
+
+        <!-- 스탯 카드 -->
         <div class="stats-row">
             <div class="stat-card">
-                <div class="stat-label">총 접속자 수</div>
+                <div class="stat-label" id="labelUsers">접속자 수</div>
                 <div class="stat-value" id="statUsers">—</div>
-                <div class="stat-sub">고유 이메일 기준</div>
+                <div class="stat-sub" id="subUsers">고유 이메일 기준</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">총 접속 횟수</div>
+                <div class="stat-label" id="labelTotal">접속 횟수</div>
                 <div class="stat-value" id="statTotal">—</div>
-                <div class="stat-sub">누적 로그인 이벤트</div>
+                <div class="stat-sub" id="subTotal">누적 로그인 이벤트</div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">가장 최근 접속</div>
@@ -524,11 +652,30 @@
                 <div class="stat-sub" id="statLatestTime">—</div>
             </div>
         </div>
+
+        <!-- 기간별 추이 차트 -->
+        <div class="table-card" style="margin-bottom:20px;">
+            <div class="table-header">
+                <div>
+                    <div class="table-title">기간별 접속 추이</div>
+                    <div class="table-meta" id="trendMeta">월별 집계 · 최근 6개월</div>
+                </div>
+                <div class="chart-toggle">
+                    <button class="chart-toggle-btn active" id="btnMonthly" onclick="setChartView('monthly')">월별</button>
+                    <button class="chart-toggle-btn"        id="btnWeekly"  onclick="setChartView('weekly')">주차별</button>
+                </div>
+            </div>
+            <div class="chart-area" id="chartArea">
+                <div class="chart-empty">데이터 로딩 중…</div>
+            </div>
+        </div>
+
+        <!-- 이메일별 테이블 -->
         <div class="table-card">
             <div class="table-header">
                 <div>
                     <div class="table-title">이메일별 접속 현황</div>
-                    <div class="table-meta">접속 횟수 많은 순 정렬 · Firebase Realtime Database 연동</div>
+                    <div class="table-meta" id="tableMeta">접속 횟수 많은 순 정렬</div>
                 </div>
                 <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -543,7 +690,7 @@
                     <tr>
                         <th style="width:48px;">#</th>
                         <th>이메일</th>
-                        <th class="right" style="width:120px;">접속 횟수</th>
+                        <th class="right" style="width:130px;">접속 횟수</th>
                         <th style="width:180px;">마지막 접속</th>
                         <th style="width:180px;">최초 접속</th>
                     </tr>
@@ -925,10 +1072,94 @@ function relTime(iso) {
     return `${Math.floor(h / 24)}일 전`;
 }
 
+// ── ISO 주차 키 (YYYY-WXX) ────────────────────────────────────────────
+function getWeekKey(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const day = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - day);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const week = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    return `${d.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
+}
+function getMonthKey(date) {
+    return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+}
+function fmtMonthKey(k) {
+    const [y, m] = k.split('-');
+    return `${y}.${m}`;
+}
+function fmtWeekKey(k) {
+    // "2026-W11" → "26년 W11"
+    const [y, w] = k.split('-');
+    return `${String(y).slice(2)}년 ${w}`;
+}
+
+// ── 필터 상태 ─────────────────────────────────────────────────────────
+let allLoginData   = [];
+let currentFilter  = { type: 'all', from: null, to: null };
+let currentChart   = 'monthly';
+
+function setFilter(type) {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    document.getElementById('pill-' + type).classList.add('active');
+    const customRange = document.getElementById('customRange');
+    if (type === 'custom') {
+        customRange.classList.add('show');
+        return; // 날짜 선택 후 applyCustomFilter()에서 처리
+    }
+    customRange.classList.remove('show');
+    const { from, to } = getDateRange(type);
+    currentFilter = { type, from, to };
+    renderAccess();
+}
+
+function applyCustomFilter() {
+    const from = document.getElementById('dateFrom').value;
+    const to   = document.getElementById('dateTo').value;
+    if (!from || !to) { alert('시작일과 종료일을 모두 선택하세요.'); return; }
+    if (from > to)    { alert('시작일이 종료일보다 늦을 수 없습니다.'); return; }
+    currentFilter = { type: 'custom', from: new Date(from + 'T00:00:00'), to: new Date(to + 'T23:59:59') };
+    renderAccess();
+}
+
+function getDateRange(type) {
+    const now   = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    if (type === 'all') return { from: null, to: null };
+    if (type === 'this-month') {
+        return { from: new Date(now.getFullYear(), now.getMonth(), 1),
+                 to:   new Date(now.getFullYear(), now.getMonth()+1, 0, 23, 59, 59) };
+    }
+    if (type === 'last-month') {
+        return { from: new Date(now.getFullYear(), now.getMonth()-1, 1),
+                 to:   new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59) };
+    }
+    if (type === 'this-week') {
+        const day  = today.getDay() || 7;
+        const mon  = new Date(today); mon.setDate(today.getDate() - day + 1);
+        const sun  = new Date(mon);   sun.setDate(mon.getDate() + 6); sun.setHours(23,59,59);
+        return { from: mon, to: sun };
+    }
+    if (type === 'last-week') {
+        const day     = today.getDay() || 7;
+        const thisMon = new Date(today); thisMon.setDate(today.getDate() - day + 1);
+        const lastMon = new Date(thisMon); lastMon.setDate(thisMon.getDate() - 7);
+        const lastSun = new Date(thisMon); lastSun.setDate(thisMon.getDate() - 1); lastSun.setHours(23,59,59);
+        return { from: lastMon, to: lastSun };
+    }
+    return { from: null, to: null };
+}
+
+function setChartView(view) {
+    currentChart = view;
+    document.getElementById('btnMonthly').classList.toggle('active', view === 'monthly');
+    document.getElementById('btnWeekly').classList.toggle('active',  view === 'weekly');
+    renderTrendChart();
+}
+
 // ── 접속 현황 로드 ────────────────────────────────────────────────────
 async function loadData() {
     const btn   = document.getElementById('refreshBtn');
-    const tbody = document.getElementById('tableBody');
     btn.classList.add('spinning'); btn.disabled = true;
 
     try {
@@ -936,30 +1167,80 @@ async function loadData() {
         const data = await res.json();
 
         if (!data || typeof data !== 'object') {
-            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">아직 접속 기록이 없습니다.</td></tr>`;
-            updateStats([], null); return;
+            allLoginData = [];
+        } else {
+            allLoginData = Object.values(data).filter(r => r && r.email);
         }
-        const rows = Object.values(data)
-            .filter(r => r && r.email)
-            .sort((a, b) => (b.count || 0) - (a.count || 0));
-
-        updateStats(rows, data);
-        renderTable(rows);
+        renderAccess();
         document.getElementById('lastUpdated').textContent = '업데이트: ' + fmtDate(new Date().toISOString());
 
     } catch (e) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다.</td></tr>`;
+        document.getElementById('tableBody').innerHTML =
+            `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다.</td></tr>`;
         console.error(e);
     }
     btn.classList.remove('spinning'); btn.disabled = false;
 }
 
-function updateStats(rows) {
+// ── 전체 렌더링 조율 ──────────────────────────────────────────────────
+function renderAccess() {
+    const { from, to, type } = currentFilter;
+    const filtered = filterRows(allLoginData, from, to);
+    updateStats(filtered, from, to, type);
+    renderTable(filtered, from, to);
+    renderTrendChart();
+    updateFilterDesc(type, from, to);
+}
+
+function filterRows(rows, from, to) {
+    if (!from && !to) return rows;
+    return rows.filter(r => {
+        const d = new Date(r.lastSeen);
+        return (!from || d >= from) && (!to || d <= to);
+    });
+}
+
+function updateFilterDesc(type, from, to) {
+    const labels = {
+        'all':        '전체 기간 · 누적 데이터 기준',
+        'this-month': `이번 달 (${fmtMonthKey(getMonthKey(new Date()))})`,
+        'last-month': (() => { const d = new Date(); d.setMonth(d.getMonth()-1); return `지난 달 (${fmtMonthKey(getMonthKey(d))})`; })(),
+        'this-week':  `이번 주 (${getWeekKey(new Date())})`,
+        'last-week':  (() => { const d = new Date(); d.setDate(d.getDate()-7); return `지난 주 (${getWeekKey(d)})`; })(),
+    };
+    if (type === 'custom' && from && to) {
+        const fmt = d => `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+        document.getElementById('filterDesc').textContent = `기간 지정: ${fmt(from)} ~ ${fmt(to)}`;
+    } else {
+        document.getElementById('filterDesc').textContent = labels[type] || '';
+    }
+}
+
+function updateStats(rows, from, to, type) {
+    // 접속자 수: 기간 내 lastSeen 기준 고유 이메일
     document.getElementById('statUsers').textContent = rows.length.toLocaleString();
-    const total = rows.reduce((s, r) => s + (r.count || 0), 0);
+
+    // 접속 횟수: 기간이 있으면 monthly/weekly 세부 데이터 합산, 전체면 누적 count
+    let total = 0;
+    if (!from && !to) {
+        total = allLoginData.reduce((s, r) => s + (r.count || 0), 0);
+        document.getElementById('subTotal').textContent = '누적 로그인 이벤트';
+    } else {
+        // monthly/weekly 서브카운터가 있으면 정확히 합산
+        total = computePeriodCount(allLoginData, from, to);
+        document.getElementById('subTotal').textContent = '기간 내 로그인 이벤트';
+    }
     document.getElementById('statTotal').textContent = total.toLocaleString();
-    if (rows.length > 0) {
-        const latest = rows.slice().sort((a,b) => new Date(b.lastSeen) - new Date(a.lastSeen))[0];
+
+    // 레이블 업데이트
+    const isAll = type === 'all';
+    document.getElementById('labelUsers').textContent = isAll ? '총 접속자 수' : '기간 내 접속자 수';
+    document.getElementById('labelTotal').textContent = isAll ? '총 접속 횟수' : '기간 내 접속 횟수';
+
+    // 최근 접속 (전체 기준 항상 표시)
+    const all = allLoginData;
+    if (all.length > 0) {
+        const latest = all.slice().sort((a,b) => new Date(b.lastSeen) - new Date(a.lastSeen))[0];
         document.getElementById('statLatest').textContent     = latest.email;
         document.getElementById('statLatestTime').textContent = relTime(latest.lastSeen);
     } else {
@@ -968,21 +1249,136 @@ function updateStats(rows) {
     }
 }
 
-function renderTable(rows) {
-    const tbody = document.getElementById('tableBody');
+// monthly/weekly 서브카운터 합산 (없으면 count 전체로 fallback)
+function computePeriodCount(rows, from, to) {
+    let total = 0;
+    for (const r of rows) {
+        if (r.monthly) {
+            for (const [k, v] of Object.entries(r.monthly)) {
+                const d = new Date(k + '-01');
+                if ((!from || d >= new Date(from.getFullYear(), from.getMonth(), 1)) &&
+                    (!to   || d <= new Date(to.getFullYear(),   to.getMonth(),   1))) {
+                    total += v;
+                }
+            }
+        } else {
+            // 서브카운터 없는 구 데이터: lastSeen 기준으로 필터 후 count 전체 합산
+            const ls = new Date(r.lastSeen);
+            if ((!from || ls >= from) && (!to || ls <= to)) total += (r.count || 0);
+        }
+    }
+    return total;
+}
+
+function renderTable(rows, from, to) {
+    const tbody   = document.getElementById('tableBody');
+    const isAll   = !from && !to;
+    document.getElementById('tableMeta').textContent =
+        isAll ? '접속 횟수 많은 순 정렬 · 전체 기간' : '기간 내 마지막 접속 기준 · 최신 순';
+
     if (rows.length === 0) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">아직 접속 기록이 없습니다.</td></tr>`;
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">해당 기간에 접속 기록이 없습니다.</td></tr>`;
         return;
     }
-    tbody.innerHTML = rows.map((r, i) => `
-        <tr>
+    const sorted = rows.slice().sort((a, b) =>
+        isAll ? (b.count||0)-(a.count||0) : new Date(b.lastSeen)-new Date(a.lastSeen));
+
+    tbody.innerHTML = sorted.map((r, i) => {
+        const cnt = isAll ? (r.count||0) : getPeriodCountForUser(r, from, to);
+        return `<tr>
             <td class="rank">${i + 1}</td>
             <td class="email-cell">${r.email}</td>
-            <td class="right"><span class="count-badge">${(r.count||0).toLocaleString()}회</span></td>
+            <td class="right"><span class="count-badge">${cnt.toLocaleString()}회</span></td>
             <td class="date-cell">${fmtDate(r.lastSeen)}<br>
                 <span style="color:#b0bac5;font-size:0.72rem;">${relTime(r.lastSeen)}</span></td>
             <td class="date-cell">${fmtDate(r.firstSeen)}</td>
-        </tr>`).join('');
+        </tr>`;
+    }).join('');
+}
+
+function getPeriodCountForUser(r, from, to) {
+    if (!r.monthly) return r.count || 0;
+    let total = 0;
+    for (const [k, v] of Object.entries(r.monthly)) {
+        const d = new Date(k + '-01');
+        if ((!from || d >= new Date(from.getFullYear(), from.getMonth(), 1)) &&
+            (!to   || d <= new Date(to.getFullYear(),   to.getMonth(),   1))) {
+            total += v;
+        }
+    }
+    return total;
+}
+
+// ── 추이 차트 ─────────────────────────────────────────────────────────
+function renderTrendChart() {
+    const area = document.getElementById('chartArea');
+    const isMonthly = currentChart === 'monthly';
+
+    // 전체 데이터에서 집계 (필터 무관하게 전체 추이 표시)
+    const agg = {};
+    for (const r of allLoginData) {
+        const src = isMonthly ? (r.monthly || {}) : (r.weekly || {});
+        for (const [k, v] of Object.entries(src)) {
+            agg[k] = (agg[k] || 0) + v;
+        }
+    }
+
+    // 데이터 없을 때 (구 버전 데이터만 있는 경우) fallback
+    if (Object.keys(agg).length === 0) {
+        if (isMonthly) {
+            // lastSeen 기준 월별 사용자 수로 fallback (접속 횟수 아닌 "활성 사용자")
+            for (const r of allLoginData) {
+                if (r.lastSeen) {
+                    const k = getMonthKey(new Date(r.lastSeen));
+                    agg[k] = (agg[k] || 0) + 1;
+                }
+            }
+        }
+        if (Object.keys(agg).length === 0) {
+            area.innerHTML = `<div class="chart-empty">기간별 상세 데이터가 없습니다.<br><span style="font-size:0.75rem;color:#b0bac5;">로그인 후 데이터가 쌓이면 차트가 표시됩니다.</span></div>`;
+            document.getElementById('trendMeta').textContent = isMonthly ? '월별 집계' : '주차별 집계';
+            return;
+        }
+    }
+
+    // 키 정렬 후 최근 N개만
+    const limit  = isMonthly ? 6 : 12;
+    const sorted = Object.keys(agg).sort().slice(-limit);
+    const values = sorted.map(k => agg[k]);
+    const maxVal = Math.max(...values, 1);
+    const total  = values.reduce((s, v) => s + v, 0);
+    const nowKey = isMonthly ? getMonthKey(new Date()) : getWeekKey(new Date());
+
+    document.getElementById('trendMeta').textContent =
+        isMonthly ? `월별 집계 · 최근 ${sorted.length}개월` : `주차별 집계 · 최근 ${sorted.length}주`;
+
+    const bars = sorted.map((k, i) => {
+        const v       = values[i];
+        const pct     = Math.round((v / maxVal) * 100);
+        const isNow   = k === nowKey;
+        const label   = isMonthly ? fmtMonthKey(k) : fmtWeekKey(k);
+        return `<div class="chart-bar-row">
+            <div class="chart-bar-label">${label}</div>
+            <div class="chart-bar-track">
+                <div class="chart-bar-fill${isNow ? ' highlight' : ''}" style="width:${pct}%"></div>
+            </div>
+            <div class="chart-bar-value">${v.toLocaleString()}</div>
+        </div>`;
+    }).join('');
+
+    const isFallback = allLoginData.some(r => !r.monthly && !r.weekly);
+    const note = isFallback
+        ? `<div style="font-size:0.7rem;color:#b0bac5;margin-top:12px;">※ 일부 데이터는 lastSeen 기준 활성 사용자 수로 표시됩니다.</div>`
+        : '';
+
+    area.innerHTML = `
+        <div class="chart-summary">
+            <div class="chart-summary-item">표시 기간 합계 <strong>${total.toLocaleString()}회</strong></div>
+            <div class="chart-summary-item">최고 <strong>${maxVal.toLocaleString()}회</strong></div>
+            <div class="chart-summary-item">평균 <strong>${Math.round(total/sorted.length).toLocaleString()}회</strong></div>
+        </div>
+        <div class="chart-bars">${bars}</div>
+        ${note}`;
 }
 
 // ── 계정 관리 ─────────────────────────────────────────────────────────

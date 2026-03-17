@@ -1644,6 +1644,19 @@ function renderViewSummaryHTML() {
 
 // ── LOGIN ──────────────────────────────────────────────
 // Firebase에 로그인 이력 기록 (이메일별 접속 횟수 + 시각)
+// 월 키 (YYYY-MM), 주차 키 (YYYY-WXX) 생성
+function _monthKey(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+function _weekKey(d) {
+    const utc  = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const day  = utc.getUTCDay() || 7;
+    utc.setUTCDate(utc.getUTCDate() + 4 - day);
+    const yr   = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1));
+    const week = Math.ceil((((utc - yr) / 86400000) + 1) / 7);
+    return `${utc.getUTCFullYear()}-W${String(week).padStart(2,'0')}`;
+}
+
 async function recordLogin(email) {
     if (!FIREBASE_DB_URL) return;
     const key = email.replace(/[@.]/g, '_');
@@ -1655,23 +1668,35 @@ async function recordLogin(email) {
             console.error(`[recordLogin] GET failed: ${res.status} ${res.statusText}`, body);
             return;
         }
-        const data = await res.json();
-        const now  = new Date().toISOString();
+        const data     = await res.json();
+        const now      = new Date();
+        const nowISO   = now.toISOString();
+        const monthKey = _monthKey(now);
+        const weekKey  = _weekKey(now);
+
+        // 월별/주차별 카운터 누적
+        const monthly = (data && data.monthly) || {};
+        const weekly  = (data && data.weekly)  || {};
+        monthly[monthKey] = (monthly[monthKey] || 0) + 1;
+        weekly[weekKey]   = (weekly[weekKey]   || 0) + 1;
+
         const putRes = await fetch(url, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email,
                 count:     ((data && data.count) || 0) + 1,
-                lastSeen:  now,
-                firstSeen: (data && data.firstSeen) || now
+                lastSeen:  nowISO,
+                firstSeen: (data && data.firstSeen) || nowISO,
+                monthly,
+                weekly
             })
         });
         if (!putRes.ok) {
             const body = await putRes.text();
             console.error(`[recordLogin] PUT failed: ${putRes.status} ${putRes.statusText}`, body);
         } else {
-            console.log(`[recordLogin] OK — ${email} (count: ${((data && data.count) || 0) + 1})`);
+            console.log(`[recordLogin] OK — ${email} (count: ${((data && data.count) || 0) + 1}, ${monthKey}, ${weekKey})`);
         }
     } catch (e) {
         console.error('[recordLogin] Network error:', e);
