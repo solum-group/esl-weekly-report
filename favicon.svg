@@ -1,0 +1,49 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#1e0047"/>
+    </linearGradient>
+    <linearGradient id="ft" x1="3" y1="11" x2="21" y2="7" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EDE9FE"/>
+      <stop offset="1" stop-color="#A855F7"/>
+    </linearGradient>
+    <linearGradient id="ff" x1="3" y1="11" x2="20" y2="27" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C084FC"/>
+      <stop offset="1" stop-color="#3B0764"/>
+    </linearGradient>
+    <linearGradient id="fs" x1="20" y1="7" x2="29" y2="27" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6B21A8"/>
+      <stop offset="1" stop-color="#1e0047"/>
+    </linearGradient>
+    <filter id="glow">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#2F006D" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="7" fill="url(#bg)"/>
+
+  <!-- 3D isometric display box -->
+  <!-- Top face -->
+  <path d="M3 13 L16 6.5 L29 13 L16 19.5 Z" fill="url(#ft)"/>
+  <!-- Right face -->
+  <path d="M16 19.5 L29 13 L29 22 L16 28.5 Z" fill="url(#fs)"/>
+  <!-- Front face -->
+  <path d="M3 13 L16 19.5 L16 28.5 L3 22 Z" fill="url(#ff)" filter="url(#glow)"/>
+
+  <!-- Top edge highlight -->
+  <path d="M3 13 L16 6.5 L16 7.5 L3 14 Z" fill="rgba(255,255,255,0.22)"/>
+  <path d="M16 6.5 L29 13 L29 14 L16 7.5 Z" fill="rgba(255,255,255,0.12)"/>
+  <!-- Left edge highlight -->
+  <rect x="3" y="13" width="1.2" height="9" fill="rgba(255,255,255,0.15)"/>
+
+  <!-- Screen bezel on front face -->
+  <path d="M5 15 L13.5 19.3 L13.5 26.2 L5 21.9 Z" fill="rgba(0,0,0,0.35)"/>
+  <!-- Screen top highlight line -->
+  <path d="M5 15 L13.5 19.3 L13.5 20.1 L5 15.8 Z" fill="rgba(167,139,250,0.35)"/>
+  <!-- Screen content lines -->
+  <path d="M6 17 L11.5 19.7 L11.5 20.5 L6 17.8 Z" fill="rgba(255,255,255,0.9)"/>
+  <path d="M6 20 L9.5 21.7 L9.5 22.4 L6 20.7 Z" fill="rgba(255,255,255,0.55)"/>
+  <path d="M6 22.5 L12 25.1 L12 25.8 L6 23.2 Z" fill="rgba(255,255,255,0.35)"/>
+</svg>
