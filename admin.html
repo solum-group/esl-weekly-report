@@ -639,12 +639,12 @@
         <!-- 스탯 카드 -->
         <div class="stats-row">
             <div class="stat-card">
-                <div class="stat-label" id="labelUsers">접속자 수</div>
+                <div class="stat-label" id="labelUsers">접속 인원 (명)</div>
                 <div class="stat-value" id="statUsers">—</div>
                 <div class="stat-sub" id="subUsers">고유 이메일 기준</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label" id="labelTotal">접속 횟수</div>
+                <div class="stat-label" id="labelTotal">총 로그인 횟수 (회)</div>
                 <div class="stat-value" id="statTotal">—</div>
                 <div class="stat-sub" id="subTotal">누적 로그인 이벤트</div>
             </div>
@@ -1236,8 +1236,8 @@ function updateStats(rows, from, to, type) {
 
     // 레이블 업데이트
     const isAll = type === 'all';
-    document.getElementById('labelUsers').textContent = isAll ? '총 접속자 수' : '기간 내 접속자 수';
-    document.getElementById('labelTotal').textContent = isAll ? '총 접속 횟수' : '기간 내 접속 횟수';
+    document.getElementById('labelUsers').textContent = isAll ? '접속 인원 (명)' : '기간 내 접속 인원 (명)';
+    document.getElementById('labelTotal').textContent = isAll ? '총 로그인 횟수 (회)' : '기간 내 로그인 횟수 (회)';
 
     // 최근 접속 (전체 기준 항상 표시)
     const all = allLoginData;
