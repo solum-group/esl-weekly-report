@@ -1316,31 +1316,33 @@ function renderTrendChart() {
     const area = document.getElementById('chartArea');
     const isMonthly = currentChart === 'monthly';
 
-    // 전체 데이터에서 집계 (필터 무관하게 전체 추이 표시)
+    // 사용자별로 개별 처리:
+    // - monthly/weekly 서브카운터가 있으면 → 정확한 값 사용
+    // - 없으면 (코드 배포 이전 구 데이터) → count 전체를 lastSeen 기준 월/주에 합산 (fallback)
     const agg = {};
+    let hasFallback = false;
     for (const r of allLoginData) {
-        const src = isMonthly ? (r.monthly || {}) : (r.weekly || {});
-        for (const [k, v] of Object.entries(src)) {
-            agg[k] = (agg[k] || 0) + v;
+        const src = isMonthly ? r.monthly : r.weekly;
+        if (src && Object.keys(src).length > 0) {
+            // 정확한 서브카운터 사용
+            for (const [k, v] of Object.entries(src)) {
+                agg[k] = (agg[k] || 0) + v;
+            }
+        } else {
+            // 구 데이터 fallback: 누적 count를 lastSeen 기준 기간에 귀속
+            if (r.lastSeen) {
+                const d = new Date(r.lastSeen);
+                const k = isMonthly ? getMonthKey(d) : getWeekKey(d);
+                agg[k] = (agg[k] || 0) + (r.count || 1);
+                hasFallback = true;
+            }
         }
     }
 
-    // 데이터 없을 때 (구 버전 데이터만 있는 경우) fallback
     if (Object.keys(agg).length === 0) {
-        if (isMonthly) {
-            // lastSeen 기준 월별 사용자 수로 fallback (접속 횟수 아닌 "활성 사용자")
-            for (const r of allLoginData) {
-                if (r.lastSeen) {
-                    const k = getMonthKey(new Date(r.lastSeen));
-                    agg[k] = (agg[k] || 0) + 1;
-                }
-            }
-        }
-        if (Object.keys(agg).length === 0) {
-            area.innerHTML = `<div class="chart-empty">기간별 상세 데이터가 없습니다.<br><span style="font-size:0.75rem;color:#b0bac5;">로그인 후 데이터가 쌓이면 차트가 표시됩니다.</span></div>`;
-            document.getElementById('trendMeta').textContent = isMonthly ? '월별 집계' : '주차별 집계';
-            return;
-        }
+        area.innerHTML = `<div class="chart-empty">기간별 상세 데이터가 없습니다.<br><span style="font-size:0.75rem;color:#b0bac5;">로그인 후 데이터가 쌓이면 차트가 표시됩니다.</span></div>`;
+        document.getElementById('trendMeta').textContent = isMonthly ? '월별 집계' : '주차별 집계';
+        return;
     }
 
     // 키 정렬 후 최근 N개만
@@ -1368,9 +1370,8 @@ function renderTrendChart() {
         </div>`;
     }).join('');
 
-    const isFallback = allLoginData.some(r => !r.monthly && !r.weekly);
-    const note = isFallback
-        ? `<div style="font-size:0.7rem;color:#b0bac5;margin-top:12px;">※ 일부 데이터는 lastSeen 기준 활성 사용자 수로 표시됩니다.</div>`
+    const note = hasFallback
+        ? `<div style="font-size:0.7rem;color:#b0bac5;margin-top:12px;">※ 일부 항목은 코드 배포 이전 데이터로, 누적 접속 횟수를 마지막 접속일 기준으로 귀속한 값입니다.</div>`
         : '';
 
     area.innerHTML = `
