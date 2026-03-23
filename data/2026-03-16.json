@@ -1,7 +1,7 @@
 {
   "weekId": "2026-03-16",
-  "weekLabel": "2026.03.16 ~ 2026.03.20",
-  "searchAnalysis": "**3월 16일 SOLUM 지배구조 뉴스:** SOLUM과 행동주의 펀드 Align Partners가 이사회 개편·RCPS 분쟁 해소·전문 경영인 체제 전환을 포함한 포괄적 거버넌스 합의를 발표—주주총회 앞둔 ESG 리스크 조기 해소 주목.\n**3월 16~17일 규제 뉴스 집중:** 뉴욕주 AG + 의원들의 ESL 금지 'One Fair Price Package' 발표로 3월 9일 월마트 발표에 대한 규제 반응이 본격화됨.\n**3월 17~19일 기술·특허 뉴스:** 월마트가 ML 기반 AI 가격 책정 특허 2건 취득, 'EDLP 정책 무관' 해명에도 업계·소비자 논란 심화—알고리즘 가격 책정 공식화 신호로 해석.\n**이번 주 신규 ESL 배포 발표 부재:** Vusion·Pricer·Hanshow 신규 보도 없음—전주 월마트 발표에 대한 후속 규제·기술 논쟁 국면으로 업계 주목.",
+  "weekLabel": "2026.03.16 ~ 2026.03.23",
+  "searchAnalysis": "**3월 16일 SOLUM 지배구조 뉴스:** SOLUM과 행동주의 펀드 Align Partners가 이사회 개편·RCPS 분쟁 해소·전문 경영인 체제 전환을 포함한 포괄적 거버넌스 합의를 발표—주주총회 앞둔 ESG 리스크 조기 해소 주목.\n**3월 16~17일 규제 뉴스 집중:** 뉴욕주 AG + 의원들의 ESL 금지 'One Fair Price Package' 발표로 3월 9일 월마트 발표에 대한 규제 반응이 본격화됨.\n**3월 17~19일 기술·특허 뉴스:** 월마트가 ML 기반 AI 가격 책정 특허 2건 취득, 'EDLP 정책 무관' 해명에도 업계·소비자 논란 심화—알고리즘 가격 책정 공식화 신호로 해석.\n**이번 주 신규 ESL 배포 발표 부재:** Vusion·Pricer·Hanshow 신규 보도 없음—전주 월마트 발표에 대한 후속 규제·기술 논쟁 국면으로 업계 주목.\n**3월 21~23일 보완:** 주말~월요일 1건 추가—CNBC(3/21) 월마트 전 미국 전 매장(4,600개+) 연말 ESL 완료 선언 보도. Vusion이 독점 공급사로 확인(~$10억 규모 계약); Kroger 실험 도입·홀푸드 ~50개 매장 테스트로 확산 구도 확인. 상원 Merkley·Luján, 하원 Hoyle 의원 ESL 금지 법안 지속 추진. 대부분의 뉴스 도메인 접속 차단으로 원문 직접 확인에 제한이 있었으며, 확인된 기사만 추가함.",
   "sections": {
     "industryTrends": [
       {
@@ -23,7 +23,19 @@
         "sourceName": "RetailWire"
       }
     ],
-    "customerAdoption": {},
+    "customerAdoption": {
+      "grocery": [
+        {
+          "title": "월마트, 연말까지 전 미국 4,600개+ 매장 ESL 완료 선언—Vusion 독점 공급($10억), Kroger·홀푸드도 확산",
+          "summary": "CNBC가 3월 21일 보도한 기사에서 월마트가 2026년 연말까지 미국 내 전 4,600여 개 매장에 디지털 가격 표시기(DSL)를 배포 완료한다는 계획을 공식 확인했다.\n- **전 매장 배포 확정**: 기존 '2026년까지 2,300개 매장' 목표에서 '2026년 연말 전 미국 4,600개+ 매장'으로 확대\n- **VusionGroup 독점 공급**: 前 SES-imagotag인 VusionGroup이 약 10억 달러(€10억) 규모 계약으로 전량 공급 중\n- **임직원 효율 사례**: 오하이오주 웨스트체스터 월마트 Amanda Bailey 팀장 — \"DSL 도입 후 가격 업무 시간이 75% 줄었다\"\n- **경쟁 소매사 확산**: Kroger가 DSL 도입 실험 확대 중; 홀푸드(Amazon 소유)는 약 50개 매장에서 테스트 진행\n- **월마트 공식 입장**: '모든 소비자에게 동일 가격, 감시형·서지 프라이싱 불참여' 재확인\n- **입법 저항 지속**: 상원 Merkley(D-OR)·Luján(D-NM) + 하원 Hoyle(D-OR) 의원이 식료품점 ESL 금지 법안 추진 중",
+          "implications": "[🔴 위협] 월마트 4,600개 매장 전량을 Vusion이 독점 공급함으로써 미국 시장 내 SOLUM의 진입 창이 좁아지고 있다.\n- Vusion이 세계 최대 소매체인 전량 공급 레퍼런스를 완성할 경우 글로벌 대형 체인 영업에서 SOLUM과의 비교 우위가 더욱 격화됨\n- [🟢 기회] Kroger·홀푸드(Amazon)가 아직 공급사를 확정하지 않은 도입 초기 단계—SOLUM의 북미 침투를 위한 마지막 대형 타겟 창\n- **단기 액션**: Kroger 공급사 선정 프로세스 파악 및 제안 준비; 홀푸드 모회사 Amazon의 ESL 전략 분석하여 침투 전략 수립\n- **모니터링**: 월마트-Vusion 배포 완료 시점 및 Vusion의 미국 내 다음 체인 타겟; Kroger·홀푸드의 ESL 공급사 결정 발표 여부 추적",
+          "imageUrl": "",
+          "pubDate": "2026-03-21",
+          "sourceUrl": "https://www.cnbc.com/2026/03/21/walmart-digital-price-tags-will-be-in-every-us-store-by-end-of-2026.html",
+          "sourceName": "CNBC"
+        }
+      ]
+    },
     "majorCompanies": [
       {
         "title": "SOLUM–Align Partners, 주주총회 앞두고 포괄적 거버넌스 개혁 합의—전문 경영인 체제 전환 선언",
