@@ -1778,7 +1778,7 @@ const AUTH_LOGIN_TIME_KEY  = 'esl_auth_login_time';   // 최초 로그인 시각
 const AUTH_ACTIVE_TIME_KEY = 'esl_auth_active_time';  // 마지막 활동 시각 (1hr 기준)
 const INIT_PW              = 'thffndpa2026';
 const ACCESS_TOKEN_MS      = 60 * 60 * 1000;          // 1시간 (idle timeout)
-const REFRESH_TOKEN_MS     = 24 * 60 * 60 * 1000;     // 24시간 (hard limit)
+const REFRESH_TOKEN_MS     =  8 * 60 * 60 * 1000;     //  8시간 (hard limit)
 
 // SHA-256 해시 (Web Crypto API — 브라우저 내장)
 async function sha256(text) {
@@ -2013,7 +2013,7 @@ function doLogout(isAuto = false, reason = '') {
         const msgEl   = document.getElementById('autoLogoutMsg');
         if (reason === 'refresh') {
             titleEl.textContent = '세션이 만료되었습니다';
-            msgEl.innerHTML     = '로그인 후 <strong>24시간</strong>이 경과하여<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
+            msgEl.innerHTML     = '로그인 후 <strong>8시간</strong>이 경과하여<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
         } else {
             titleEl.textContent = '자동 로그아웃';
             msgEl.innerHTML     = '<strong>1시간</strong> 동안 활동이 없어<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
@@ -2042,6 +2042,8 @@ function checkTokenExpiry() {
 }
 
 // 사용자 활동 감지 → idle 타이머 갱신 (1분에 1회 기록)
+// mousemove 제외: 마우스를 살짝 움직이기만 해도 타이머가 리셋되는 문제 방지
+// 의도적인 사용자 행동(클릭·키입력·스크롤·터치)만 활동으로 인정
 let _lastActiveWrite = 0;
 function _resetActiveTime() {
     if (sessionStorage.getItem(AUTH_KEY) !== 'true') return;
@@ -2051,13 +2053,14 @@ function _resetActiveTime() {
         _lastActiveWrite = now;
     }
 }
-['click', 'keydown', 'scroll', 'mousemove', 'touchstart'].forEach(evt =>
+['click', 'keydown', 'scroll', 'touchstart'].forEach(evt =>
     document.addEventListener(evt, _resetActiveTime, { passive: true })
 );
-// 탭 전환 시 즉시 확인
+// 탭 전환 / 브라우저 복귀 시 즉시 만료 확인
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') checkTokenExpiry();
 });
+window.addEventListener('pageshow', () => checkTokenExpiry());
 // 1분마다 만료 확인
 setInterval(checkTokenExpiry, 60 * 1000);
 // ──────────────────────────────────────────────────────
