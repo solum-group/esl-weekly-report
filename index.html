@@ -463,6 +463,61 @@
             padding: 24px;
         }
         #changePwOverlay.hidden { display: none; }
+        /* ── AUTO-LOGOUT MODAL ── */
+        #autoLogoutModal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(4px);
+        }
+        #autoLogoutModal.hidden { display: none; }
+        .auto-logout-card {
+            background: #1a1a2e;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px 32px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+        }
+        .auto-logout-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+        .auto-logout-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .auto-logout-msg {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.65;
+            margin-bottom: 28px;
+        }
+        .auto-logout-msg strong { color: rgba(255,255,255,0.8); }
+        .auto-logout-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6c63ff, #a78bfa);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            letter-spacing: -0.01em;
+        }
+        .auto-logout-btn:hover { opacity: 0.88; }
         .pw-requirements {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -861,6 +916,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <button class="login-btn" id="changePwBtn" onclick="doChangePassword()">비밀번호 변경</button>
         <div class="login-hint">※ 변경 완료 후 새 비밀번호로 서비스를 이용하실 수 있습니다</div>
+    </div>
+</div>
+
+<!-- AUTO LOGOUT MODAL -->
+<div id="autoLogoutModal" class="hidden">
+    <div class="auto-logout-card">
+        <div class="auto-logout-icon">⏱️</div>
+        <div class="auto-logout-title" id="autoLogoutTitle">자동 로그아웃</div>
+        <div class="auto-logout-msg" id="autoLogoutMsg">보안을 위해 자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.</div>
+        <button class="auto-logout-btn" onclick="closeAutoLogoutModal()">다시 로그인</button>
     </div>
 </div>
 
@@ -1706,10 +1771,14 @@ async function recordLogin(email) {
 }
 
 // ── AUTH CONSTANTS ──────────────────────────────────────
-const AUTH_KEY        = 'esl_auth_v1';
-const AUTH_EMAIL_KEY  = 'esl_auth_email';
-const MUST_CHANGE_KEY = 'esl_must_change_pw';
-const INIT_PW         = 'thffndpa2026';
+const AUTH_KEY             = 'esl_auth_v1';
+const AUTH_EMAIL_KEY       = 'esl_auth_email';
+const MUST_CHANGE_KEY      = 'esl_must_change_pw';
+const AUTH_LOGIN_TIME_KEY  = 'esl_auth_login_time';   // 최초 로그인 시각 (24hr 기준)
+const AUTH_ACTIVE_TIME_KEY = 'esl_auth_active_time';  // 마지막 활동 시각 (1hr 기준)
+const INIT_PW              = 'thffndpa2026';
+const ACCESS_TOKEN_MS      = 60 * 60 * 1000;          // 1시간 (idle timeout)
+const REFRESH_TOKEN_MS     = 24 * 60 * 60 * 1000;     // 24시간 (hard limit)
 
 // SHA-256 해시 (Web Crypto API — 브라우저 내장)
 async function sha256(text) {
@@ -1740,6 +1809,20 @@ function checkPwRequirements(pw) {
 // ── 초기 인증 상태 확인 ──────────────────────────────────
 (function initAuth() {
     if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+        // 페이지 로드 시 토큰 만료 즉시 확인
+        const now        = Date.now();
+        const loginTime  = parseInt(sessionStorage.getItem(AUTH_LOGIN_TIME_KEY)  || '0');
+        const activeTime = parseInt(sessionStorage.getItem(AUTH_ACTIVE_TIME_KEY) || '0');
+
+        if (loginTime > 0) {
+            if (now - loginTime > REFRESH_TOKEN_MS) {
+                doLogout(true, 'refresh'); return;
+            }
+            if (now - activeTime > ACCESS_TOKEN_MS) {
+                doLogout(true, 'access'); return;
+            }
+        }
+
         document.getElementById('loginOverlay').classList.add('hidden');
         if (sessionStorage.getItem(MUST_CHANGE_KEY) === 'true') {
             showChangePwOverlay();
@@ -1804,8 +1887,11 @@ async function doLogin() {
         }
 
         // 인증 성공 처리
+        const _loginNow = String(Date.now());
         sessionStorage.setItem(AUTH_KEY, 'true');
         sessionStorage.setItem(AUTH_EMAIL_KEY, email);
+        sessionStorage.setItem(AUTH_LOGIN_TIME_KEY,  _loginNow);
+        sessionStorage.setItem(AUTH_ACTIVE_TIME_KEY, _loginNow);
         recordLogin(email);
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: 'esl_login', user_email: email });
@@ -1900,10 +1986,13 @@ async function doChangePassword() {
 }
 
 // ── 로그아웃 ─────────────────────────────────────────────
-function doLogout() {
+// isAuto: 자동 로그아웃 여부 / reason: 'access'(1hr idle) | 'refresh'(24hr 만료)
+function doLogout(isAuto = false, reason = '') {
     sessionStorage.removeItem(AUTH_KEY);
     sessionStorage.removeItem(AUTH_EMAIL_KEY);
     sessionStorage.removeItem(MUST_CHANGE_KEY);
+    sessionStorage.removeItem(AUTH_LOGIN_TIME_KEY);
+    sessionStorage.removeItem(AUTH_ACTIVE_TIME_KEY);
     document.getElementById('loginEmail').value    = '';
     document.getElementById('loginPassword').value = '';
     document.getElementById('emailError').textContent    = '';
@@ -1917,8 +2006,60 @@ function doLogout() {
     cpOverlay.classList.add('hidden');
     document.getElementById('newPassword').value        = '';
     document.getElementById('newPasswordConfirm').value = '';
+
+    if (isAuto) {
+        const modal   = document.getElementById('autoLogoutModal');
+        const titleEl = document.getElementById('autoLogoutTitle');
+        const msgEl   = document.getElementById('autoLogoutMsg');
+        if (reason === 'refresh') {
+            titleEl.textContent = '세션이 만료되었습니다';
+            msgEl.innerHTML     = '로그인 후 <strong>24시간</strong>이 경과하여<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
+        } else {
+            titleEl.textContent = '자동 로그아웃';
+            msgEl.innerHTML     = '<strong>1시간</strong> 동안 활동이 없어<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
+        }
+        modal.classList.remove('hidden');
+    } else {
+        setTimeout(() => document.getElementById('loginEmail').focus(), 100);
+    }
+}
+
+// ── 자동 로그아웃 모달 닫기 ──────────────────────────────
+function closeAutoLogoutModal() {
+    document.getElementById('autoLogoutModal').classList.add('hidden');
     setTimeout(() => document.getElementById('loginEmail').focus(), 100);
 }
+
+// ── 토큰 만료 확인 ────────────────────────────────────────
+function checkTokenExpiry() {
+    if (sessionStorage.getItem(AUTH_KEY) !== 'true') return;
+    const now        = Date.now();
+    const loginTime  = parseInt(sessionStorage.getItem(AUTH_LOGIN_TIME_KEY)  || '0');
+    const activeTime = parseInt(sessionStorage.getItem(AUTH_ACTIVE_TIME_KEY) || '0');
+    if (!loginTime) return; // 타임스탬프 없는 구형 세션은 무시
+    if (now - loginTime  > REFRESH_TOKEN_MS) { doLogout(true, 'refresh'); return; }
+    if (now - activeTime > ACCESS_TOKEN_MS)  { doLogout(true, 'access'); }
+}
+
+// 사용자 활동 감지 → idle 타이머 갱신 (1분에 1회 기록)
+let _lastActiveWrite = 0;
+function _resetActiveTime() {
+    if (sessionStorage.getItem(AUTH_KEY) !== 'true') return;
+    const now = Date.now();
+    if (now - _lastActiveWrite > 60000) {
+        sessionStorage.setItem(AUTH_ACTIVE_TIME_KEY, String(now));
+        _lastActiveWrite = now;
+    }
+}
+['click', 'keydown', 'scroll', 'mousemove', 'touchstart'].forEach(evt =>
+    document.addEventListener(evt, _resetActiveTime, { passive: true })
+);
+// 탭 전환 시 즉시 확인
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') checkTokenExpiry();
+});
+// 1분마다 만료 확인
+setInterval(checkTokenExpiry, 60 * 1000);
 // ──────────────────────────────────────────────────────
 </script>
 </body>
