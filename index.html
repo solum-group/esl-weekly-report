@@ -1399,13 +1399,13 @@ async function loadWeek(weekId) {
 function renderReport(report) {
     const totalArticles = countArticles(report);
 
-    // Count per section
+    // Count per section (Align Partners 기사 제외)
     const sectionCounts = SECTION_CONFIG.map(sec => {
         if (sec.isSegmented) {
             const data = report.sections[sec.key] || {};
-            return Object.values(data).reduce((sum, arr) => sum + arr.length, 0);
+            return Object.values(data).reduce((sum, arr) => sum + arr.filter(a => !isAlignPartners(a)).length, 0);
         }
-        return (report.sections[sec.key] || []).length;
+        return (report.sections[sec.key] || []).filter(a => !isAlignPartners(a)).length;
     });
 
     // Stats row
@@ -1433,7 +1433,7 @@ function renderReport(report) {
                 content = emptyState(sec.label);
             } else {
                 segments.forEach(segment => {
-                    const articles = data[segment] || [];
+                    const articles = (data[segment] || []).filter(a => !isAlignPartners(a));
                     if (articles.length === 0) return;
                     content += `
                         <div class="segment-group">
@@ -1450,7 +1450,7 @@ function renderReport(report) {
                 if (!content) content = emptyState(sec.label);
             }
         } else {
-            const articles = report.sections[sec.key] || [];
+            const articles = (report.sections[sec.key] || []).filter(a => !isAlignPartners(a));
             if (articles.length === 0) {
                 content = emptyState(sec.label);
             } else {
@@ -1581,14 +1581,20 @@ function updateNavButtons() {
     if (nextBtn) nextBtn.disabled = idx < 0 || idx >= weekIndex.length - 1;
 }
 
+function isAlignPartners(a) {
+    return /(align\s*partners)/i.test(
+        (a.title || '') + ' ' + (a.summary || '') + ' ' + (a.implications || '')
+    );
+}
+
 function countArticles(report) {
     let total = 0;
     const s = report.sections;
     ['industryTrends', 'majorCompanies', 'solutionProviders', 'technology'].forEach(k => {
-        total += (s[k] || []).length;
+        total += (s[k] || []).filter(a => !isAlignPartners(a)).length;
     });
     const ca = s.customerAdoption || {};
-    Object.values(ca).forEach(arr => { total += arr.length; });
+    Object.values(ca).forEach(arr => { total += arr.filter(a => !isAlignPartners(a)).length; });
     return total;
 }
 
