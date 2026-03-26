@@ -709,7 +709,7 @@
         <!-- 계정 생성 -->
         <div class="create-card">
             <div class="create-card-title">신규 계정 생성</div>
-            <div class="create-card-desc">생성된 계정은 초기 비밀번호(thffndpa2026)로 설정되며, 최초 로그인 시 비밀번호 변경을 요구합니다.</div>
+            <div class="create-card-desc">생성된 계정은 초기 비밀번호로 설정되며, 최초 로그인 시 비밀번호 변경을 요구합니다.</div>
             <div class="create-row">
                 <input class="create-input" type="email" id="newAccountEmail"
                     placeholder="name@solum-group.com"
@@ -755,7 +755,7 @@
     <div class="tab-panel" id="panel-admins">
         <div class="create-card">
             <div class="create-card-title">신규 어드민 계정 생성</div>
-            <div class="create-card-desc">생성된 어드민은 초기 비밀번호(thffndpa2026)로 설정되며, 최초 로그인 시 비밀번호 변경을 요구합니다.</div>
+            <div class="create-card-desc">생성된 어드민은 초기 비밀번호로 설정되며, 최초 로그인 시 비밀번호 변경을 요구합니다.</div>
             <div class="create-row">
                 <input class="create-input" type="email" id="newAdminEmail"
                     placeholder="admin@solum-group.com"
@@ -803,12 +803,41 @@
 // ── CONFIG ───────────────────────────────────────────────────────────
 const FIREBASE_DB_URL  = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app';
 const BOOTSTRAP_CODE   = 'solum_admin_2026';   // 어드민 0개일 때만 유효
-const INIT_PW          = 'thffndpa2026';
+const INIT_PW_HASH     = '20cbe87ac59c3a06ecf8a3241721ea02697df993e959cb6964833986653cd149'; // sha256('thffndpa2026')
 // ─────────────────────────────────────────────────────────────────────
 
-const ADMIN_AUTH_KEY       = 'esl_admin_auth';
-const ADMIN_EMAIL_KEY      = 'esl_admin_email';
-const ADMIN_MUST_CHANGE_KEY = 'esl_admin_must_change';
+const ADMIN_AUTH_KEY         = 'esl_admin_auth';
+const ADMIN_EMAIL_KEY        = 'esl_admin_email';
+const ADMIN_MUST_CHANGE_KEY  = 'esl_admin_must_change';
+const ADMIN_LOGIN_TIME_KEY   = 'esl_admin_login_time';
+const ADMIN_ACTIVE_TIME_KEY  = 'esl_admin_active_time';
+const ADMIN_ACCESS_TOKEN_MS  =  1 * 60 * 60 * 1000;  // 1시간 (idle timeout)
+const ADMIN_REFRESH_TOKEN_MS =  8 * 60 * 60 * 1000;  // 8시간 (hard limit)
+
+// ── 브루트포스 방어 (5회 실패→30초, 10회→5분 잠금) ──────────────────
+let _adminFailCount = 0;
+let _adminLockUntil = 0;
+function _checkAdminLoginLock(pwErrEl, btn) {
+    const now = Date.now();
+    if (now < _adminLockUntil) {
+        const remaining = Math.ceil((_adminLockUntil - now) / 1000);
+        pwErrEl.textContent = `로그인 시도 횟수 초과. ${remaining}초 후 다시 시도하세요.`;
+        btn.textContent = '잠금 중…'; btn.disabled = true;
+        return false;
+    }
+    return true;
+}
+function _recordAdminLoginFail(pwErrEl, btn) {
+    _adminFailCount++;
+    if (_adminFailCount >= 10) {
+        _adminLockUntil = Date.now() + 5 * 60 * 1000;
+        pwErrEl.textContent = '10회 실패. 5분 후 다시 시도하세요.';
+    } else if (_adminFailCount >= 5) {
+        _adminLockUntil = Date.now() + 30 * 1000;
+        pwErrEl.textContent = '5회 실패. 30초 후 다시 시도하세요.';
+    }
+    btn.textContent = '로그인'; btn.disabled = false;
+}
 
 // ── SHA-256 (Web Crypto API) ──────────────────────────────────────────
 async function sha256(text) {
@@ -855,6 +884,14 @@ function switchTab(name) {
 // ── 초기화 ───────────────────────────────────────────────────────────
 (async function initAuth() {
     if (sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true') {
+        // 세션 만료 즉시 체크
+        const now        = Date.now();
+        const loginTime  = parseInt(sessionStorage.getItem(ADMIN_LOGIN_TIME_KEY)  || '0');
+        const activeTime = parseInt(sessionStorage.getItem(ADMIN_ACTIVE_TIME_KEY) || '0');
+        if (loginTime && (now - loginTime > ADMIN_REFRESH_TOKEN_MS || now - activeTime > ADMIN_ACCESS_TOKEN_MS)) {
+            _clearAdminSession();
+            return;
+        }
         const email = sessionStorage.getItem(ADMIN_EMAIL_KEY);
         showDashboard(email);
         if (sessionStorage.getItem(ADMIN_MUST_CHANGE_KEY) === 'true') {
@@ -907,6 +944,9 @@ async function doAdminLogin() {
     if (!email) { emailEl.classList.add('error'); emailErrEl.textContent = '이메일을 입력하세요.'; return; }
     if (!pw)    { pwEl.classList.add('error');    pwErrEl.textContent    = '비밀번호를 입력하세요.'; return; }
 
+    // 잠금 체크
+    if (!_checkAdminLoginLock(pwErrEl, btn)) return;
+
     btn.textContent = '확인 중…'; btn.disabled = true;
 
     try {
@@ -922,13 +962,18 @@ async function doAdminLogin() {
         const inputHash = await sha256(pw);
         if (inputHash !== account.passwordHash) {
             pwEl.classList.add('error');
-            pwErrEl.textContent = '비밀번호가 올바르지 않습니다.';
-            btn.textContent = '로그인'; btn.disabled = false; return;
+            _recordAdminLoginFail(pwErrEl, btn);
+            if (!pwErrEl.textContent) pwErrEl.textContent = '비밀번호가 올바르지 않습니다.';
+            return;
         }
 
-        // 로그인 성공
-        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
-        sessionStorage.setItem(ADMIN_EMAIL_KEY, email);
+        // 로그인 성공 → 카운터 초기화
+        _adminFailCount = 0; _adminLockUntil = 0;
+        const _loginNow = Date.now();
+        sessionStorage.setItem(ADMIN_AUTH_KEY,        'true');
+        sessionStorage.setItem(ADMIN_EMAIL_KEY,        email);
+        sessionStorage.setItem(ADMIN_LOGIN_TIME_KEY,   String(_loginNow));
+        sessionStorage.setItem(ADMIN_ACTIVE_TIME_KEY,  String(_loginNow));
         showDashboard(email);
 
         if (account.mustChangePassword) {
@@ -985,8 +1030,11 @@ async function doSetupFirstAdmin() {
         });
         if (!res.ok) throw new Error(`PUT ${res.status}`);
 
-        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
-        sessionStorage.setItem(ADMIN_EMAIL_KEY, email);
+        const _setupNow = Date.now();
+        sessionStorage.setItem(ADMIN_AUTH_KEY,       'true');
+        sessionStorage.setItem(ADMIN_EMAIL_KEY,       email);
+        sessionStorage.setItem(ADMIN_LOGIN_TIME_KEY,  String(_setupNow));
+        sessionStorage.setItem(ADMIN_ACTIVE_TIME_KEY, String(_setupNow));
         document.getElementById('setupOverlay').classList.add('hidden');
         showDashboard(email);
         loadData();
@@ -1041,11 +1089,18 @@ async function doAdminChangePassword() {
     btn.textContent = '비밀번호 변경'; btn.disabled = false;
 }
 
-// ── 어드민 로그아웃 ──────────────────────────────────────────────────
-function doAdminLogout() {
+// ── 어드민 세션 클리어 (로그아웃 + 자동 만료 공통) ─────────────────
+function _clearAdminSession() {
     sessionStorage.removeItem(ADMIN_AUTH_KEY);
     sessionStorage.removeItem(ADMIN_EMAIL_KEY);
     sessionStorage.removeItem(ADMIN_MUST_CHANGE_KEY);
+    sessionStorage.removeItem(ADMIN_LOGIN_TIME_KEY);
+    sessionStorage.removeItem(ADMIN_ACTIVE_TIME_KEY);
+}
+
+// ── 어드민 로그아웃 ──────────────────────────────────────────────────
+function doAdminLogout(isAuto = false) {
+    _clearAdminSession();
     document.getElementById('adminEmail').value = '';
     document.getElementById('adminPw').value    = '';
     document.getElementById('adminEmailErr').textContent = '';
@@ -1054,6 +1109,17 @@ function doAdminLogout() {
     document.getElementById('adminChangePwOverlay').classList.add('hidden');
     document.getElementById('loginOverlay').classList.remove('hidden');
     setTimeout(() => document.getElementById('adminEmail').focus(), 100);
+}
+
+// ── XSS 방어 ─────────────────────────────────────────────────────────
+function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 // ── 날짜 포맷 ─────────────────────────────────────────────────────────
@@ -1289,7 +1355,7 @@ function renderTable(rows, from, to) {
         const cnt = isAll ? (r.count||0) : getPeriodCountForUser(r, from, to);
         return `<tr>
             <td class="rank">${i + 1}</td>
-            <td class="email-cell">${r.email}</td>
+            <td class="email-cell">${escapeHtml(r.email)}</td>
             <td class="right"><span class="count-badge">${cnt.toLocaleString()}회</span></td>
             <td class="date-cell">${fmtDate(r.lastSeen)}<br>
                 <span style="color:#b0bac5;font-size:0.72rem;">${relTime(r.lastSeen)}</span></td>
@@ -1410,7 +1476,7 @@ async function loadAccounts() {
         tbody.innerHTML = rows.map((r, i) => `
             <tr>
                 <td class="rank">${i + 1}</td>
-                <td class="email-cell">${r.email}</td>
+                <td class="email-cell">${escapeHtml(r.email)}</td>
                 <td>
                     ${r.mustChangePassword
                         ? `<span class="pw-status-badge need-change">⚠ 변경 필요</span>`
@@ -1420,9 +1486,11 @@ async function loadAccounts() {
                 <td>
                     <div class="actions-cell">
                         <button class="action-btn reset"
-                            onclick="resetPassword('${r.key}', '${r.email}')">🔄 초기화</button>
+                            data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
+                            data-action="reset-account">🔄 초기화</button>
                         <button class="action-btn delete"
-                            onclick="deleteAccount('${r.key}', '${r.email}')">🗑 삭제</button>
+                            data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
+                            data-action="delete-account">🗑 삭제</button>
                     </div>
                 </td>
             </tr>`).join('');
@@ -1468,7 +1536,7 @@ async function createAccount() {
             return;
         }
 
-        const initHash = await sha256(INIT_PW);
+        const initHash = INIT_PW_HASH;
         const now      = new Date().toISOString();
         const res      = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PUT',
@@ -1503,7 +1571,7 @@ async function resetPassword(key, email) {
     try {
         const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
         const account = getRes.ok ? await getRes.json() : {};
-        const initHash = await sha256(INIT_PW);
+        const initHash = INIT_PW_HASH;
 
         const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PUT',
@@ -1562,7 +1630,7 @@ async function loadAdmins() {
             <tr>
                 <td class="rank">${i + 1}</td>
                 <td class="email-cell">
-                    ${r.email}
+                    ${escapeHtml(r.email)}
                     ${r.email === myEmail ? '<span style="font-size:0.68rem;background:#f0e6ff;color:#7c3aed;border:1px solid #c084fc;border-radius:20px;padding:2px 8px;margin-left:6px;font-weight:700;">나</span>' : ''}
                 </td>
                 <td>
@@ -1574,10 +1642,12 @@ async function loadAdmins() {
                 <td>
                     <div class="actions-cell">
                         <button class="action-btn reset"
-                            onclick="resetAdminPassword('${r.key}', '${r.email}')">🔄 초기화</button>
+                            data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
+                            data-action="reset-admin">🔄 초기화</button>
                         ${r.email !== myEmail
                             ? `<button class="action-btn delete"
-                                onclick="deleteAdmin('${r.key}', '${r.email}')">🗑 삭제</button>`
+                                data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
+                                data-action="delete-admin">🗑 삭제</button>`
                             : `<span style="font-size:0.72rem;color:#b0bac5;">자신은 삭제 불가</span>`}
                     </div>
                 </td>
@@ -1617,7 +1687,7 @@ async function createAdmin() {
             btn.textContent = '어드민 생성'; btn.disabled = false; return;
         }
 
-        const initHash = await sha256(INIT_PW);
+        const initHash = INIT_PW_HASH;
         const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -1647,7 +1717,7 @@ async function resetAdminPassword(key, email) {
     try {
         const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
         const account = getRes.ok ? await getRes.json() : {};
-        const initHash = await sha256(INIT_PW);
+        const initHash = INIT_PW_HASH;
         const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -1674,6 +1744,54 @@ async function deleteAdmin(key, email) {
         console.error(e);
     }
 }
+
+// ── 테이블 버튼 이벤트 델리게이션 (XSS 방어: onclick 속성 대신 data-* 사용) ──
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    const key    = btn.dataset.key;
+    const email  = btn.dataset.email;
+    if (action === 'reset-account') resetPassword(key, email);
+    else if (action === 'delete-account') deleteAccount(key, email);
+    else if (action === 'reset-admin')   resetAdminPassword(key, email);
+    else if (action === 'delete-admin')  deleteAdmin(key, email);
+});
+
+// ── 자동 로그아웃 ────────────────────────────────────────────────────
+function checkAdminTokenExpiry() {
+    if (sessionStorage.getItem(ADMIN_AUTH_KEY) !== 'true') return;
+    const now        = Date.now();
+    const loginTime  = parseInt(sessionStorage.getItem(ADMIN_LOGIN_TIME_KEY)  || '0');
+    const activeTime = parseInt(sessionStorage.getItem(ADMIN_ACTIVE_TIME_KEY) || '0');
+    if (!loginTime) return;
+    if (now - loginTime  > ADMIN_REFRESH_TOKEN_MS) {
+        alert('로그인 후 8시간이 경과하여 자동 로그아웃 되었습니다.\n다시 로그인해주세요.');
+        doAdminLogout(true); return;
+    }
+    if (now - activeTime > ADMIN_ACCESS_TOKEN_MS) {
+        alert('1시간 동안 활동이 없어 자동 로그아웃 되었습니다.\n다시 로그인해주세요.');
+        doAdminLogout(true);
+    }
+}
+
+let _adminLastActiveWrite = 0;
+function _resetAdminActiveTime() {
+    if (sessionStorage.getItem(ADMIN_AUTH_KEY) !== 'true') return;
+    const now = Date.now();
+    if (now - _adminLastActiveWrite > 60000) {
+        sessionStorage.setItem(ADMIN_ACTIVE_TIME_KEY, String(now));
+        _adminLastActiveWrite = now;
+    }
+}
+['click', 'keydown', 'scroll', 'touchstart'].forEach(evt =>
+    document.addEventListener(evt, _resetAdminActiveTime, { passive: true })
+);
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') checkAdminTokenExpiry();
+});
+window.addEventListener('pageshow', () => checkAdminTokenExpiry());
+setInterval(checkAdminTokenExpiry, 60 * 1000);
 </script>
 </body>
 </html>

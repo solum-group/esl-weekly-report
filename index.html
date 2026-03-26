@@ -1782,7 +1782,7 @@ const AUTH_EMAIL_KEY       = 'esl_auth_email';
 const MUST_CHANGE_KEY      = 'esl_must_change_pw';
 const AUTH_LOGIN_TIME_KEY  = 'esl_auth_login_time';   // 최초 로그인 시각 (24hr 기준)
 const AUTH_ACTIVE_TIME_KEY = 'esl_auth_active_time';  // 마지막 활동 시각 (1hr 기준)
-const INIT_PW              = 'thffndpa2026';
+const INIT_PW_HASH         = '20cbe87ac59c3a06ecf8a3241721ea02697df993e959cb6964833986653cd149'; // sha256('thffndpa2026')
 const ACCESS_TOKEN_MS      = 60 * 60 * 1000;          // 1시간 (idle timeout)
 const REFRESH_TOKEN_MS     =  8 * 60 * 60 * 1000;     //  8시간 (hard limit)
 
@@ -1838,6 +1838,31 @@ function checkPwRequirements(pw) {
     }
 })();
 
+// ── 브루트포스 방어 (5회 실패→30초, 10회→5분 잠금) ──────────────────
+let _loginFailCount = 0;
+let _loginLockUntil = 0;
+function _checkLoginLock(pwErrEl, loginBtn) {
+    const now = Date.now();
+    if (now < _loginLockUntil) {
+        const remaining = Math.ceil((_loginLockUntil - now) / 1000);
+        pwErrEl.textContent = `로그인 시도 횟수 초과. ${remaining}초 후 다시 시도하세요.`;
+        loginBtn.textContent = '잠금 중…'; loginBtn.disabled = true;
+        return false;
+    }
+    return true;
+}
+function _recordLoginFail(pwErrEl, loginBtn) {
+    _loginFailCount++;
+    if (_loginFailCount >= 10) {
+        _loginLockUntil = Date.now() + 5 * 60 * 1000;
+        pwErrEl.textContent = '10회 실패. 5분 후 다시 시도하세요.';
+    } else if (_loginFailCount >= 5) {
+        _loginLockUntil = Date.now() + 30 * 1000;
+        pwErrEl.textContent = '5회 실패. 30초 후 다시 시도하세요.';
+    }
+    loginBtn.textContent = '로그인'; loginBtn.disabled = false;
+}
+
 // ── 로그인 ───────────────────────────────────────────────
 async function doLogin() {
     const emailEl  = document.getElementById('loginEmail');
@@ -1865,6 +1890,9 @@ async function doLogin() {
         return;
     }
 
+    // 잠금 체크
+    if (!_checkLoginLock(pwErr, loginBtn)) return;
+
     loginBtn.textContent = '확인 중…';
     loginBtn.disabled    = true;
 
@@ -1886,13 +1914,13 @@ async function doLogin() {
         const inputHash = await sha256(pw);
         if (inputHash !== account.passwordHash) {
             pwEl.classList.add('error');
-            pwErr.textContent = '비밀번호가 올바르지 않습니다.';
-            loginBtn.textContent = '로그인';
-            loginBtn.disabled    = false;
+            _recordLoginFail(pwErr, loginBtn);
+            if (!pwErr.textContent) pwErr.textContent = '비밀번호가 올바르지 않습니다.';
             return;
         }
 
-        // 인증 성공 처리
+        // 인증 성공 → 카운터 초기화
+        _loginFailCount = 0; _loginLockUntil = 0;
         const _loginNow = String(Date.now());
         sessionStorage.setItem(AUTH_KEY, 'true');
         sessionStorage.setItem(AUTH_EMAIL_KEY, email);
