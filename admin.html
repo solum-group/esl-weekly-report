@@ -812,7 +812,7 @@ const ADMIN_MUST_CHANGE_KEY  = 'esl_admin_must_change';
 const ADMIN_LOGIN_TIME_KEY   = 'esl_admin_login_time';
 const ADMIN_ACTIVE_TIME_KEY  = 'esl_admin_active_time';
 const ADMIN_ACCESS_TOKEN_MS  =  1 * 60 * 60 * 1000;  // 1시간 (idle timeout)
-const ADMIN_REFRESH_TOKEN_MS =  8 * 60 * 60 * 1000;  // 8시간 (hard limit)
+const ADMIN_REFRESH_TOKEN_MS =  2 * 60 * 60 * 1000;  // 2시간 (hard limit)
 
 // ── 브루트포스 방어 (5회 실패→30초, 10회→5분 잠금) ──────────────────
 let _adminFailCount = 0;
@@ -1766,7 +1766,7 @@ function checkAdminTokenExpiry() {
     const activeTime = parseInt(sessionStorage.getItem(ADMIN_ACTIVE_TIME_KEY) || '0');
     if (!loginTime) return;
     if (now - loginTime  > ADMIN_REFRESH_TOKEN_MS) {
-        alert('로그인 후 8시간이 경과하여 자동 로그아웃 되었습니다.\n다시 로그인해주세요.');
+        alert('로그인 후 2시간이 경과하여 자동 로그아웃 되었습니다.\n다시 로그인해주세요.');
         doAdminLogout(true); return;
     }
     if (now - activeTime > ADMIN_ACCESS_TOKEN_MS) {

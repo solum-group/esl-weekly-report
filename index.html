@@ -1470,7 +1470,7 @@ function renderReport(report) {
         <div style="background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:24px 28px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
             <div>
                 <div style="font-size:0.7rem;color:var(--text-tertiary);font-weight:800;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">리포트 기간</div>
-                <div style="font-size:1.3rem;font-weight:800;color:var(--text-primary);letter-spacing:-0.4px;">${report.weekLabel}</div>
+                <div style="font-size:1.3rem;font-weight:800;color:var(--text-primary);letter-spacing:-0.4px;">${computeWeekLabel(report.weekId)}</div>
             </div>
             <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
                 <span class="view-badge">👁 ${viewCount}회 조회</span>
@@ -1483,10 +1483,18 @@ function renderReport(report) {
 
     const viewSummaryHTML = renderViewSummaryHTML();
 
-    const searchAnalysisHTML = report.searchAnalysis
+    // searchAnalysis에서 Align Partners 관련 문장 제거 (단락/문장 단위 필터)
+    const filteredSearchAnalysis = report.searchAnalysis
+        ? report.searchAnalysis
+            .split('\n')
+            .filter(line => !/(align\s*partners)/i.test(line))
+            .join('\n')
+            .trim()
+        : '';
+    const searchAnalysisHTML = filteredSearchAnalysis
         ? `<div style="background:#f8f9ff;border:1.5px solid #e0e4f5;border-radius:var(--radius-xl);padding:16px 20px;margin-bottom:20px;">
             <div style="font-size:0.68rem;color:var(--text-tertiary);font-weight:800;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">🔍 이번 주 검색 분석</div>
-            <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.65;">${renderMarkdown(report.searchAnalysis)}</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.65;">${renderMarkdown(filteredSearchAnalysis)}</div>
            </div>`
         : '';
 
@@ -1610,6 +1618,17 @@ function escapeHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+}
+
+// weekId(YYYY-MM-DD)로부터 항상 월요일~일요일 레이블을 계산
+// JSON의 weekLabel 값에 의존하지 않아 크롤링 오류로 인한 날짜 불일치를 방지
+function computeWeekLabel(weekId) {
+    if (!weekId) return '';
+    const mon = new Date(weekId + 'T00:00:00');
+    const sun = new Date(mon);
+    sun.setDate(mon.getDate() + 6);
+    const fmt = d => `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+    return `${fmt(mon)} ~ ${fmt(sun)}`;
 }
 
 // 요약·시사점 마크다운 렌더러
@@ -1784,7 +1803,7 @@ const AUTH_LOGIN_TIME_KEY  = 'esl_auth_login_time';   // 최초 로그인 시각
 const AUTH_ACTIVE_TIME_KEY = 'esl_auth_active_time';  // 마지막 활동 시각 (1hr 기준)
 const INIT_PW_HASH         = '20cbe87ac59c3a06ecf8a3241721ea02697df993e959cb6964833986653cd149'; // sha256('thffndpa2026')
 const ACCESS_TOKEN_MS      = 60 * 60 * 1000;          // 1시간 (idle timeout)
-const REFRESH_TOKEN_MS     =  8 * 60 * 60 * 1000;     //  8시간 (hard limit)
+const REFRESH_TOKEN_MS     =  2 * 60 * 60 * 1000;     //  2시간 (hard limit)
 
 // SHA-256 해시 (Web Crypto API — 브라우저 내장)
 async function sha256(text) {
@@ -2047,7 +2066,7 @@ function doLogout(isAuto = false, reason = '') {
         const msgEl   = document.getElementById('autoLogoutMsg');
         if (reason === 'refresh') {
             titleEl.textContent = '세션이 만료되었습니다';
-            msgEl.innerHTML     = '로그인 후 <strong>8시간</strong>이 경과하여<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
+            msgEl.innerHTML     = '로그인 후 <strong>2시간</strong>이 경과하여<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
         } else {
             titleEl.textContent = '자동 로그아웃';
             msgEl.innerHTML     = '<strong>1시간</strong> 동안 활동이 없어<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
