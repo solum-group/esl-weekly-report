@@ -1975,7 +1975,7 @@ async function doLogin() {
         } else if (code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
             pwEl.classList.add('error');
             _recordLoginFail(pwErr, loginBtn);
-            if (!pwErr.textContent) pwErr.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+            if (!pwErr.textContent) pwErr.textContent = '비밀번호가 올바르지 않습니다. 처음 로그인하시는 경우 이메일에서 비밀번호 설정 링크를 확인해주세요.';
 
         } else if (code === 'auth/invalid-email') {
             emailEl.classList.add('error');
