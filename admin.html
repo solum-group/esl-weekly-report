@@ -603,6 +603,7 @@
 <div class="tab-nav">
     <div class="tab-nav-inner">
         <button class="tab-btn active" id="tab-access" onclick="switchTab('access')">접속 현황</button>
+        <button class="tab-btn" id="tab-views" onclick="switchTab('views')">페이지 조회</button>
         <button class="tab-btn" id="tab-accounts" onclick="switchTab('accounts')">사용자 계정</button>
         <button class="tab-btn" id="tab-admins" onclick="switchTab('admins')">어드민 관리</button>
     </div>
@@ -699,6 +700,37 @@
                 </thead>
                 <tbody id="tableBody">
                     <tr class="loading-row"><td colspan="5">데이터 로딩 중…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ── 페이지 조회 탭 ── -->
+    <div class="tab-panel" id="panel-views">
+        <div class="table-card">
+            <div class="table-header">
+                <div>
+                    <div class="table-title">주차별 페이지 조회 현황</div>
+                    <div class="table-meta" id="viewsMeta">Firebase 기준 · 세션당 1회 집계</div>
+                </div>
+                <button class="refresh-btn" id="viewsRefreshBtn" onclick="loadViewsData()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="23 4 23 10 17 10"/>
+                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                    </svg>
+                    새로고침
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:48px;">#</th>
+                        <th>리포트 주차</th>
+                        <th class="right" style="width:160px;">누적 조회 수</th>
+                    </tr>
+                </thead>
+                <tbody id="viewsTableBody">
+                    <tr class="loading-row"><td colspan="3">데이터 로딩 중…</td></tr>
                 </tbody>
             </table>
         </div>
@@ -879,6 +911,7 @@ function switchTab(name) {
     if (name === 'accounts') loadAccounts();
     if (name === 'access')   loadData();
     if (name === 'admins')   loadAdmins();
+    if (name === 'views')    loadViewsData();
 }
 
 // ── 초기화 ───────────────────────────────────────────────────────────
@@ -1655,6 +1688,49 @@ async function loadAdmins() {
 
     } catch (e) {
         tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다.</td></tr>`;
+        console.error(e);
+    }
+    btn.classList.remove('spinning'); btn.disabled = false;
+}
+
+// ── 페이지 조회 현황 ─────────────────────────────────────────────────────
+async function loadViewsData() {
+    const btn   = document.getElementById('viewsRefreshBtn');
+    const tbody = document.getElementById('viewsTableBody');
+    const meta  = document.getElementById('viewsMeta');
+    btn.classList.add('spinning'); btn.disabled = true;
+    tbody.innerHTML = `<tr class="loading-row"><td colspan="3">데이터 로딩 중…</td></tr>`;
+    try {
+        // Firebase에서 views 데이터 로드
+        const [viewsRes, indexRes] = await Promise.all([
+            fetch(`${FIREBASE_DB_URL}/views.json`),
+            fetch('./data/index.json')
+        ]);
+        const viewsData  = (await viewsRes.json()) || {};
+        const weekIndex  = await indexRes.json();
+
+        // index.json 기준으로 전체 주차 나열 (최신순), Firebase 카운트 매칭
+        const rows = [...weekIndex].reverse().map((w, i) => {
+            const cnt = viewsData[w.weekId] || 0;
+            return { rank: i + 1, weekId: w.weekId, weekLabel: w.weekLabel, cnt };
+        });
+
+        // 총 조회 수
+        const total = rows.reduce((s, r) => s + r.cnt, 0);
+        meta.textContent = `Firebase 기준 · 세션당 1회 집계 · 총 ${total}회`;
+
+        if (rows.length === 0) {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="3">조회 데이터가 없습니다.</td></tr>`;
+        } else {
+            tbody.innerHTML = rows.map(r => `
+                <tr>
+                    <td>${r.rank}</td>
+                    <td style="font-weight:600;">${escapeHtml(r.weekLabel)}</td>
+                    <td class="right" style="font-weight:800;color:var(--blue);">${r.cnt.toLocaleString()}회</td>
+                </tr>`).join('');
+        }
+    } catch(e) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="3">데이터를 불러오지 못했습니다.</td></tr>`;
         console.error(e);
     }
     btn.classList.remove('spinning'); btn.disabled = false;

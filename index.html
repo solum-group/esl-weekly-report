@@ -660,40 +660,6 @@
             font-size: 0.72rem;
             font-weight: 700;
         }
-        .view-summary-bar {
-            background: var(--bg-white);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .view-summary-title {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .view-summary-list { display: flex; flex-wrap: wrap; gap: 8px; }
-        .view-summary-item {
-            background: var(--bg-base);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 5px 12px;
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.15s;
-            font-weight: 500;
-        }
-        .view-summary-item:hover { background: var(--blue-light); border-color: var(--blue); }
-        .view-summary-item .v-label { color: var(--text-tertiary); }
-        .view-summary-item .v-count { font-weight: 800; color: var(--blue); margin-left: 4px; }
 
         /* ── SECTION TITLE (for articles grid) ── */
         .section-title-row {
@@ -1480,23 +1446,17 @@ function renderReport(report) {
     });
 
     // Week header
-    const viewCount = getViewCount(report.weekId);
     const weekHeaderHTML = `
         <div style="background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:24px 28px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
             <div>
                 <div style="font-size:0.7rem;color:var(--text-tertiary);font-weight:800;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">리포트 기간</div>
                 <div style="font-size:1.3rem;font-weight:800;color:var(--text-primary);letter-spacing:-0.4px;">${computeWeekLabel(report.weekId)}</div>
             </div>
-            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-                <span class="view-badge">👁 ${viewCount}회 조회</span>
-                <div style="text-align:right;">
-                    <div style="font-size:0.7rem;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;">총 기사 수</div>
-                    <div style="font-size:1.6rem;font-weight:800;color:var(--blue);letter-spacing:-0.5px;">${totalArticles}<span style="font-size:0.85rem;font-weight:600;margin-left:2px;">건</span></div>
-                </div>
+            <div style="text-align:right;">
+                <div style="font-size:0.7rem;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;">총 기사 수</div>
+                <div style="font-size:1.6rem;font-weight:800;color:var(--blue);letter-spacing:-0.5px;">${totalArticles}<span style="font-size:0.85rem;font-weight:600;margin-left:2px;">건</span></div>
             </div>
         </div>`;
-
-    const viewSummaryHTML = renderViewSummaryHTML();
 
     // searchAnalysis에서 Align Partners 관련 문장 제거 (단락/문장 단위 필터)
     const filteredSearchAnalysis = report.searchAnalysis
@@ -1513,7 +1473,7 @@ function renderReport(report) {
            </div>`
         : '';
 
-    document.getElementById('mainContent').innerHTML = weekHeaderHTML + searchAnalysisHTML + viewSummaryHTML + statsHTML + sectionsHTML;
+    document.getElementById('mainContent').innerHTML = weekHeaderHTML + searchAnalysisHTML + statsHTML + sectionsHTML;
     // 렌더링 후 좋아요 카운트 비동기 로드
     loadReactionCounts();
 }
@@ -1708,16 +1668,14 @@ function renderImplications(text) {
 }
 
 // ── VIEW COUNT ────────────────────────────────────────
-const VIEW_PREFIX = 'esl_views_';
 const SESS_PREFIX = 'esl_sess_';
 
 function trackView(weekId) {
     const sessKey = SESS_PREFIX + weekId;
     const isNew = !sessionStorage.getItem(sessKey);
     if (isNew) {
-        const prev = getViewCount(weekId);
-        localStorage.setItem(VIEW_PREFIX + weekId, prev + 1);
         sessionStorage.setItem(sessKey, '1');
+        _incrementFirebaseView(weekId);  // Firebase에 실제 조회수 기록
     }
     // GTM: 주간 리포트 조회 이벤트 (매번 전송)
     window.dataLayer = window.dataLayer || [];
@@ -1730,22 +1688,15 @@ function trackView(weekId) {
     });
 }
 
-function getViewCount(weekId) {
-    return parseInt(localStorage.getItem(VIEW_PREFIX + weekId) || '0', 10);
-}
-
-function renderViewSummaryHTML() {
-    const items = [...weekIndex].reverse().map(r => {
-        const cnt = getViewCount(r.weekId);
-        return `<div class="view-summary-item" onclick="loadWeek('${r.weekId}')">
-            <span class="v-label">${r.weekLabel.replace(' ~ ', '~')}</span>
-            <span class="v-count">👁 ${cnt}회</span>
-        </div>`;
-    }).join('');
-    return `<div class="view-summary-bar">
-        <div class="view-summary-title">📊 전체 주차 조회 현황</div>
-        <div class="view-summary-list">${items}</div>
-    </div>`;
+// Firebase에 주차별 조회수 증가 (비동기, 세션당 1회)
+async function _incrementFirebaseView(weekId) {
+    if (!FIREBASE_DB_URL) return;
+    try {
+        const url = `${FIREBASE_DB_URL}/views/${weekId}.json`;
+        const res = await fetch(url);
+        const current = (await res.json()) || 0;
+        await fetch(url, { method: 'PUT', body: JSON.stringify(current + 1) });
+    } catch(e) { /* silent fail */ }
 }
 // ──────────────────────────────────────────────────────
 
