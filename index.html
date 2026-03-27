@@ -1216,7 +1216,8 @@ let weekIndex = []; // data/index.json 로드 후 채워짐
 const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 
 // ── 캐시 헬퍼 ─────────────────────────────────────────
-const CACHE_PREFIX = 'esl_data_';
+const CACHE_VERSION = 'v3';   // 캐시 구조가 바뀌면 올려서 구버전 자동 무효화
+const CACHE_PREFIX = `esl_${CACHE_VERSION}_`;
 const CACHE_TTL_INDEX = 60 * 60 * 1000;          // index: 1시간
 const CACHE_TTL_WEEK  = 7 * 24 * 60 * 60 * 1000; // 주차 데이터: 7일
 
@@ -1243,7 +1244,8 @@ async function fetchIndex() {
 async function fetchWeekData(weekId) {
     const cached = getCache(CACHE_PREFIX + weekId, CACHE_TTL_WEEK);
     if (cached) return cached;
-    const res = await fetch(`./data/${weekId}.json`);
+    const res = await fetch(`./data/${weekId}.json?v=${weekId}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     setCache(CACHE_PREFIX + weekId, data);
     return data;
@@ -1392,7 +1394,20 @@ async function loadWeek(weekId) {
     weekSelect.disabled = false;
 
     trackView(weekId);
-    renderReport(report);
+    try {
+        renderReport(report);
+    } catch(e) {
+        console.error('renderReport error:', e);
+        // 캐시가 오염됐을 수 있으므로 삭제 후 재시도
+        localStorage.removeItem(CACHE_PREFIX + weekId);
+        try {
+            const fresh = await fetchWeekData(weekId);
+            renderReport(fresh);
+        } catch(e2) {
+            document.getElementById('mainContent').innerHTML =
+                '<div style="text-align:center;padding:60px;color:#ef4444;">리포트를 표시하지 못했습니다. 잠시 후 다시 시도해주세요.</div>';
+        }
+    }
     updateNavButtons();
 }
 
