@@ -1967,13 +1967,23 @@ async function doLogin() {
 
     } catch (e) {
         const code = e.code || '';
-        if (code === 'auth/user-not-found' || code === 'auth/wrong-password' ||
-            code === 'auth/invalid-credential' || code === 'auth/invalid-email') {
+
+        if (code === 'auth/user-not-found') {
+            // Firebase Auth에 계정 없음 → DB에 등록된 사용자인지 확인 (마이그레이션 대상)
+            await _handleLegacyUser(email, emailEl, emailErr, pwEl, pwErr, loginBtn);
+
+        } else if (code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
             pwEl.classList.add('error');
             _recordLoginFail(pwErr, loginBtn);
             if (!pwErr.textContent) pwErr.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+
+        } else if (code === 'auth/invalid-email') {
+            emailEl.classList.add('error');
+            emailErr.textContent = '이메일 형식이 올바르지 않습니다.';
+
         } else if (code === 'auth/too-many-requests') {
             pwErr.textContent = '로그인 시도 횟수 초과. 잠시 후 다시 시도하세요.';
+
         } else {
             pwErr.textContent = '네트워크 오류가 발생했습니다. 다시 시도해주세요.';
             console.error('Login error:', e);
@@ -1982,6 +1992,56 @@ async function doLogin() {
 
     loginBtn.textContent = '로그인';
     loginBtn.disabled    = false;
+}
+
+// ── 레거시 사용자 마이그레이션 처리 ────────────────────────────────────
+// Firebase Auth에 계정이 없지만 DB에는 있는 사용자:
+// 자동으로 Firebase Auth 계정 생성 후 비밀번호 설정 이메일 발송
+async function _handleLegacyUser(email, emailEl, emailErr, pwEl, pwErr, loginBtn) {
+    const key = email.replace(/[@.]/g, '_');
+    try {
+        // DB에 등록된 사용자인지 먼저 확인
+        const res     = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        const account = res.ok ? await res.json() : null;
+
+        if (!account || !account.email) {
+            // DB에도 없음 → 완전히 모르는 사용자
+            emailEl.classList.add('error');
+            emailErr.textContent = '등록되지 않은 계정입니다. 관리자에게 문의하세요.';
+            loginBtn.textContent = '로그인'; loginBtn.disabled = false;
+            return;
+        }
+
+        // DB에는 있음 → Firebase Auth 계정 생성 (secondary app으로 현재 세션 유지)
+        loginBtn.textContent = '이메일 발송 중…';
+        const secApp  = firebase.initializeApp(_firebaseConfig, 'mig_' + Date.now());
+        const secAuth = secApp.auth();
+        const tempPw  = 'Temp_' + Math.random().toString(36).slice(2) + '!9';
+        try {
+            await secAuth.createUserWithEmailAndPassword(email, tempPw);
+        } catch (createErr) {
+            // auth/email-already-in-use: Firebase Auth에 이미 있음 (비밀번호만 틀린 경우)
+            if (createErr.code !== 'auth/email-already-in-use') throw createErr;
+        } finally {
+            await secApp.delete();
+        }
+
+        // 비밀번호 설정 이메일 발송
+        await _fbAuth.sendPasswordResetEmail(email);
+
+        // 성공 안내 메시지
+        pwEl.classList.remove('error');
+        pwErr.textContent = '';
+        emailEl.classList.remove('error');
+        emailErr.style.color = '#16a34a';
+        emailErr.textContent = `📧 ${email} 로 비밀번호 설정 링크를 발송했습니다. 이메일을 확인해주세요.`;
+        setTimeout(() => { emailErr.textContent = ''; emailErr.style.color = ''; }, 8000);
+
+    } catch (err) {
+        pwErr.textContent = '처리 중 오류가 발생했습니다. 다시 시도해주세요.';
+        console.error('Legacy user migration error:', err);
+    }
+    loginBtn.textContent = '로그인'; loginBtn.disabled = false;
 }
 
 // ── 비밀번호 변경 오버레이 표시 ─────────────────────────
