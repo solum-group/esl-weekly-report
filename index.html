@@ -1968,14 +1968,14 @@ async function doLogin() {
     } catch (e) {
         const code = e.code || '';
 
-        if (code === 'auth/user-not-found') {
-            // Firebase Auth에 계정 없음 → DB에 등록된 사용자인지 확인 (마이그레이션 대상)
-            await _handleLegacyUser(email, emailEl, emailErr, pwEl, pwErr, loginBtn);
-
-        } else if (code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
-            pwEl.classList.add('error');
-            _recordLoginFail(pwErr, loginBtn);
-            if (!pwErr.textContent) pwErr.textContent = '비밀번호가 올바르지 않습니다. 처음 로그인하시는 경우 이메일에서 비밀번호 설정 링크를 확인해주세요.';
+        if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
+            // Firebase Auth 실패 → 레거시 SHA-256 방식으로 마이그레이션 시도
+            const migrated = await _tryLegacyMigration(email, pw, emailEl, emailErr, pwEl, pwErr, loginBtn);
+            if (!migrated) {
+                pwEl.classList.add('error');
+                _recordLoginFail(pwErr, loginBtn);
+                if (!pwErr.textContent) pwErr.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+            }
 
         } else if (code === 'auth/invalid-email') {
             emailEl.classList.add('error');
@@ -1994,54 +1994,87 @@ async function doLogin() {
     loginBtn.disabled    = false;
 }
 
-// ── 레거시 사용자 마이그레이션 처리 ────────────────────────────────────
-// Firebase Auth에 계정이 없지만 DB에는 있는 사용자:
-// 자동으로 Firebase Auth 계정 생성 후 비밀번호 설정 이메일 발송
-async function _handleLegacyUser(email, emailEl, emailErr, pwEl, pwErr, loginBtn) {
+// ── 레거시 SHA-256 마이그레이션 ───────────────────────────────────────
+// Firebase Auth 로그인 실패 시 DB의 기존 passwordHash와 비교.
+// 일치하면 Firebase Auth 계정 자동 생성 후 즉시 로그인 (이메일 발송 불필요).
+// 마이그레이션 완료 후 DB에서 passwordHash 제거.
+// ※ 이 함수가 동작하려면 Firebase Rules에서 /accounts 읽기가 공개여야 함.
+//   마이그레이션 완료 후 rules를 "auth != null"로 되돌릴 것.
+async function _tryLegacyMigration(email, pw, emailEl, emailErr, pwEl, pwErr, loginBtn) {
     const key = email.replace(/[@.]/g, '_');
     try {
-        // DB에 등록된 사용자인지 먼저 확인
         const res     = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
         const account = res.ok ? await res.json() : null;
 
         if (!account || !account.email) {
-            // DB에도 없음 → 완전히 모르는 사용자
+            // DB에도 없는 사용자
             emailEl.classList.add('error');
             emailErr.textContent = '등록되지 않은 계정입니다. 관리자에게 문의하세요.';
             loginBtn.textContent = '로그인'; loginBtn.disabled = false;
-            return;
+            return true; // 에러 처리 완료 (일반 오류 메시지 출력 방지)
         }
 
-        // DB에는 있음 → Firebase Auth 계정 생성 (secondary app으로 현재 세션 유지)
-        loginBtn.textContent = '이메일 발송 중…';
-        const secApp  = firebase.initializeApp(_firebaseConfig, 'mig_' + Date.now());
-        const secAuth = secApp.auth();
-        const tempPw  = 'Temp_' + Math.random().toString(36).slice(2) + '!9';
+        if (!account.passwordHash) {
+            // Firebase Auth에 계정은 있는데 비밀번호가 틀린 경우 (이미 마이그레이션 완료)
+            return false;
+        }
+
+        // 기존 SHA-256 해시 비교
+        const inputHash = await sha256(pw);
+        if (inputHash !== account.passwordHash) {
+            return false; // 비밀번호 불일치 → 일반 오류 처리로 넘김
+        }
+
+        // ✅ 비밀번호 일치 → Firebase Auth 계정 생성 후 즉시 로그인
+        loginBtn.textContent = '계정 전환 중…';
         try {
-            await secAuth.createUserWithEmailAndPassword(email, tempPw);
+            await _fbAuth.createUserWithEmailAndPassword(email, pw);
         } catch (createErr) {
-            // auth/email-already-in-use: Firebase Auth에 이미 있음 (비밀번호만 틀린 경우)
-            if (createErr.code !== 'auth/email-already-in-use') throw createErr;
-        } finally {
-            await secApp.delete();
+            if (createErr.code === 'auth/email-already-in-use') {
+                // Firebase Auth에 이미 있는데 위에서 로그인 실패한 경우 → 비밀번호 불일치
+                return false;
+            }
+            throw createErr;
         }
 
-        // 비밀번호 설정 이메일 발송
-        await _fbAuth.sendPasswordResetEmail(email);
+        // DB에서 passwordHash 제거 (마이그레이션 완료 표시)
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const { passwordHash: _removed, ...rest } = account;
+        await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(rest)
+        });
 
-        // 성공 안내 메시지
-        pwEl.classList.remove('error');
-        pwErr.textContent = '';
-        emailEl.classList.remove('error');
-        emailErr.style.color = '#16a34a';
-        emailErr.textContent = `📧 ${email} 로 비밀번호 설정 링크를 발송했습니다. 이메일을 확인해주세요.`;
-        setTimeout(() => { emailErr.textContent = ''; emailErr.style.color = ''; }, 8000);
+        // 로그인 성공 처리
+        _loginFailCount = 0; _loginLockUntil = 0;
+        const _loginNow = String(Date.now());
+        sessionStorage.setItem(AUTH_KEY,             'true');
+        sessionStorage.setItem(AUTH_EMAIL_KEY,        email);
+        sessionStorage.setItem(AUTH_LOGIN_TIME_KEY,   _loginNow);
+        sessionStorage.setItem(AUTH_ACTIVE_TIME_KEY,  _loginNow);
+        recordLogin(email);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'esl_login', user_email: email });
+
+        const overlay = document.getElementById('loginOverlay');
+        overlay.style.transition = 'opacity 0.3s';
+        overlay.style.opacity    = '0';
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+
+        if (account.mustChangePassword) {
+            sessionStorage.setItem(MUST_CHANGE_KEY, 'true');
+            setTimeout(() => showChangePwOverlay(), 320);
+        }
+
+        loginBtn.textContent = '로그인'; loginBtn.disabled = false;
+        return true;
 
     } catch (err) {
-        pwErr.textContent = '처리 중 오류가 발생했습니다. 다시 시도해주세요.';
-        console.error('Legacy user migration error:', err);
+        console.error('Legacy migration error:', err);
+        return false;
     }
-    loginBtn.textContent = '로그인'; loginBtn.disabled = false;
 }
 
 // ── 비밀번호 변경 오버레이 표시 ─────────────────────────
