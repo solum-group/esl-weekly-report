@@ -43,5 +43,10 @@
     "weekId": "2026-03-16",
     "weekLabel": "2026.03.16 ~ 2026.03.22",
     "articleCount": 7
+  },
+  {
+    "weekId": "2026-03-23",
+    "weekLabel": "2026.03.23 ~ 2026.03.27",
+    "articleCount": 6
   }
 ]
