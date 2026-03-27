@@ -751,6 +751,11 @@
     
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
+    <!-- 보안: 뒤로가기 버튼으로 로그인 페이지 우회 방지 -->
+    <meta http-equiv="Cache-Control" content="no-store">
+    <!-- Firebase Auth SDK (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -1007,6 +1012,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 const FIREBASE_DB_URL = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app';
 
+// ── FIREBASE AUTH INIT ────────────────────────────────────────────────
+const _firebaseConfig = {
+    apiKey:            "AIzaSyANAvgXU7HFHb9P6_nmZs5wg-WiI94VC6E",
+    authDomain:        "esl-weekly-report.firebaseapp.com",
+    databaseURL:       "https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId:         "esl-weekly-report",
+    storageBucket:     "esl-weekly-report.firebasestorage.app",
+    messagingSenderId: "30927701987",
+    appId:             "1:30927701987:web:02d3ee4af6c424b7d902d6",
+    measurementId:     "G-5JN444FHDQ"
+};
+if (!firebase.apps.length) firebase.initializeApp(_firebaseConfig);
+const _fbAuth = firebase.auth();
+// ─────────────────────────────────────────────────────────────────────
+
 // 기사 고유 ID 생성 (URL + 제목 해시)
 function getArticleId(article) {
     const raw = (article.sourceUrl || '') + (article.title || '') + (article.pubDate || '');
@@ -1056,7 +1076,9 @@ async function incrementReactionCount(articleId, delta) {
     try {
         const current = await fetchReactionCount(articleId);
         const newCount = Math.max(0, current + delta);
-        const res = await fetch(`${FIREBASE_DB_URL}/likes/${articleId}.json`, {
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const res = await fetch(`${FIREBASE_DB_URL}/likes/${articleId}.json${authQ}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newCount)
@@ -1692,10 +1714,16 @@ function trackView(weekId) {
 async function _incrementFirebaseView(weekId) {
     if (!FIREBASE_DB_URL) return;
     try {
-        const url = `${FIREBASE_DB_URL}/views/${weekId}.json`;
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const url = `${FIREBASE_DB_URL}/views/${weekId}.json${authQ}`;
         const res = await fetch(url);
         const current = (await res.json()) || 0;
-        await fetch(url, { method: 'PUT', body: JSON.stringify(current + 1) });
+        await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(current + 1)
+        });
     } catch(e) { /* silent fail */ }
 }
 // ──────────────────────────────────────────────────────
@@ -1718,7 +1746,9 @@ function _weekKey(d) {
 async function recordLogin(email) {
     if (!FIREBASE_DB_URL) return;
     const key = email.replace(/[@.]/g, '_');
-    const url = `${FIREBASE_DB_URL}/logins/${key}.json`;
+    const token = await _getAuthToken();
+    const authQ = token ? `?auth=${token}` : '';
+    const url = `${FIREBASE_DB_URL}/logins/${key}.json${authQ}`;
     try {
         const res = await fetch(url);
         if (!res.ok) {
@@ -1767,7 +1797,6 @@ const AUTH_EMAIL_KEY       = 'esl_auth_email';
 const MUST_CHANGE_KEY      = 'esl_must_change_pw';
 const AUTH_LOGIN_TIME_KEY  = 'esl_auth_login_time';   // 최초 로그인 시각 (24hr 기준)
 const AUTH_ACTIVE_TIME_KEY = 'esl_auth_active_time';  // 마지막 활동 시각 (1hr 기준)
-const INIT_PW_HASH         = '20cbe87ac59c3a06ecf8a3241721ea02697df993e959cb6964833986653cd149'; // sha256('thffndpa2026')
 const ACCESS_TOKEN_MS      = 60 * 60 * 1000;          // 1시간 (idle timeout)
 const REFRESH_TOKEN_MS     =  2 * 60 * 60 * 1000;     //  2시간 (hard limit)
 
@@ -1778,6 +1807,14 @@ async function sha256(text) {
     const hashBuf = await crypto.subtle.digest('SHA-256', data);
     return Array.from(new Uint8Array(hashBuf))
         .map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Firebase Auth 토큰 가져오기 (DB REST API 인증용)
+async function _getAuthToken() {
+    const user = _fbAuth.currentUser;
+    if (!user) return null;
+    try { return await user.getIdToken(); }
+    catch { return null; }
 }
 
 // 비밀번호 강도 검사 (8자+영문+숫자+특수문자)
@@ -1797,10 +1834,10 @@ function checkPwRequirements(pw) {
     set('req-special', /[!@#$%^&*()\-_=+\[\]{};':",.<>/?\\|`~]/.test(pw));
 }
 
-// ── 초기 인증 상태 확인 ──────────────────────────────────
-(function initAuth() {
-    if (sessionStorage.getItem(AUTH_KEY) === 'true') {
-        // 페이지 로드 시 토큰 만료 즉시 확인
+// ── 초기 인증 상태 확인 (Firebase Auth onAuthStateChanged) ───────────
+_fbAuth.onAuthStateChanged(function(user) {
+    if (user) {
+        // Firebase Auth에 로그인된 사용자가 있음
         const now        = Date.now();
         const loginTime  = parseInt(sessionStorage.getItem(AUTH_LOGIN_TIME_KEY)  || '0');
         const activeTime = parseInt(sessionStorage.getItem(AUTH_ACTIVE_TIME_KEY) || '0');
@@ -1814,14 +1851,18 @@ function checkPwRequirements(pw) {
             }
         }
 
+        sessionStorage.setItem(AUTH_KEY, 'true');
         document.getElementById('loginOverlay').classList.add('hidden');
         if (sessionStorage.getItem(MUST_CHANGE_KEY) === 'true') {
             showChangePwOverlay();
         }
     } else {
+        // Firebase에 로그인된 사용자 없음 → 로그인 화면 표시
+        sessionStorage.removeItem(AUTH_KEY);
+        sessionStorage.removeItem(AUTH_EMAIL_KEY);
         setTimeout(() => document.getElementById('loginEmail').focus(), 100);
     }
-})();
+});
 
 // ── 브루트포스 방어 (5회 실패→30초, 10회→5분 잠금) ──────────────────
 let _loginFailCount = 0;
@@ -1882,12 +1923,19 @@ async function doLogin() {
     loginBtn.disabled    = true;
 
     try {
-        // Firebase에서 계정 조회
-        const key     = email.replace(/[@.]/g, '_');
-        const res     = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        // ① Firebase Auth로 로그인
+        await _fbAuth.signInWithEmailAndPassword(email, pw);
+
+        // ② DB에서 계정 메타데이터 확인 (등록된 사용자인지 + mustChangePassword)
+        const key   = email.replace(/[@.]/g, '_');
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const res     = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`);
         const account = (res.ok) ? await res.json() : null;
 
         if (!account) {
+            // DB에 없는 계정 → Firebase Auth는 성공했지만 접근 차단
+            await _fbAuth.signOut();
             emailEl.classList.add('error');
             emailErr.textContent = '등록되지 않은 계정입니다. 관리자에게 문의하세요.';
             loginBtn.textContent = '로그인';
@@ -1895,16 +1943,7 @@ async function doLogin() {
             return;
         }
 
-        // 비밀번호 해시 비교
-        const inputHash = await sha256(pw);
-        if (inputHash !== account.passwordHash) {
-            pwEl.classList.add('error');
-            _recordLoginFail(pwErr, loginBtn);
-            if (!pwErr.textContent) pwErr.textContent = '비밀번호가 올바르지 않습니다.';
-            return;
-        }
-
-        // 인증 성공 → 카운터 초기화
+        // ③ 인증 성공 → 카운터 초기화
         _loginFailCount = 0; _loginLockUntil = 0;
         const _loginNow = String(Date.now());
         sessionStorage.setItem(AUTH_KEY, 'true');
@@ -1927,8 +1966,18 @@ async function doLogin() {
         }
 
     } catch (e) {
-        pwErr.textContent = '네트워크 오류가 발생했습니다. 다시 시도해주세요.';
-        console.error('Login error:', e);
+        const code = e.code || '';
+        if (code === 'auth/user-not-found' || code === 'auth/wrong-password' ||
+            code === 'auth/invalid-credential' || code === 'auth/invalid-email') {
+            pwEl.classList.add('error');
+            _recordLoginFail(pwErr, loginBtn);
+            if (!pwErr.textContent) pwErr.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+        } else if (code === 'auth/too-many-requests') {
+            pwErr.textContent = '로그인 시도 횟수 초과. 잠시 후 다시 시도하세요.';
+        } else {
+            pwErr.textContent = '네트워크 오류가 발생했습니다. 다시 시도해주세요.';
+            console.error('Login error:', e);
+        }
     }
 
     loginBtn.textContent = '로그인';
@@ -1970,24 +2019,25 @@ async function doChangePassword() {
     btn.disabled    = true;
 
     try {
-        const email   = sessionStorage.getItem(AUTH_EMAIL_KEY);
-        const key     = email.replace(/[@.]/g, '_');
-        const newHash = await sha256(newPw);
+        const user = _fbAuth.currentUser;
+        if (!user) throw Object.assign(new Error(), { code: 'auth/user-not-found' });
 
-        // 기존 계정 데이터 유지하면서 해시만 교체
-        const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        // Firebase Auth로 비밀번호 변경
+        await user.updatePassword(newPw);
+
+        // DB에서 mustChangePassword: false 업데이트
+        const email = sessionStorage.getItem(AUTH_EMAIL_KEY);
+        const key   = email.replace(/[@.]/g, '_');
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`);
         const account = getRes.ok ? await getRes.json() : {};
 
-        const putRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
+        await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ ...account, passwordHash: newHash, mustChangePassword: false })
+            body:    JSON.stringify({ ...account, mustChangePassword: false })
         });
-
-        if (!putRes.ok) {
-            const body = await putRes.text();
-            throw new Error(`PUT failed: ${putRes.status} ${body}`);
-        }
 
         sessionStorage.removeItem(MUST_CHANGE_KEY);
         const overlay = document.getElementById('changePwOverlay');
@@ -1996,8 +2046,14 @@ async function doChangePassword() {
         setTimeout(() => overlay.classList.add('hidden'), 300);
 
     } catch (e) {
-        newPwErr.textContent = '변경 중 오류가 발생했습니다. 다시 시도해주세요.';
-        console.error('Change password error:', e);
+        const code = e.code || '';
+        if (code === 'auth/requires-recent-login') {
+            newPwErr.textContent = '보안을 위해 다시 로그인한 후 비밀번호를 변경해주세요.';
+            setTimeout(() => doLogout(), 2000);
+        } else {
+            newPwErr.textContent = '변경 중 오류가 발생했습니다. 다시 시도해주세요.';
+            console.error('Change password error:', e);
+        }
     }
 
     btn.textContent = '비밀번호 변경';
@@ -2007,6 +2063,7 @@ async function doChangePassword() {
 // ── 로그아웃 ─────────────────────────────────────────────
 // isAuto: 자동 로그아웃 여부 / reason: 'access'(1hr idle) | 'refresh'(24hr 만료)
 function doLogout(isAuto = false, reason = '') {
+    _fbAuth.signOut().catch(() => {});  // Firebase Auth 로그아웃
     sessionStorage.removeItem(AUTH_KEY);
     sessionStorage.removeItem(AUTH_EMAIL_KEY);
     sessionStorage.removeItem(MUST_CHANGE_KEY);
@@ -2051,6 +2108,7 @@ function closeAutoLogoutModal() {
 
 // ── 토큰 만료 확인 ────────────────────────────────────────
 function checkTokenExpiry() {
+    if (!_fbAuth.currentUser) return;
     if (sessionStorage.getItem(AUTH_KEY) !== 'true') return;
     const now        = Date.now();
     const loginTime  = parseInt(sessionStorage.getItem(AUTH_LOGIN_TIME_KEY)  || '0');

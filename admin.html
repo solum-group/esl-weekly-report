@@ -466,6 +466,11 @@
             .create-btn { width: 100%; }
         }
     </style>
+    <!-- 보안: 뒤로가기 버튼으로 로그인 페이지 우회 방지 -->
+    <meta http-equiv="Cache-Control" content="no-store">
+    <!-- Firebase Auth SDK (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
 
@@ -833,9 +838,25 @@
 
 <script>
 // ── CONFIG ───────────────────────────────────────────────────────────
-const FIREBASE_DB_URL  = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app';
-const BOOTSTRAP_CODE   = 'solum_admin_2026';   // 어드민 0개일 때만 유효
-const INIT_PW_HASH     = '20cbe87ac59c3a06ecf8a3241721ea02697df993e959cb6964833986653cd149'; // sha256('thffndpa2026')
+const FIREBASE_DB_URL    = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app';
+// 보안: 부트스트랩 코드를 SHA-256 해시로 저장 (평문 노출 방지)
+// sha256('solum_admin_2026') = 아래 값
+const BOOTSTRAP_CODE_HASH = '2f43dd5129b9183c0eca06b7bb7d311529ec6bdcb91afbaf0d53f0387c14fa29';
+// ─────────────────────────────────────────────────────────────────────
+
+// ── FIREBASE AUTH INIT ────────────────────────────────────────────────
+const _firebaseConfig = {
+    apiKey:            "AIzaSyANAvgXU7HFHb9P6_nmZs5wg-WiI94VC6E",
+    authDomain:        "esl-weekly-report.firebaseapp.com",
+    databaseURL:       "https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId:         "esl-weekly-report",
+    storageBucket:     "esl-weekly-report.firebasestorage.app",
+    messagingSenderId: "30927701987",
+    appId:             "1:30927701987:web:02d3ee4af6c424b7d902d6",
+    measurementId:     "G-5JN444FHDQ"
+};
+if (!firebase.apps.length) firebase.initializeApp(_firebaseConfig);
+const _fbAuth = firebase.auth();
 // ─────────────────────────────────────────────────────────────────────
 
 const ADMIN_AUTH_KEY         = 'esl_admin_auth';
@@ -880,6 +901,14 @@ async function sha256(text) {
         .map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// Firebase Auth 토큰 가져오기 (DB REST API 인증용)
+async function _getAuthToken() {
+    const user = _fbAuth.currentUser;
+    if (!user) return null;
+    try { return await user.getIdToken(); }
+    catch { return null; }
+}
+
 // ── 비밀번호 강도 검사 ───────────────────────────────────────────────
 function isStrongPw(pw) {
     return pw.length >= 8 &&
@@ -914,30 +943,64 @@ function switchTab(name) {
     if (name === 'views')    loadViewsData();
 }
 
-// ── 초기화 ───────────────────────────────────────────────────────────
-(async function initAuth() {
-    if (sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true') {
-        // 세션 만료 즉시 체크
+// ── 초기화 (Firebase Auth onAuthStateChanged) ────────────────────────
+_fbAuth.onAuthStateChanged(async function(user) {
+    if (user) {
+        // Firebase에 로그인된 사용자 있음 → 세션 만료 체크
         const now        = Date.now();
         const loginTime  = parseInt(sessionStorage.getItem(ADMIN_LOGIN_TIME_KEY)  || '0');
         const activeTime = parseInt(sessionStorage.getItem(ADMIN_ACTIVE_TIME_KEY) || '0');
         if (loginTime && (now - loginTime > ADMIN_REFRESH_TOKEN_MS || now - activeTime > ADMIN_ACCESS_TOKEN_MS)) {
-            _clearAdminSession();
+            doAdminLogout(true);
             return;
         }
-        const email = sessionStorage.getItem(ADMIN_EMAIL_KEY);
-        showDashboard(email);
-        if (sessionStorage.getItem(ADMIN_MUST_CHANGE_KEY) === 'true') {
-            showAdminChangePwOverlay();
-        } else {
-            loadData();
+
+        // DB에서 어드민 등록 확인
+        const email = user.email;
+        const key   = email.replace(/[@.]/g, '_');
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        try {
+            const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
+            const account = res.ok ? await res.json() : null;
+            if (!account) {
+                // Firebase Auth에는 계정이 있지만 DB에 어드민 등록 없음
+                await _fbAuth.signOut();
+                setTimeout(() => document.getElementById('adminEmail').focus(), 100);
+                return;
+            }
+            sessionStorage.setItem(ADMIN_AUTH_KEY,       'true');
+            sessionStorage.setItem(ADMIN_EMAIL_KEY,       email);
+            if (!loginTime) {
+                const now2 = String(Date.now());
+                sessionStorage.setItem(ADMIN_LOGIN_TIME_KEY,  now2);
+                sessionStorage.setItem(ADMIN_ACTIVE_TIME_KEY, now2);
+            }
+            showDashboard(email);
+            if (account.mustChangePassword) {
+                sessionStorage.setItem(ADMIN_MUST_CHANGE_KEY, 'true');
+                showAdminChangePwOverlay();
+            } else {
+                loadData();
+            }
+        } catch (e) {
+            console.error('Admin auth check failed:', e);
+            await _fbAuth.signOut();
         }
         return;
     }
+
+    // Firebase에 로그인된 사용자 없음
+    _clearAdminSession();
     // 어드민이 한 명도 없으면 부트스트랩 설정 화면 표시
     try {
         const res  = await fetch(`${FIREBASE_DB_URL}/admins.json`);
-        const data = res.ok ? await res.json() : null;
+        // auth 에러(401/403)면 로그인 화면 표시 (부트스트랩 아님)
+        if (!res.ok) {
+            setTimeout(() => document.getElementById('adminEmail').focus(), 100);
+            return;
+        }
+        const data = await res.json();
         const hasAdmins = data && typeof data === 'object' && Object.keys(data).length > 0;
         if (!hasAdmins) {
             document.getElementById('loginOverlay').classList.add('hidden');
@@ -948,7 +1011,7 @@ function switchTab(name) {
     } catch (e) {
         setTimeout(() => document.getElementById('adminEmail').focus(), 100);
     }
-})();
+});
 
 function showDashboard(email) {
     document.getElementById('loginOverlay').classList.add('hidden');
@@ -983,24 +1046,25 @@ async function doAdminLogin() {
     btn.textContent = '확인 중…'; btn.disabled = true;
 
     try {
-        const key     = email.replace(/[@.]/g, '_');
-        const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        // ① Firebase Auth로 로그인
+        await _fbAuth.signInWithEmailAndPassword(email, pw);
+
+        // ② DB에서 어드민 등록 확인
+        const key   = email.replace(/[@.]/g, '_');
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
         const account = res.ok ? await res.json() : null;
 
         if (!account) {
+            // Firebase Auth 성공이나 DB에 어드민 아님 → 차단
+            await _fbAuth.signOut();
             emailEl.classList.add('error');
             emailErrEl.textContent = '등록되지 않은 어드민 계정입니다.';
             btn.textContent = '로그인'; btn.disabled = false; return;
         }
-        const inputHash = await sha256(pw);
-        if (inputHash !== account.passwordHash) {
-            pwEl.classList.add('error');
-            _recordAdminLoginFail(pwErrEl, btn);
-            if (!pwErrEl.textContent) pwErrEl.textContent = '비밀번호가 올바르지 않습니다.';
-            return;
-        }
 
-        // 로그인 성공 → 카운터 초기화
+        // ③ 로그인 성공 → 카운터 초기화
         _adminFailCount = 0; _adminLockUntil = 0;
         const _loginNow = Date.now();
         sessionStorage.setItem(ADMIN_AUTH_KEY,        'true');
@@ -1016,8 +1080,18 @@ async function doAdminLogin() {
             loadData();
         }
     } catch (e) {
-        pwErrEl.textContent = '네트워크 오류가 발생했습니다.';
-        console.error(e);
+        const code = e.code || '';
+        if (code === 'auth/user-not-found' || code === 'auth/wrong-password' ||
+            code === 'auth/invalid-credential' || code === 'auth/invalid-email') {
+            pwEl.classList.add('error');
+            _recordAdminLoginFail(pwErrEl, btn);
+            if (!pwErrEl.textContent) pwErrEl.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+        } else if (code === 'auth/too-many-requests') {
+            pwErrEl.textContent = '로그인 시도 횟수 초과. 잠시 후 다시 시도하세요.';
+        } else {
+            pwErrEl.textContent = '네트워크 오류가 발생했습니다.';
+            console.error(e);
+        }
     }
     btn.textContent = '로그인'; btn.disabled = false;
 }
@@ -1041,7 +1115,9 @@ async function doSetupFirstAdmin() {
     const pw    = pwEl.value;
     const pwCf  = pwCfEl.value;
 
-    if (code !== BOOTSTRAP_CODE) { codeErr.textContent  = '부트스트랩 코드가 올바르지 않습니다.'; return; }
+    // 부트스트랩 코드는 평문 대신 SHA-256 해시로 비교 (소스 코드에 평문 노출 방지)
+    const codeHash = await sha256(code);
+    if (codeHash !== BOOTSTRAP_CODE_HASH) { codeErr.textContent = '부트스트랩 코드가 올바르지 않습니다.'; return; }
     if (!email || !email.includes('@')) { emailErr.textContent = '올바른 이메일을 입력하세요.'; return; }
     if (!isStrongPw(pw)) { pwErr.textContent = '8자 이상, 영문+숫자+특수문자 조합이어야 합니다.'; return; }
     if (pw !== pwCf)      { pwCfErr.textContent = '비밀번호가 일치하지 않습니다.'; return; }
@@ -1049,14 +1125,17 @@ async function doSetupFirstAdmin() {
     btn.textContent = '생성 중…'; btn.disabled = true;
 
     try {
-        const key  = email.replace(/[@.]/g, '_');
-        const hash = await sha256(pw);
-        const res  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+        // Firebase Auth 계정 생성 (자동으로 로그인됨)
+        const userCred = await _fbAuth.createUserWithEmailAndPassword(email, pw);
+        const token    = await userCred.user.getIdToken();
+
+        // DB에 어드민 메타데이터 저장 (인증 토큰 사용)
+        const key = email.replace(/[@.]/g, '_');
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json?auth=${token}`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
                 email,
-                passwordHash:       hash,
                 mustChangePassword: false,
                 createdAt:          new Date().toISOString()
             })
@@ -1072,8 +1151,15 @@ async function doSetupFirstAdmin() {
         showDashboard(email);
         loadData();
     } catch (e) {
-        pwErr.textContent = '생성 중 오류가 발생했습니다.';
-        console.error(e);
+        const code2 = e.code || '';
+        if (code2 === 'auth/email-already-in-use') {
+            emailErr.textContent = '이미 사용 중인 이메일입니다.';
+        } else if (code2 === 'auth/weak-password') {
+            pwErr.textContent = '비밀번호가 너무 약합니다. 더 강한 비밀번호를 사용하세요.';
+        } else {
+            pwErr.textContent = '생성 중 오류가 발생했습니다.';
+            console.error(e);
+        }
     }
     btn.textContent = '어드민 계정 생성'; btn.disabled = false;
 }
@@ -1100,30 +1186,46 @@ async function doAdminChangePassword() {
     btn.textContent = '변경 중…'; btn.disabled = true;
 
     try {
-        const email   = sessionStorage.getItem(ADMIN_EMAIL_KEY);
-        const key     = email.replace(/[@.]/g, '_');
-        const newHash = await sha256(newPw);
-        const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        const user = _fbAuth.currentUser;
+        if (!user) throw Object.assign(new Error(), { code: 'auth/user-not-found' });
+
+        // Firebase Auth로 비밀번호 변경
+        await user.updatePassword(newPw);
+
+        // DB에서 mustChangePassword: false 업데이트
+        const email = sessionStorage.getItem(ADMIN_EMAIL_KEY);
+        const key   = email.replace(/[@.]/g, '_');
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
         const account = getRes.ok ? await getRes.json() : {};
-        const putRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+        // passwordHash 필드 제거 (Firebase Auth로 관리)
+        const { passwordHash: _removed, ...rest } = account;
+        await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ ...account, passwordHash: newHash, mustChangePassword: false })
+            body:    JSON.stringify({ ...rest, mustChangePassword: false })
         });
-        if (!putRes.ok) throw new Error(`PUT ${putRes.status}`);
 
         sessionStorage.removeItem(ADMIN_MUST_CHANGE_KEY);
         document.getElementById('adminChangePwOverlay').classList.add('hidden');
         loadData();
     } catch (e) {
-        newPwErr.textContent = '변경 중 오류가 발생했습니다.';
-        console.error(e);
+        const code = e.code || '';
+        if (code === 'auth/requires-recent-login') {
+            newPwErr.textContent = '보안을 위해 다시 로그인한 후 비밀번호를 변경해주세요.';
+            setTimeout(() => doAdminLogout(), 2000);
+        } else {
+            newPwErr.textContent = '변경 중 오류가 발생했습니다.';
+            console.error(e);
+        }
     }
     btn.textContent = '비밀번호 변경'; btn.disabled = false;
 }
 
 // ── 어드민 세션 클리어 (로그아웃 + 자동 만료 공통) ─────────────────
 function _clearAdminSession() {
+    _fbAuth.signOut().catch(() => {});  // Firebase Auth 로그아웃
     sessionStorage.removeItem(ADMIN_AUTH_KEY);
     sessionStorage.removeItem(ADMIN_EMAIL_KEY);
     sessionStorage.removeItem(ADMIN_MUST_CHANGE_KEY);
@@ -1264,7 +1366,9 @@ async function loadData() {
     btn.classList.add('spinning'); btn.disabled = true;
 
     try {
-        const res  = await fetch(`${FIREBASE_DB_URL}/logins.json`);
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const res  = await fetch(`${FIREBASE_DB_URL}/logins.json${authQ}`);
         const data = await res.json();
 
         if (!data || typeof data !== 'object') {
@@ -1490,7 +1594,9 @@ async function loadAccounts() {
     btn.classList.add('spinning'); btn.disabled = true;
 
     try {
-        const res  = await fetch(`${FIREBASE_DB_URL}/accounts.json`);
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const res  = await fetch(`${FIREBASE_DB_URL}/accounts.json${authQ}`);
         const data = await res.json();
 
         if (!data || typeof data !== 'object') {
@@ -1558,9 +1664,12 @@ async function createAccount() {
     btn.textContent = '생성 중…'; btn.disabled = true;
 
     try {
-        const key = email.replace(/[@.]/g, '_');
-        // 이미 존재하는 계정 확인
-        const chk = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        const key   = email.replace(/[@.]/g, '_');
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+
+        // 이미 존재하는 계정 확인 (DB)
+        const chk      = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`);
         const existing = chk.ok ? await chk.json() : null;
         if (existing && existing.email) {
             emailEl.classList.add('error');
@@ -1569,63 +1678,97 @@ async function createAccount() {
             return;
         }
 
-        const initHash = INIT_PW_HASH;
-        const now      = new Date().toISOString();
-        const res      = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
+        // Secondary Firebase app으로 사용자 계정 생성 (현재 어드민 세션 유지)
+        const secApp  = firebase.initializeApp(_firebaseConfig, 'sec_' + Date.now());
+        const secAuth = secApp.auth();
+        // 임시 랜덤 비밀번호로 계정 생성
+        const tempPw  = 'Temp_' + Math.random().toString(36).slice(2) + '!9';
+        await secAuth.createUserWithEmailAndPassword(email, tempPw);
+        await secApp.delete();
+
+        // 비밀번호 재설정 이메일 발송 (사용자가 이메일로 비밀번호 설정)
+        await _fbAuth.sendPasswordResetEmail(email);
+
+        // DB에 계정 메타데이터 저장
+        const now = new Date().toISOString();
+        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
                 email,
-                passwordHash:       initHash,
                 mustChangePassword: true,
                 createdAt:          now
             })
         });
-
         if (!res.ok) throw new Error(`PUT ${res.status}`);
 
         emailEl.value       = '';
         errorEl.textContent = '';
         errorEl.style.color = '#16a34a';
-        errorEl.textContent = `✓ ${email} 계정이 생성되었습니다.`;
-        setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 3000);
+        errorEl.textContent = `✓ ${email} 계정이 생성되었습니다. 비밀번호 설정 이메일이 발송되었습니다.`;
+        setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
         loadAccounts();
 
     } catch (e) {
-        errorEl.textContent = '계정 생성 중 오류가 발생했습니다.';
-        console.error(e);
+        const code = e.code || '';
+        if (code === 'auth/email-already-in-use') {
+            // Firebase Auth에 이미 존재 → DB만 등록
+            const key2  = email.replace(/[@.]/g, '_');
+            const token2 = await _getAuthToken();
+            const authQ2 = token2 ? `?auth=${token2}` : '';
+            await fetch(`${FIREBASE_DB_URL}/accounts/${key2}.json${authQ2}`, {
+                method:  'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ email, mustChangePassword: true, createdAt: new Date().toISOString() })
+            });
+            await _fbAuth.sendPasswordResetEmail(email);
+            emailEl.value = '';
+            errorEl.style.color = '#16a34a';
+            errorEl.textContent = `✓ ${email} 계정이 등록되었습니다. 비밀번호 재설정 이메일이 발송되었습니다.`;
+            setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
+            loadAccounts();
+        } else {
+            errorEl.textContent = '계정 생성 중 오류가 발생했습니다.';
+            console.error(e);
+        }
     }
     btn.textContent = '계정 생성'; btn.disabled = false;
 }
 
 async function resetPassword(key, email) {
-    if (!confirm(`${email} 계정의 비밀번호를 초기화하시겠습니까?\n\n초기화 후 다음 로그인 시 비밀번호 변경을 요구합니다.`)) return;
+    if (!confirm(`${email} 계정에 비밀번호 재설정 이메일을 발송하시겠습니까?\n\n해당 사용자의 이메일로 재설정 링크가 전송됩니다.`)) return;
 
     try {
-        const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
-        const account = getRes.ok ? await getRes.json() : {};
-        const initHash = INIT_PW_HASH;
+        // Firebase Auth 비밀번호 재설정 이메일 발송
+        await _fbAuth.sendPasswordResetEmail(email);
 
-        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
+        // DB에 mustChangePassword: true 표시
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`);
+        const account = getRes.ok ? await getRes.json() : {};
+        const { passwordHash: _removed, ...rest } = account;
+        await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ ...account, passwordHash: initHash, mustChangePassword: true })
+            body:    JSON.stringify({ ...rest, mustChangePassword: true })
         });
 
-        if (!res.ok) throw new Error(`PUT ${res.status}`);
-        alert(`${email} 계정의 비밀번호가 초기화되었습니다.`);
+        alert(`${email} 계정으로 비밀번호 재설정 이메일이 발송되었습니다.`);
         loadAccounts();
 
     } catch (e) {
-        alert('초기화 중 오류가 발생했습니다.');
+        alert('이메일 발송 중 오류가 발생했습니다.');
         console.error(e);
     }
 }
 
 async function deleteAccount(key, email) {
-    if (!confirm(`${email} 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로는 로그인할 수 없습니다.`)) return;
+    if (!confirm(`${email} 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로는 로그인할 수 없습니다.\n(Firebase Auth 계정은 Firebase Console에서 별도 삭제 필요)`)) return;
     try {
-        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, { method: 'DELETE' });
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, { method: 'DELETE' });
         if (!res.ok) throw new Error(`DELETE ${res.status}`);
         alert(`${email} 계정이 삭제되었습니다.`);
         loadAccounts();
@@ -1642,7 +1785,9 @@ async function loadAdmins() {
     btn.classList.add('spinning'); btn.disabled = true;
 
     try {
-        const res  = await fetch(`${FIREBASE_DB_URL}/admins.json`);
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const res  = await fetch(`${FIREBASE_DB_URL}/admins.json${authQ}`);
         const data = await res.json();
 
         if (!data || typeof data !== 'object') {
@@ -1702,8 +1847,10 @@ async function loadViewsData() {
     tbody.innerHTML = `<tr class="loading-row"><td colspan="3">데이터 로딩 중…</td></tr>`;
     try {
         // Firebase에서 views 데이터 로드
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
         const [viewsRes, indexRes] = await Promise.all([
-            fetch(`${FIREBASE_DB_URL}/views.json`),
+            fetch(`${FIREBASE_DB_URL}/views.json${authQ}`),
             fetch('./data/index.json')
         ]);
         const viewsData  = (await viewsRes.json()) || {};
@@ -1754,8 +1901,11 @@ async function createAdmin() {
     btn.textContent = '생성 중…'; btn.disabled = true;
 
     try {
-        const key = email.replace(/[@.]/g, '_');
-        const chk = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        const key   = email.replace(/[@.]/g, '_');
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+
+        const chk = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
         const existing = chk.ok ? await chk.json() : null;
         if (existing && existing.email) {
             emailEl.classList.add('error');
@@ -1763,13 +1913,22 @@ async function createAdmin() {
             btn.textContent = '어드민 생성'; btn.disabled = false; return;
         }
 
-        const initHash = INIT_PW_HASH;
-        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+        // Secondary Firebase app으로 어드민 계정 생성 (현재 세션 유지)
+        const secApp  = firebase.initializeApp(_firebaseConfig, 'sec_admin_' + Date.now());
+        const secAuth = secApp.auth();
+        const tempPw  = 'Temp_' + Math.random().toString(36).slice(2) + '!9';
+        await secAuth.createUserWithEmailAndPassword(email, tempPw);
+        await secApp.delete();
+
+        // 비밀번호 재설정 이메일 발송
+        await _fbAuth.sendPasswordResetEmail(email);
+
+        // DB에 어드민 메타데이터 저장
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
                 email,
-                passwordHash:       initHash,
                 mustChangePassword: true,
                 createdAt:          new Date().toISOString()
             })
@@ -1778,8 +1937,8 @@ async function createAdmin() {
 
         emailEl.value       = '';
         errorEl.style.color = '#16a34a';
-        errorEl.textContent = `✓ ${email} 어드민 계정이 생성되었습니다.`;
-        setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 3000);
+        errorEl.textContent = `✓ ${email} 어드민 계정이 생성되었습니다. 비밀번호 설정 이메일이 발송되었습니다.`;
+        setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
         loadAdmins();
     } catch (e) {
         errorEl.textContent = '생성 중 오류가 발생했습니다.';
@@ -1789,29 +1948,37 @@ async function createAdmin() {
 }
 
 async function resetAdminPassword(key, email) {
-    if (!confirm(`${email} 어드민의 비밀번호를 초기화하시겠습니까?\n\n초기화 후 다음 로그인 시 비밀번호 변경을 요구합니다.`)) return;
+    if (!confirm(`${email} 어드민에게 비밀번호 재설정 이메일을 발송하시겠습니까?\n\n해당 어드민의 이메일로 재설정 링크가 전송됩니다.`)) return;
     try {
-        const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        // Firebase Auth 비밀번호 재설정 이메일 발송
+        await _fbAuth.sendPasswordResetEmail(email);
+
+        // DB에 mustChangePassword: true 표시
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
         const account = getRes.ok ? await getRes.json() : {};
-        const initHash = INIT_PW_HASH;
-        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+        const { passwordHash: _removed, ...rest } = account;
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ ...account, passwordHash: initHash, mustChangePassword: true })
+            body:    JSON.stringify({ ...rest, mustChangePassword: true })
         });
         if (!res.ok) throw new Error(`PUT ${res.status}`);
-        alert(`${email} 어드민의 비밀번호가 초기화되었습니다.`);
+        alert(`${email} 어드민으로 비밀번호 재설정 이메일이 발송되었습니다.`);
         loadAdmins();
     } catch (e) {
-        alert('초기화 중 오류가 발생했습니다.');
+        alert('이메일 발송 중 오류가 발생했습니다.');
         console.error(e);
     }
 }
 
 async function deleteAdmin(key, email) {
-    if (!confirm(`${email} 어드민 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로 어드민 로그인이 불가합니다.`)) return;
+    if (!confirm(`${email} 어드민 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로 어드민 로그인이 불가합니다.\n(Firebase Auth 계정은 Firebase Console에서 별도 삭제 필요)`)) return;
     try {
-        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, { method: 'DELETE' });
+        const token = await _getAuthToken();
+        const authQ = token ? `?auth=${token}` : '';
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`, { method: 'DELETE' });
         if (!res.ok) throw new Error(`DELETE ${res.status}`);
         alert(`${email} 어드민 계정이 삭제되었습니다.`);
         loadAdmins();
@@ -1836,6 +2003,7 @@ document.addEventListener('click', function(e) {
 
 // ── 자동 로그아웃 ────────────────────────────────────────────────────
 function checkAdminTokenExpiry() {
+    if (!_fbAuth.currentUser) return;
     if (sessionStorage.getItem(ADMIN_AUTH_KEY) !== 'true') return;
     const now        = Date.now();
     const loginTime  = parseInt(sessionStorage.getItem(ADMIN_LOGIN_TIME_KEY)  || '0');
