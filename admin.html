@@ -1466,13 +1466,14 @@ function updateStats(rows, from, to, type) {
 
 // monthly/weekly 서브카운터 합산 (없으면 count 전체로 fallback)
 function computePeriodCount(rows, from, to) {
+    // Date 객체를 "YYYY-MM" 문자열로 변환해 비교 (타임존 영향 없음)
+    const fromKey = from ? `${from.getFullYear()}-${String(from.getMonth()+1).padStart(2,'0')}` : null;
+    const toKey   = to   ? `${to.getFullYear()}-${String(to.getMonth()+1).padStart(2,'0')}`   : null;
     let total = 0;
     for (const r of rows) {
         if (r.monthly) {
             for (const [k, v] of Object.entries(r.monthly)) {
-                const d = new Date(k + '-01');
-                if ((!from || d >= new Date(from.getFullYear(), from.getMonth(), 1)) &&
-                    (!to   || d <= new Date(to.getFullYear(),   to.getMonth(),   1))) {
+                if ((!fromKey || k >= fromKey) && (!toKey || k <= toKey)) {
                     total += v;
                 }
             }
@@ -1513,11 +1514,11 @@ function renderTable(rows, from, to) {
 
 function getPeriodCountForUser(r, from, to) {
     if (!r.monthly) return r.count || 0;
+    const fromKey = from ? `${from.getFullYear()}-${String(from.getMonth()+1).padStart(2,'0')}` : null;
+    const toKey   = to   ? `${to.getFullYear()}-${String(to.getMonth()+1).padStart(2,'0')}`   : null;
     let total = 0;
     for (const [k, v] of Object.entries(r.monthly)) {
-        const d = new Date(k + '-01');
-        if ((!from || d >= new Date(from.getFullYear(), from.getMonth(), 1)) &&
-            (!to   || d <= new Date(to.getFullYear(),   to.getMonth(),   1))) {
+        if ((!fromKey || k >= fromKey) && (!toKey || k <= toKey)) {
             total += v;
         }
     }
