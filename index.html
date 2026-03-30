@@ -1943,8 +1943,18 @@ async function doLogin() {
             return;
         }
 
-        // ③ 인증 성공 → 카운터 초기화
+        // ③ 인증 성공 → 실패 카운트 DB 기록 후 초기화 (어드민 확인용)
+        const _prevFailCount = _loginFailCount;
         _loginFailCount = 0; _loginLockUntil = 0;
+        // 이전 실패 횟수를 accounts 레코드에 기록 (fire-and-forget)
+        fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+            method:  'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                loginFailCount: _prevFailCount,
+                ...(_prevFailCount > 0 && { loginFailAt: new Date().toISOString() })
+            })
+        }).catch(() => {});
         const _loginNow = String(Date.now());
         sessionStorage.setItem(AUTH_KEY, 'true');
         sessionStorage.setItem(AUTH_EMAIL_KEY, email);
@@ -2054,8 +2064,18 @@ async function _tryLegacyMigration(email, pw, emailEl, emailErr, pwEl, pwErr, lo
             body:    JSON.stringify(rest)
         });
 
-        // 로그인 성공 처리
+        // 로그인 성공 처리 (레거시 마이그레이션 완료)
+        const _prevFailCountLeg = _loginFailCount;
         _loginFailCount = 0; _loginLockUntil = 0;
+        // 마이그레이션 PUT에 loginFailCount 포함 (이미 위에서 PUT했으므로 PATCH로 덮어쓰기)
+        fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+            method:  'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                loginFailCount: _prevFailCountLeg,
+                ...(_prevFailCountLeg > 0 && { loginFailAt: new Date().toISOString() })
+            })
+        }).catch(() => {});
         const _loginNow = String(Date.now());
         sessionStorage.setItem(AUTH_KEY,             'true');
         sessionStorage.setItem(AUTH_EMAIL_KEY,        email);

@@ -447,6 +447,14 @@
             background: #f0fdf4; color: #16a34a;
             border: 1px solid #86efac;
         }
+        .fail-badge {
+            display: inline-flex; align-items: center;
+            font-size: 0.7rem; font-weight: 700;
+            padding: 3px 9px; border-radius: var(--radius-full);
+            background: #fff7ed; color: #ea580c;
+            border: 1px solid #fdba74;
+        }
+        .text-muted { color: var(--text-3); font-size: 0.85rem; }
         .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
 
         /* ── FOOTER ── */
@@ -761,7 +769,7 @@
             <div class="table-header">
                 <div>
                     <div class="table-title">계정 목록</div>
-                    <div class="table-meta">생성일 기준 최신 순 · 비밀번호는 암호화(SHA-256) 저장</div>
+                    <div class="table-meta">생성일 기준 최신 순 · 비밀번호는 Firebase Authentication 관리</div>
                 </div>
                 <button class="refresh-btn" id="refreshAccountsBtn" onclick="loadAccounts()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -776,13 +784,15 @@
                     <tr>
                         <th style="width:48px;">#</th>
                         <th>이메일</th>
-                        <th style="width:160px;">비밀번호 상태</th>
-                        <th style="width:180px;">생성일</th>
+                        <th style="width:130px;">비밀번호 상태</th>
+                        <th style="width:160px;">마지막 접속</th>
+                        <th style="width:100px;">이전 실패</th>
+                        <th style="width:160px;">생성일</th>
                         <th style="width:200px;">관리</th>
                     </tr>
                 </thead>
                 <tbody id="accountsTableBody">
-                    <tr class="loading-row"><td colspan="5">데이터 로딩 중…</td></tr>
+                    <tr class="loading-row"><td colspan="7">데이터 로딩 중…</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1596,11 +1606,17 @@ async function loadAccounts() {
     try {
         const token = await _getAuthToken();
         const authQ = token ? `?auth=${token}` : '';
-        const res  = await fetch(`${FIREBASE_DB_URL}/accounts.json${authQ}`);
-        const data = await res.json();
+
+        // accounts + logins 병렬 조회
+        const [accRes, loginRes] = await Promise.all([
+            fetch(`${FIREBASE_DB_URL}/accounts.json${authQ}`),
+            fetch(`${FIREBASE_DB_URL}/logins.json${authQ}`)
+        ]);
+        const data      = await accRes.json();
+        const loginData = loginRes.ok ? await loginRes.json() : {};
 
         if (!data || typeof data !== 'object') {
-            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">생성된 계정이 없습니다.</td></tr>`;
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="7">생성된 계정이 없습니다.</td></tr>`;
             return;
         }
         const rows = Object.entries(data)
@@ -1609,18 +1625,34 @@ async function loadAccounts() {
             .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
         if (rows.length === 0) {
-            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">생성된 계정이 없습니다.</td></tr>`;
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="7">생성된 계정이 없습니다.</td></tr>`;
             return;
         }
-        tbody.innerHTML = rows.map((r, i) => `
+        tbody.innerHTML = rows.map((r, i) => {
+            const loginInfo  = (loginData && loginData[r.key]) || {};
+            const lastSeen   = loginInfo.lastSeen  || null;
+            const failCount  = r.loginFailCount    || 0;
+            const failAt     = r.loginFailAt        || null;
+
+            const pwBadge = r.mustChangePassword
+                ? `<span class="pw-status-badge need-change">⚠ 변경 필요</span>`
+                : `<span class="pw-status-badge normal">✓ 정상</span>`;
+
+            const lastSeenCell = lastSeen
+                ? `<span class="date-cell" title="${lastSeen}">${fmtDate(lastSeen)}</span>`
+                : `<span class="text-muted">–</span>`;
+
+            const failBadge = failCount > 0
+                ? `<span class="fail-badge" title="마지막 실패: ${failAt ? fmtDate(failAt) : '–'}">${failCount}회</span>`
+                : `<span class="text-muted">–</span>`;
+
+            return `
             <tr>
                 <td class="rank">${i + 1}</td>
                 <td class="email-cell">${escapeHtml(r.email)}</td>
-                <td>
-                    ${r.mustChangePassword
-                        ? `<span class="pw-status-badge need-change">⚠ 변경 필요</span>`
-                        : `<span class="pw-status-badge normal">✓ 정상</span>`}
-                </td>
+                <td>${pwBadge}</td>
+                <td class="date-cell">${lastSeenCell}</td>
+                <td style="text-align:center;">${failBadge}</td>
                 <td class="date-cell">${fmtDate(r.createdAt)}</td>
                 <td>
                     <div class="actions-cell">
@@ -1632,10 +1664,11 @@ async function loadAccounts() {
                             data-action="delete-account">🗑 삭제</button>
                     </div>
                 </td>
-            </tr>`).join('');
+            </tr>`;
+        }).join('');
 
     } catch (e) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다.</td></tr>`;
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="7">데이터를 불러오지 못했습니다.</td></tr>`;
         console.error(e);
     }
     btn.classList.remove('spinning'); btn.disabled = false;
