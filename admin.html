@@ -440,8 +440,8 @@
             padding: 3px 9px; border-radius: var(--radius-full);
         }
         .pw-status-badge.need-change {
-            background: #fef3c7; color: #d97706;
-            border: 1px solid #fcd34d;
+            background: #eff6ff; color: #2563eb;
+            border: 1px solid #93c5fd;
         }
         .pw-status-badge.normal {
             background: #f0fdf4; color: #16a34a;
@@ -1635,7 +1635,7 @@ async function loadAccounts() {
             const failAt     = r.loginFailAt        || null;
 
             const pwBadge = r.mustChangePassword
-                ? `<span class="pw-status-badge need-change">⚠ 변경 필요</span>`
+                ? `<span class="pw-status-badge need-change">✉ 메일 미확인</span>`
                 : `<span class="pw-status-badge normal">✓ 정상</span>`;
 
             const lastSeenCell = lastSeen
@@ -1846,7 +1846,7 @@ async function loadAdmins() {
                 </td>
                 <td>
                     ${r.mustChangePassword
-                        ? `<span class="pw-status-badge need-change">⚠ 변경 필요</span>`
+                        ? `<span class="pw-status-badge need-change">✉ 메일 미확인</span>`
                         : `<span class="pw-status-badge normal">✓ 정상</span>`}
                 </td>
                 <td class="date-cell">${fmtDate(r.createdAt)}</td>
