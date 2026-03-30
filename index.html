@@ -1959,10 +1959,17 @@ async function doLogin() {
         overlay.style.opacity    = '0';
         setTimeout(() => overlay.classList.add('hidden'), 300);
 
-        // 최초 로그인 / 비밀번호 초기화 시 변경 강제
+        // Firebase Auth 로그인 성공 = 사용자가 이미 자신의 비밀번호를 보유
+        // (이메일 링크로 설정했든 직접 변경했든 Firebase가 이미 처리)
+        // → mustChangePassword가 true여도 DB에서 자동 해제
         if (account.mustChangePassword) {
-            sessionStorage.setItem(MUST_CHANGE_KEY, 'true');
-            setTimeout(() => showChangePwOverlay(), 320);
+            const { passwordHash: _ph, ...rest } = account;
+            fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+                method:  'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ ...rest, mustChangePassword: false })
+            }).catch(() => {});
+            sessionStorage.removeItem(MUST_CHANGE_KEY);
         }
 
     } catch (e) {
