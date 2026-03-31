@@ -764,6 +764,21 @@
             <div class="create-error" id="createError"></div>
         </div>
 
+        <!-- passwordHash 마이그레이션 경고 배너 -->
+        <div id="migrationWarningBanner" class="hidden" style="
+            background: #fff3cd; border: 1px solid #ffc107; border-radius: 10px;
+            padding: 14px 18px; margin-bottom: 16px;
+            display: flex; align-items: flex-start; gap: 12px; font-size: 13.5px; color: #7d5700;">
+            <span style="font-size:18px;line-height:1.2;">⚠️</span>
+            <div>
+                <strong>레거시 passwordHash 필드 감지</strong> —
+                <span id="migrationWarningText"></span>
+                <br><span style="font-size:12px;color:#9a6e00;">
+                    사용자가 다음 로그인 시 자동으로 마이그레이션됩니다. 이미 로그인된 계정은 조치 불필요.
+                </span>
+            </div>
+        </div>
+
         <!-- 계정 목록 -->
         <div class="table-card">
             <div class="table-header">
@@ -919,6 +934,19 @@ async function _getAuthToken() {
     catch { return null; }
 }
 
+// ── 인증 헬퍼: URL ?auth= 대신 Authorization: Bearer 헤더 사용 ──────
+async function _authFetch(url, options = {}) {
+    try {
+        const user = _fbAuth.currentUser;
+        if (user) {
+            const token = await user.getIdToken();
+            const headers = { ...(options.headers || {}), 'Authorization': `Bearer ${token}` };
+            return fetch(url, { ...options, headers });
+        }
+    } catch(e) {}
+    return fetch(url, options);
+}
+
 // ── 비밀번호 강도 검사 ───────────────────────────────────────────────
 function isStrongPw(pw) {
     return pw.length >= 8 &&
@@ -968,10 +996,8 @@ _fbAuth.onAuthStateChanged(async function(user) {
         // DB에서 어드민 등록 확인
         const email = user.email;
         const key   = email.replace(/[@.]/g, '_');
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
         try {
-            const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
+            const res     = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
             const account = res.ok ? await res.json() : null;
             if (!account) {
                 // Firebase Auth에는 계정이 있지만 DB에 어드민 등록 없음
@@ -1061,9 +1087,7 @@ async function doAdminLogin() {
 
         // ② DB에서 어드민 등록 확인
         const key   = email.replace(/[@.]/g, '_');
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
+        const res     = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
         const account = res.ok ? await res.json() : null;
 
         if (!account) {
@@ -1139,11 +1163,11 @@ async function doSetupFirstAdmin() {
         const userCred = await _fbAuth.createUserWithEmailAndPassword(email, pw);
         const token    = await userCred.user.getIdToken();
 
-        // DB에 어드민 메타데이터 저장 (인증 토큰 사용)
+        // DB에 어드민 메타데이터 저장 (Authorization: Bearer 헤더 사용)
         const key = email.replace(/[@.]/g, '_');
-        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json?auth=${token}`, {
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
             method:  'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body:    JSON.stringify({
                 email,
                 mustChangePassword: false,
@@ -1205,13 +1229,11 @@ async function doAdminChangePassword() {
         // DB에서 mustChangePassword: false 업데이트
         const email = sessionStorage.getItem(ADMIN_EMAIL_KEY);
         const key   = email.replace(/[@.]/g, '_');
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
+        const getRes  = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
         const account = getRes.ok ? await getRes.json() : {};
         // passwordHash 필드 제거 (Firebase Auth로 관리)
         const { passwordHash: _removed, ...rest } = account;
-        await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`, {
+        await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ ...rest, mustChangePassword: false })
@@ -1376,9 +1398,7 @@ async function loadData() {
     btn.classList.add('spinning'); btn.disabled = true;
 
     try {
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const res  = await fetch(`${FIREBASE_DB_URL}/logins.json${authQ}`);
+        const res  = await _authFetch(`${FIREBASE_DB_URL}/logins.json`);
         const data = await res.json();
 
         if (!data || typeof data !== 'object') {
@@ -1605,13 +1625,10 @@ async function loadAccounts() {
     btn.classList.add('spinning'); btn.disabled = true;
 
     try {
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-
         // accounts + logins 병렬 조회
         const [accRes, loginRes] = await Promise.all([
-            fetch(`${FIREBASE_DB_URL}/accounts.json${authQ}`),
-            fetch(`${FIREBASE_DB_URL}/logins.json${authQ}`)
+            _authFetch(`${FIREBASE_DB_URL}/accounts.json`),
+            _authFetch(`${FIREBASE_DB_URL}/logins.json`)
         ]);
         const data      = await accRes.json();
         const loginData = loginRes.ok ? await loginRes.json() : {};
@@ -1629,6 +1646,20 @@ async function loadAccounts() {
             tbody.innerHTML = `<tr class="empty-row"><td colspan="7">생성된 계정이 없습니다.</td></tr>`;
             return;
         }
+
+        // passwordHash 마이그레이션 경고
+        const legacyCount = rows.filter(r => r.passwordHash).length;
+        const banner      = document.getElementById('migrationWarningBanner');
+        const bannerText  = document.getElementById('migrationWarningText');
+        if (legacyCount > 0) {
+            bannerText.textContent = `${legacyCount}개 계정에 레거시 passwordHash 필드가 남아 있습니다. Firebase Authentication으로 마이그레이션 필요.`;
+            banner.classList.remove('hidden');
+            banner.style.display = 'flex';
+        } else {
+            banner.classList.add('hidden');
+            banner.style.display = '';
+        }
+
         tbody.innerHTML = rows.map((r, i) => {
             const loginInfo  = (loginData && loginData[r.key]) || {};
             const lastSeen   = loginInfo.lastSeen  || null;
@@ -1699,11 +1730,8 @@ async function createAccount() {
 
     try {
         const key   = email.replace(/[@.]/g, '_');
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-
         // 이미 존재하는 계정 확인 (DB)
-        const chk      = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`);
+        const chk      = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
         const existing = chk.ok ? await chk.json() : null;
         if (existing && existing.email) {
             emailEl.classList.add('error');
@@ -1725,7 +1753,7 @@ async function createAccount() {
 
         // DB에 계정 메타데이터 저장
         const now = new Date().toISOString();
-        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+        const res = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
@@ -1748,9 +1776,7 @@ async function createAccount() {
         if (code === 'auth/email-already-in-use') {
             // Firebase Auth에 이미 존재 → DB만 등록
             const key2  = email.replace(/[@.]/g, '_');
-            const token2 = await _getAuthToken();
-            const authQ2 = token2 ? `?auth=${token2}` : '';
-            await fetch(`${FIREBASE_DB_URL}/accounts/${key2}.json${authQ2}`, {
+            await _authFetch(`${FIREBASE_DB_URL}/accounts/${key2}.json`, {
                 method:  'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify({ email, mustChangePassword: true, createdAt: new Date().toISOString() })
@@ -1777,12 +1803,10 @@ async function resetPassword(key, email) {
         await _fbAuth.sendPasswordResetEmail(email);
 
         // DB에 mustChangePassword: true 표시
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`);
+        const getRes  = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
         const account = getRes.ok ? await getRes.json() : {};
         const { passwordHash: _removed, ...rest } = account;
-        await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+        await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ ...rest, mustChangePassword: true })
@@ -1800,9 +1824,7 @@ async function resetPassword(key, email) {
 async function deleteAccount(key, email) {
     if (!confirm(`${email} 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로는 로그인할 수 없습니다.\n(Firebase Auth 계정은 Firebase Console에서 별도 삭제 필요)`)) return;
     try {
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const res = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, { method: 'DELETE' });
+        const res = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, { method: 'DELETE' });
         if (!res.ok) throw new Error(`DELETE ${res.status}`);
         alert(`${email} 계정이 삭제되었습니다.`);
         loadAccounts();
@@ -1819,9 +1841,7 @@ async function loadAdmins() {
     btn.classList.add('spinning'); btn.disabled = true;
 
     try {
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const res  = await fetch(`${FIREBASE_DB_URL}/admins.json${authQ}`);
+        const res  = await _authFetch(`${FIREBASE_DB_URL}/admins.json`);
         const data = await res.json();
 
         if (!data || typeof data !== 'object') {
@@ -1881,10 +1901,8 @@ async function loadViewsData() {
     tbody.innerHTML = `<tr class="loading-row"><td colspan="3">데이터 로딩 중…</td></tr>`;
     try {
         // Firebase에서 views 데이터 로드
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
         const [viewsRes, indexRes] = await Promise.all([
-            fetch(`${FIREBASE_DB_URL}/views.json${authQ}`),
+            _authFetch(`${FIREBASE_DB_URL}/views.json`),
             fetch('./data/index.json')
         ]);
         const viewsData  = (await viewsRes.json()) || {};
@@ -1936,10 +1954,8 @@ async function createAdmin() {
 
     try {
         const key   = email.replace(/[@.]/g, '_');
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
 
-        const chk = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
+        const chk = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
         const existing = chk.ok ? await chk.json() : null;
         if (existing && existing.email) {
             emailEl.classList.add('error');
@@ -1958,7 +1974,7 @@ async function createAdmin() {
         await _fbAuth.sendPasswordResetEmail(email);
 
         // DB에 어드민 메타데이터 저장
-        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`, {
+        const res = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
@@ -1988,12 +2004,10 @@ async function resetAdminPassword(key, email) {
         await _fbAuth.sendPasswordResetEmail(email);
 
         // DB에 mustChangePassword: true 표시
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const getRes  = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`);
+        const getRes  = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
         const account = getRes.ok ? await getRes.json() : {};
         const { passwordHash: _removed, ...rest } = account;
-        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`, {
+        const res = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ ...rest, mustChangePassword: true })
@@ -2010,9 +2024,7 @@ async function resetAdminPassword(key, email) {
 async function deleteAdmin(key, email) {
     if (!confirm(`${email} 어드민 계정을 삭제하시겠습니까?\n\n삭제 후 해당 계정으로 어드민 로그인이 불가합니다.\n(Firebase Auth 계정은 Firebase Console에서 별도 삭제 필요)`)) return;
     try {
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json${authQ}`, { method: 'DELETE' });
+        const res = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`, { method: 'DELETE' });
         if (!res.ok) throw new Error(`DELETE ${res.status}`);
         alert(`${email} 어드민 계정이 삭제되었습니다.`);
         loadAdmins();

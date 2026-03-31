@@ -1076,9 +1076,7 @@ async function incrementReactionCount(articleId, delta) {
     try {
         const current = await fetchReactionCount(articleId);
         const newCount = Math.max(0, current + delta);
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const res = await fetch(`${FIREBASE_DB_URL}/likes/${articleId}.json${authQ}`, {
+        const res = await _authFetch(`${FIREBASE_DB_URL}/likes/${articleId}.json`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newCount)
@@ -1724,17 +1722,15 @@ function trackView(weekId) {
 async function _incrementFirebaseView(weekId) {
     if (!FIREBASE_DB_URL) return;
     try {
-        const token = await _getAuthToken();
-        if (!token) {
+        if (!_fbAuth.currentUser) {
             // 미인증 상태 → 로그인 후 재시도 예약
             _pendingViewWeekId = weekId;
             return;
         }
-        const authQ  = `?auth=${token}`;
-        const url    = `${FIREBASE_DB_URL}/views/${weekId}.json${authQ}`;
-        const res    = await fetch(url);
+        const url     = `${FIREBASE_DB_URL}/views/${weekId}.json`;
+        const res     = await _authFetch(url);
         const current = (await res.json()) || 0;
-        await fetch(url, {
+        await _authFetch(url, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify(current + 1)
@@ -1765,11 +1761,9 @@ function _weekKey(d) {
 async function recordLogin(email) {
     if (!FIREBASE_DB_URL) return;
     const key = email.replace(/[@.]/g, '_');
-    const token = await _getAuthToken();
-    const authQ = token ? `?auth=${token}` : '';
-    const url = `${FIREBASE_DB_URL}/logins/${key}.json${authQ}`;
+    const url = `${FIREBASE_DB_URL}/logins/${key}.json`;
     try {
-        const res = await fetch(url);
+        const res = await _authFetch(url);
         if (!res.ok) {
             const body = await res.text();
             console.error(`[recordLogin] GET failed: ${res.status} ${res.statusText}`, body);
@@ -1787,7 +1781,7 @@ async function recordLogin(email) {
         monthly[monthKey] = (monthly[monthKey] || 0) + 1;
         weekly[weekKey]   = (weekly[weekKey]   || 0) + 1;
 
-        const putRes = await fetch(url, {
+        const putRes = await _authFetch(url, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1834,6 +1828,20 @@ async function _getAuthToken() {
     if (!user) return null;
     try { return await user.getIdToken(); }
     catch { return null; }
+}
+
+// ── 인증 헬퍼: URL ?auth= 대신 Authorization: Bearer 헤더 사용 ──────
+// ?auth= 는 브라우저 히스토리·서버 로그에 토큰이 노출되는 문제가 있어 폐기
+async function _authFetch(url, options = {}) {
+    try {
+        const user = _fbAuth.currentUser;
+        if (user) {
+            const token = await user.getIdToken();
+            const headers = { ...(options.headers || {}), 'Authorization': `Bearer ${token}` };
+            return fetch(url, { ...options, headers });
+        }
+    } catch(e) {}
+    return fetch(url, options);
 }
 
 // 비밀번호 강도 검사 (8자+영문+숫자+특수문자)
@@ -1884,8 +1892,15 @@ _fbAuth.onAuthStateChanged(function(user) {
 });
 
 // ── 브루트포스 방어 (5회 실패→30초, 10회→5분 잠금) ──────────────────
-let _loginFailCount = 0;
-let _loginLockUntil = 0;
+// ── 브루트포스 방어: sessionStorage에 실패 상태 저장 (새로고침 후에도 유지) ───
+const _FAIL_COUNT_KEY  = 'esl_login_fail_count';
+const _FAIL_LOCK_KEY   = 'esl_login_lock_until';
+let _loginFailCount = parseInt(sessionStorage.getItem(_FAIL_COUNT_KEY)  || '0', 10);
+let _loginLockUntil = parseInt(sessionStorage.getItem(_FAIL_LOCK_KEY)   || '0', 10);
+function _saveFailState() {
+    sessionStorage.setItem(_FAIL_COUNT_KEY,  String(_loginFailCount));
+    sessionStorage.setItem(_FAIL_LOCK_KEY,   String(_loginLockUntil));
+}
 function _checkLoginLock(pwErrEl, loginBtn) {
     const now = Date.now();
     if (now < _loginLockUntil) {
@@ -1906,6 +1921,7 @@ function _recordLoginFail(pwErrEl, loginBtn) {
         pwErrEl.textContent = '5회 실패. 30초 후 다시 시도하세요.';
     }
     loginBtn.textContent = '로그인'; loginBtn.disabled = false;
+    _saveFailState();
 }
 
 // ── 로그인 ───────────────────────────────────────────────
@@ -1946,10 +1962,8 @@ async function doLogin() {
         await _fbAuth.signInWithEmailAndPassword(email, pw);
 
         // ② DB에서 계정 메타데이터 확인 (등록된 사용자인지 + mustChangePassword)
-        const key   = email.replace(/[@.]/g, '_');
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const res     = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`);
+        const key     = email.replace(/[@.]/g, '_');
+        const res     = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
         const account = (res.ok) ? await res.json() : null;
 
         if (!account) {
@@ -1965,8 +1979,9 @@ async function doLogin() {
         // ③ 인증 성공 → 실패 카운트 DB 기록 후 초기화 (어드민 확인용)
         const _prevFailCount = _loginFailCount;
         _loginFailCount = 0; _loginLockUntil = 0;
+        _saveFailState();
         // 이전 실패 횟수를 accounts 레코드에 기록 (fire-and-forget)
-        fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+        _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
@@ -1983,7 +1998,7 @@ async function doLogin() {
         // 로그인 전 조회된 주차 Firebase 기록 재시도 (인증 전 silent-fail 대응)
         if (_pendingViewWeekId) _incrementFirebaseView(_pendingViewWeekId);
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'esl_login', user_email: email });
+        sha256(email).then(h => window.dataLayer.push({ event: 'esl_login', user_email_hash: h }));
 
         const overlay = document.getElementById('loginOverlay');
         overlay.style.transition = 'opacity 0.3s';
@@ -1995,7 +2010,7 @@ async function doLogin() {
         // → mustChangePassword가 true여도 DB에서 자동 해제
         if (account.mustChangePassword) {
             const { passwordHash: _ph, ...rest } = account;
-            fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+            _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
                 method:  'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify({ ...rest, mustChangePassword: false })
@@ -2076,10 +2091,8 @@ async function _tryLegacyMigration(email, pw, emailEl, emailErr, pwEl, pwErr, lo
         }
 
         // DB에서 passwordHash 제거 (마이그레이션 완료 표시)
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
         const { passwordHash: _removed, ...rest } = account;
-        await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+        await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify(rest)
@@ -2088,8 +2101,9 @@ async function _tryLegacyMigration(email, pw, emailEl, emailErr, pwEl, pwErr, lo
         // 로그인 성공 처리 (레거시 마이그레이션 완료)
         const _prevFailCountLeg = _loginFailCount;
         _loginFailCount = 0; _loginLockUntil = 0;
+        _saveFailState();
         // 마이그레이션 PUT에 loginFailCount 포함 (이미 위에서 PUT했으므로 PATCH로 덮어쓰기)
-        fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+        _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
@@ -2106,7 +2120,7 @@ async function _tryLegacyMigration(email, pw, emailEl, emailErr, pwEl, pwErr, lo
         // 로그인 전 조회된 주차 Firebase 기록 재시도 (인증 전 silent-fail 대응, 레거시 경로)
         if (_pendingViewWeekId) _incrementFirebaseView(_pendingViewWeekId);
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'esl_login', user_email: email });
+        sha256(email).then(h => window.dataLayer.push({ event: 'esl_login', user_email_hash: h }));
 
         const overlay = document.getElementById('loginOverlay');
         overlay.style.transition = 'opacity 0.3s';
@@ -2169,14 +2183,12 @@ async function doChangePassword() {
         await user.updatePassword(newPw);
 
         // DB에서 mustChangePassword: false 업데이트
-        const email = sessionStorage.getItem(AUTH_EMAIL_KEY);
-        const key   = email.replace(/[@.]/g, '_');
-        const token = await _getAuthToken();
-        const authQ = token ? `?auth=${token}` : '';
-        const getRes  = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`);
+        const email   = sessionStorage.getItem(AUTH_EMAIL_KEY);
+        const key     = email.replace(/[@.]/g, '_');
+        const getRes  = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
         const account = getRes.ok ? await getRes.json() : {};
 
-        await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json${authQ}`, {
+        await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ ...account, mustChangePassword: false })
