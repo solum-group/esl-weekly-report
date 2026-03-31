@@ -988,14 +988,16 @@ async function _getAuthToken() {
     catch { return null; }
 }
 
-// ── 인증 헬퍼: URL ?auth= 대신 Authorization: Bearer 헤더 사용 ──────
+/// ── 인증 헬퍼: Firebase REST API ?auth= 쿼리 파라미터로 인증 ──────────
+// Firebase Realtime Database REST API는 Authorization: Bearer 헤더를
+// ID 토큰 인증에 공식적으로 지원하지 않음. ?auth= 방식 사용.
 async function _authFetch(url, options = {}) {
     try {
         const user = _fbAuth.currentUser;
         if (user) {
             const token = await user.getIdToken();
-            const headers = { ...(options.headers || {}), 'Authorization': `Bearer ${token}` };
-            return fetch(url, { ...options, headers });
+            const sep   = url.includes('?') ? '&' : '?';
+            return fetch(`${url}${sep}auth=${token}`, options);
         }
     } catch(e) {}
     return fetch(url, options);
@@ -1220,11 +1222,11 @@ async function doSetupFirstAdmin() {
         const userCred = await _fbAuth.createUserWithEmailAndPassword(email, pw);
         const token    = await userCred.user.getIdToken();
 
-        // DB에 어드민 메타데이터 저장 (Authorization: Bearer 헤더 사용)
+        // DB에 어드민 메타데이터 저장 (?auth= 쿼리 파라미터 사용)
         const key = email.replace(/[@.]/g, '_');
-        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
+        const res = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json?auth=${token}`, {
             method:  'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
                 email,
                 mustChangePassword: false,

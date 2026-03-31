@@ -1830,15 +1830,16 @@ async function _getAuthToken() {
     catch { return null; }
 }
 
-// ── 인증 헬퍼: URL ?auth= 대신 Authorization: Bearer 헤더 사용 ──────
-// ?auth= 는 브라우저 히스토리·서버 로그에 토큰이 노출되는 문제가 있어 폐기
+/// ── 인증 헬퍼: Firebase REST API ?auth= 쿼리 파라미터로 인증 ──────────
+// Firebase Realtime Database REST API는 Authorization: Bearer 헤더를
+// ID 토큰 인증에 공식적으로 지원하지 않음. ?auth= 방식 사용.
 async function _authFetch(url, options = {}) {
     try {
         const user = _fbAuth.currentUser;
         if (user) {
             const token = await user.getIdToken();
-            const headers = { ...(options.headers || {}), 'Authorization': `Bearer ${token}` };
-            return fetch(url, { ...options, headers });
+            const sep   = url.includes('?') ? '&' : '?';
+            return fetch(`${url}${sep}auth=${token}`, options);
         }
     } catch(e) {}
     return fetch(url, options);
