@@ -1961,9 +1961,9 @@ async function doLogin() {
         // ① Firebase Auth로 로그인
         await _fbAuth.signInWithEmailAndPassword(email, pw);
 
-        // ② DB에서 계정 메타데이터 확인 (등록된 사용자인지 + mustChangePassword)
+        // ② DB에서 계정 메타데이터 확인 (accounts.read: true → 인증 토큰 불필요)
         const key     = email.replace(/[@.]/g, '_');
-        const res     = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
+        const res     = await fetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
         const account = (res.ok) ? await res.json() : null;
 
         if (!account) {

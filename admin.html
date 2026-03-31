@@ -1048,11 +1048,11 @@ _fbAuth.onAuthStateChanged(async function(user) {
             return;
         }
 
-        // DB에서 어드민 등록 확인
+        // DB에서 어드민 등록 확인 (admins.read: true → Bearer 토큰 불필요, 초기화 타이밍 오류 방지)
         const email = user.email;
         const key   = email.replace(/[@.]/g, '_');
         try {
-            const res     = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+            const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
             const account = res.ok ? await res.json() : null;
             if (!account) {
                 // Firebase Auth에는 계정이 있지만 DB에 어드민 등록 없음
@@ -1140,9 +1140,9 @@ async function doAdminLogin() {
         // ① Firebase Auth로 로그인
         await _fbAuth.signInWithEmailAndPassword(email, pw);
 
-        // ② DB에서 어드민 등록 확인
+        // ② DB에서 어드민 등록 확인 (admins.read: true → Bearer 토큰 불필요, 초기화 타이밍 오류 방지)
         const key   = email.replace(/[@.]/g, '_');
-        const res     = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
         const account = res.ok ? await res.json() : null;
 
         if (!account) {
