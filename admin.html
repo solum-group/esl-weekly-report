@@ -619,6 +619,7 @@
         <button class="tab-btn" id="tab-views" onclick="switchTab('views')">페이지 조회</button>
         <button class="tab-btn" id="tab-accounts" onclick="switchTab('accounts')">사용자 계정</button>
         <button class="tab-btn" id="tab-admins" onclick="switchTab('admins')">어드민 관리</button>
+        <button class="tab-btn" id="tab-auditlog" onclick="switchTab('auditlog')">감사 로그</button>
     </div>
 </div>
 
@@ -813,6 +814,59 @@
         </div>
     </div>
 
+    <!-- ── 감사 로그 탭 ── -->
+    <div class="tab-panel" id="panel-auditlog">
+        <div class="table-card">
+            <div class="table-header">
+                <div>
+                    <div class="table-title">감사 로그</div>
+                    <div class="table-meta" id="auditLogMeta">어드민 활동 기록 · 최근 200건</div>
+                </div>
+                <button class="refresh-btn" id="refreshAuditBtn" onclick="loadAuditLog()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="23 4 23 10 17 10"/>
+                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                    </svg>
+                    새로고침
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:180px;">일시</th>
+                        <th style="width:200px;">어드민</th>
+                        <th style="width:140px;">액션</th>
+                        <th>대상</th>
+                        <th style="width:200px;">상세</th>
+                    </tr>
+                </thead>
+                <tbody id="auditLogTableBody">
+                    <tr class="loading-row"><td colspan="5">데이터 로딩 중…</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 부트스트랩 코드 변경 -->
+        <div class="create-card" style="margin-top:24px;">
+            <div class="create-card-title">🔑 부트스트랩 코드 변경</div>
+            <div class="create-card-desc">
+                어드민이 모두 삭제되었을 때 첫 어드민을 생성하기 위한 코드입니다.
+                변경 즉시 Firebase DB에 SHA-256 해시로 저장됩니다.
+            </div>
+            <div class="create-row" style="flex-direction:column; align-items:stretch; gap:10px;">
+                <input class="create-input" type="password" id="newBootstrapCode"
+                    placeholder="새 부트스트랩 코드 (8자 이상 권장)"
+                    style="width:100%; max-width:400px;">
+                <input class="create-input" type="password" id="newBootstrapCodeConfirm"
+                    placeholder="코드 확인"
+                    style="width:100%; max-width:400px;">
+                <button class="create-btn" id="updateBootstrapBtn"
+                    onclick="updateBootstrapCode()" style="max-width:160px;">코드 변경</button>
+            </div>
+            <div class="create-error" id="bootstrapUpdateError"></div>
+        </div>
+    </div>
+
     <!-- ── 어드민 관리 탭 ── -->
     <div class="tab-panel" id="panel-admins">
         <div class="create-card">
@@ -979,6 +1033,7 @@ function switchTab(name) {
     if (name === 'access')   loadData();
     if (name === 'admins')   loadAdmins();
     if (name === 'views')    loadViewsData();
+    if (name === 'auditlog') loadAuditLog();
 }
 
 // ── 초기화 (Firebase Auth onAuthStateChanged) ────────────────────────
@@ -1105,6 +1160,7 @@ async function doAdminLogin() {
         sessionStorage.setItem(ADMIN_EMAIL_KEY,        email);
         sessionStorage.setItem(ADMIN_LOGIN_TIME_KEY,   String(_loginNow));
         sessionStorage.setItem(ADMIN_ACTIVE_TIME_KEY,  String(_loginNow));
+        _auditLog('adminLogin', email, '로그인 성공');
         showDashboard(email);
 
         if (account.mustChangePassword) {
@@ -1149,9 +1205,10 @@ async function doSetupFirstAdmin() {
     const pw    = pwEl.value;
     const pwCf  = pwCfEl.value;
 
-    // 부트스트랩 코드는 평문 대신 SHA-256 해시로 비교 (소스 코드에 평문 노출 방지)
-    const codeHash = await sha256(code);
-    if (codeHash !== BOOTSTRAP_CODE_HASH) { codeErr.textContent = '부트스트랩 코드가 올바르지 않습니다.'; return; }
+    // 부트스트랩 코드: Firebase DB에서 해시 조회 (없으면 소스 내 기본값 사용)
+    const codeHash       = await sha256(code);
+    const expectedHash   = await _getBootstrapCodeHash();
+    if (codeHash !== expectedHash) { codeErr.textContent = '부트스트랩 코드가 올바르지 않습니다.'; return; }
     if (!email || !email.includes('@')) { emailErr.textContent = '올바른 이메일을 입력하세요.'; return; }
     if (!isStrongPw(pw)) { pwErr.textContent = '8자 이상, 영문+숫자+특수문자 조합이어야 합니다.'; return; }
     if (pw !== pwCf)      { pwCfErr.textContent = '비밀번호가 일치하지 않습니다.'; return; }
@@ -1267,6 +1324,8 @@ function _clearAdminSession() {
 
 // ── 어드민 로그아웃 ──────────────────────────────────────────────────
 function doAdminLogout(isAuto = false) {
+    const logEmail = sessionStorage.getItem(ADMIN_EMAIL_KEY) || '';
+    _auditLog('adminLogout', logEmail, isAuto ? '자동 로그아웃 (세션 만료)' : '수동 로그아웃');
     _clearAdminSession();
     document.getElementById('adminEmail').value = '';
     document.getElementById('adminPw').value    = '';
@@ -1767,6 +1826,7 @@ async function createAccount() {
         emailEl.value       = '';
         errorEl.textContent = '';
         errorEl.style.color = '#16a34a';
+        await _auditLog('createAccount', email, '신규 계정 생성 + 비밀번호 설정 이메일 발송');
         errorEl.textContent = `✓ ${email} 계정이 생성되었습니다. 비밀번호 설정 이메일이 발송되었습니다.`;
         setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
         loadAccounts();
@@ -1782,6 +1842,7 @@ async function createAccount() {
                 body:    JSON.stringify({ email, mustChangePassword: true, createdAt: new Date().toISOString() })
             });
             await _fbAuth.sendPasswordResetEmail(email);
+            await _auditLog('createAccount', email, 'Firebase Auth 기존 계정 → DB 등록');
             emailEl.value = '';
             errorEl.style.color = '#16a34a';
             errorEl.textContent = `✓ ${email} 계정이 등록되었습니다. 비밀번호 재설정 이메일이 발송되었습니다.`;
@@ -1812,6 +1873,7 @@ async function resetPassword(key, email) {
             body:    JSON.stringify({ ...rest, mustChangePassword: true })
         });
 
+        await _auditLog('resetPassword', email, '비밀번호 재설정 이메일 발송');
         alert(`${email} 계정으로 비밀번호 재설정 이메일이 발송되었습니다.`);
         loadAccounts();
 
@@ -1826,6 +1888,7 @@ async function deleteAccount(key, email) {
     try {
         const res = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, { method: 'DELETE' });
         if (!res.ok) throw new Error(`DELETE ${res.status}`);
+        await _auditLog('deleteAccount', email, 'DB에서 계정 삭제 (Firebase Auth는 Console에서 별도 삭제 필요)');
         alert(`${email} 계정이 삭제되었습니다.`);
         loadAccounts();
     } catch (e) {
@@ -1987,6 +2050,7 @@ async function createAdmin() {
 
         emailEl.value       = '';
         errorEl.style.color = '#16a34a';
+        await _auditLog('createAdmin', email, '신규 어드민 생성 + 비밀번호 설정 이메일 발송');
         errorEl.textContent = `✓ ${email} 어드민 계정이 생성되었습니다. 비밀번호 설정 이메일이 발송되었습니다.`;
         setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
         loadAdmins();
@@ -2013,6 +2077,7 @@ async function resetAdminPassword(key, email) {
             body:    JSON.stringify({ ...rest, mustChangePassword: true })
         });
         if (!res.ok) throw new Error(`PUT ${res.status}`);
+        await _auditLog('resetAdminPassword', email, '어드민 비밀번호 재설정 이메일 발송');
         alert(`${email} 어드민으로 비밀번호 재설정 이메일이 발송되었습니다.`);
         loadAdmins();
     } catch (e) {
@@ -2026,6 +2091,7 @@ async function deleteAdmin(key, email) {
     try {
         const res = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`, { method: 'DELETE' });
         if (!res.ok) throw new Error(`DELETE ${res.status}`);
+        await _auditLog('deleteAdmin', email, 'DB에서 어드민 삭제 (Firebase Auth는 Console에서 별도 삭제 필요)');
         alert(`${email} 어드민 계정이 삭제되었습니다.`);
         loadAdmins();
     } catch (e) {
@@ -2047,6 +2113,168 @@ document.addEventListener('click', function(e) {
     else if (action === 'delete-admin')  deleteAdmin(key, email);
 });
 
+// ── 세션 DB 재검증 (30분마다 어드민 권한 확인) ────────────────────────
+const SESSION_VERIFY_INTERVAL_MS = 30 * 60 * 1000; // 30분
+let _lastSessionVerifyAt = 0;
+
+async function _verifyAdminSessionInDB() {
+    const email = sessionStorage.getItem(ADMIN_EMAIL_KEY);
+    if (!email || !_fbAuth.currentUser) return;
+    const key = email.replace(/[@.]/g, '_');
+    try {
+        const res     = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        const account = res.ok ? await res.json() : null;
+        if (!account || !account.email) {
+            alert('어드민 권한이 해제되었거나 계정이 삭제되었습니다.\n다시 로그인해주세요.');
+            doAdminLogout(true);
+        }
+    } catch(e) {
+        // 네트워크 오류 시 로그아웃하지 않음 — 다음 주기에 재시도
+        console.warn('세션 재검증 실패 (네트워크 오류):', e);
+    }
+}
+
+// ── 감사 로그 (Audit Log) ─────────────────────────────────────────────
+const ACTION_LABELS = {
+    adminLogin:          '로그인',
+    adminLogout:         '로그아웃',
+    createAccount:       '계정 생성',
+    deleteAccount:       '계정 삭제',
+    resetPassword:       '비밀번호 초기화',
+    createAdmin:         '어드민 생성',
+    deleteAdmin:         '어드민 삭제',
+    resetAdminPassword:  '어드민 비밀번호 초기화',
+    updateBootstrapCode: '부트스트랩 코드 변경',
+};
+
+async function _auditLog(action, targetEmail = '', details = '') {
+    const adminEmail = sessionStorage.getItem(ADMIN_EMAIL_KEY) || '';
+    const entry = {
+        adminEmail,
+        action,
+        targetEmail,
+        details,
+        timestamp: new Date().toISOString()
+    };
+    // 키: ISO 타임스탬프 기반 (정렬 가능)
+    const key = entry.timestamp.replace(/[:.]/g, '-');
+    try {
+        await _authFetch(`${FIREBASE_DB_URL}/admin_logs/${key}.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(entry)
+        });
+    } catch(e) {
+        console.warn('감사 로그 기록 실패:', e);
+    }
+}
+
+async function loadAuditLog() {
+    const btn   = document.getElementById('refreshAuditBtn');
+    const tbody = document.getElementById('auditLogTableBody');
+    const meta  = document.getElementById('auditLogMeta');
+    btn.classList.add('spinning'); btn.disabled = true;
+
+    try {
+        // orderBy timestamp desc, 최근 200건
+        const url = `${FIREBASE_DB_URL}/admin_logs.json?orderBy="timestamp"&limitToLast=200`;
+        const res  = await _authFetch(url);
+        const data = res.ok ? await res.json() : null;
+
+        if (!data || typeof data !== 'object') {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="5">기록된 로그가 없습니다.</td></tr>`;
+            meta.textContent = '어드민 활동 기록 · 0건';
+            return;
+        }
+
+        const rows = Object.values(data)
+            .filter(r => r && r.timestamp)
+            .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+
+        meta.textContent = `어드민 활동 기록 · ${rows.length}건`;
+
+        const actionColor = {
+            deleteAccount: '#ef4444', deleteAdmin: '#ef4444',
+            createAccount: '#16a34a', createAdmin: '#16a34a',
+            adminLogin: '#2563eb', adminLogout: '#6b7280',
+            resetPassword: '#f59e0b', resetAdminPassword: '#f59e0b',
+            updateBootstrapCode: '#7c3aed',
+        };
+
+        tbody.innerHTML = rows.map(r => {
+            const color = actionColor[r.action] || '#4e5968';
+            const label = ACTION_LABELS[r.action] || r.action;
+            return `
+            <tr>
+                <td class="date-cell" style="font-size:12px;">${fmtDate(r.timestamp)}</td>
+                <td class="email-cell" style="font-size:13px;">${escapeHtml(r.adminEmail || '–')}</td>
+                <td><span style="
+                    display:inline-block; padding:2px 8px; border-radius:100px;
+                    font-size:12px; font-weight:700; color:${color};
+                    background:${color}18;">${label}</span></td>
+                <td class="email-cell" style="font-size:13px;">${escapeHtml(r.targetEmail || '–')}</td>
+                <td style="font-size:12px; color:var(--text-secondary);">${escapeHtml(r.details || '–')}</td>
+            </tr>`;
+        }).join('');
+
+    } catch(e) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터를 불러오지 못했습니다.</td></tr>`;
+        console.error(e);
+    }
+    btn.classList.remove('spinning'); btn.disabled = false;
+}
+
+// ── 부트스트랩 코드 관리 ───────────────────────────────────────────────
+async function _getBootstrapCodeHash() {
+    // Firebase DB에서 먼저 조회 → 없으면 소스 내 기본값 사용
+    try {
+        const res = await fetch(`${FIREBASE_DB_URL}/config/bootstrapCodeHash.json`);
+        if (res.ok) {
+            const val = await res.json();
+            if (val && typeof val === 'string' && val.length === 64) return val;
+        }
+    } catch(e) {}
+    return BOOTSTRAP_CODE_HASH; // fallback
+}
+
+async function updateBootstrapCode() {
+    const codeEl    = document.getElementById('newBootstrapCode');
+    const confirmEl = document.getElementById('newBootstrapCodeConfirm');
+    const errorEl   = document.getElementById('bootstrapUpdateError');
+    const btn       = document.getElementById('updateBootstrapBtn');
+
+    errorEl.textContent = ''; errorEl.style.color = '';
+    const code    = codeEl.value.trim();
+    const confirm = confirmEl.value.trim();
+
+    if (!code || code.length < 8) {
+        errorEl.textContent = '코드는 8자 이상이어야 합니다.'; return;
+    }
+    if (code !== confirm) {
+        errorEl.textContent = '코드가 일치하지 않습니다.'; return;
+    }
+
+    btn.textContent = '변경 중…'; btn.disabled = true;
+    try {
+        const hash = await sha256(code);
+        const res  = await _authFetch(`${FIREBASE_DB_URL}/config/bootstrapCodeHash.json`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(hash)
+        });
+        if (!res.ok) throw new Error(`PUT ${res.status}`);
+        await _auditLog('updateBootstrapCode', '', '부트스트랩 코드 해시 업데이트');
+        codeEl.value = ''; confirmEl.value = '';
+        errorEl.style.color = '#16a34a';
+        errorEl.textContent = '✓ 부트스트랩 코드가 변경되었습니다.';
+        setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 4000);
+    } catch(e) {
+        errorEl.textContent = '변경 중 오류가 발생했습니다.';
+        console.error(e);
+    }
+    btn.textContent = '코드 변경'; btn.disabled = false;
+}
+
 // ── 자동 로그아웃 ────────────────────────────────────────────────────
 function checkAdminTokenExpiry() {
     if (!_fbAuth.currentUser) return;
@@ -2061,7 +2289,12 @@ function checkAdminTokenExpiry() {
     }
     if (now - activeTime > ADMIN_ACCESS_TOKEN_MS) {
         alert('1시간 동안 활동이 없어 자동 로그아웃 되었습니다.\n다시 로그인해주세요.');
-        doAdminLogout(true);
+        doAdminLogout(true); return;
+    }
+    // 30분마다 DB에서 어드민 권한 재검증
+    if (now - _lastSessionVerifyAt > SESSION_VERIFY_INTERVAL_MS) {
+        _lastSessionVerifyAt = now;
+        _verifyAdminSessionInDB();
     }
 }
 

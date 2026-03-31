@@ -1,46 +1,50 @@
 {
   "rules": {
-    // ── 어드민 계정 메타데이터 ──────────────────────────────────────────
-    // 공개 읽기: 부트스트랩 화면에서 어드민 존재 여부 확인에 필요
-    //           (admins 컬렉션에 계정이 있는지 여부만 확인 → mustChangePassword 등 노출됨)
-    // TODO: 부트스트랩 완료 후 "auth != null"로 변경 권장
-    // 쓰기: Firebase Auth 인증 필수
+    ".read": false,
+    ".write": false,
+
+    "ai-tracker": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
     "admins": {
       ".read": true,
       ".write": "auth != null"
     },
 
-    // ── 일반 사용자 계정 메타데이터 ────────────────────────────────────
-    // 읽기: 마이그레이션 기간 동안 공개 (로그인 전 레거시 SHA-256 비교에 필요)
-    //       DB의 passwordHash 필드가 모두 제거되면 아래를 "auth != null"로 변경할 것
-    // 쓰기: 인증 필수
     "accounts": {
       ".read": true,
       ".write": "auth != null"
     },
 
-    // ── 로그인 이력 ────────────────────────────────────────────────────
-    // 읽기: 인증 필수 (어드민만 접속 현황 조회)
-    // 쓰기: 인증 필수 (로그인 성공 후 기록)
     "logins": {
       ".read": "auth != null",
       ".write": "auth != null"
     },
 
-    // ── 주차별 조회수 ──────────────────────────────────────────────────
-    // 읽기: 공개 (조회수 표시는 누구나 볼 수 있음)
-    // 쓰기: 인증 필수 (인증된 사용자만 조회수 증가 가능)
     "views": {
       ".read": true,
       ".write": "auth != null"
     },
 
-    // ── 좋아요 카운트 ──────────────────────────────────────────────────
-    // 읽기: 공개 (좋아요 수 표시는 누구나 볼 수 있음)
-    // 쓰기: 인증 필수 (로그인한 사용자만 좋아요 가능)
     "likes": {
       ".read": true,
       ".write": "auth != null"
+    },
+
+    "admin_logs": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      ".indexOn": ["timestamp"]
+    },
+
+    "config": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "bootstrapCodeHash": {
+        ".read": true
+      }
     }
   }
 }
