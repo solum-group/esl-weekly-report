@@ -1885,10 +1885,33 @@ _fbAuth.onAuthStateChanged(function(user) {
             showChangePwOverlay();
         }
     } else {
-        // Firebase에 로그인된 사용자 없음 → 로그인 화면 표시
+        // Firebase Auth가 null을 반환 — doLogout() 호출 후 signOut()이 트리거한 경우와
+        // Firebase가 독립적으로 세션을 만료시킨 경우 모두 처리
+        const wasLoggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
         sessionStorage.removeItem(AUTH_KEY);
         sessionStorage.removeItem(AUTH_EMAIL_KEY);
-        setTimeout(() => document.getElementById('loginEmail').focus(), 100);
+        sessionStorage.removeItem(AUTH_LOGIN_TIME_KEY);
+        sessionStorage.removeItem(AUTH_ACTIVE_TIME_KEY);
+
+        if (wasLoggedIn) {
+            // doLogout() 없이 Firebase가 세션을 만료시킨 경우 → loginOverlay 표시 + 모달
+            const overlay = document.getElementById('loginOverlay');
+            if (overlay) {
+                overlay.style.opacity = '1';
+                overlay.classList.remove('hidden');
+            }
+            const modal   = document.getElementById('autoLogoutModal');
+            const titleEl = document.getElementById('autoLogoutTitle');
+            const msgEl   = document.getElementById('autoLogoutMsg');
+            if (modal && titleEl && msgEl && modal.classList.contains('hidden')) {
+                // 이미 doLogout()이 모달을 표시한 경우에는 중복 표시 방지
+                titleEl.textContent = '세션이 만료되었습니다';
+                msgEl.innerHTML     = '로그인 세션이 만료되어<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
+                modal.classList.remove('hidden');
+            }
+        } else {
+            setTimeout(() => document.getElementById('loginEmail').focus(), 100);
+        }
     }
 });
 
@@ -2264,7 +2287,8 @@ function closeAutoLogoutModal() {
 
 // ── 토큰 만료 확인 ────────────────────────────────────────
 function checkTokenExpiry() {
-    if (!_fbAuth.currentUser) return;
+    // AUTH_KEY로만 판단 — _fbAuth.currentUser는 토큰 갱신 중 일시적으로 null이 될 수 있어
+    // admin.html의 checkAdminTokenExpiry와 동일한 방식으로 sessionStorage 기반으로 체크
     if (sessionStorage.getItem(AUTH_KEY) !== 'true') return;
     const now        = Date.now();
     const loginTime  = parseInt(sessionStorage.getItem(AUTH_LOGIN_TIME_KEY)  || '0');
