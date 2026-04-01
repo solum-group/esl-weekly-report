@@ -52,6 +52,37 @@
             padding: 24px;
         }
         #setupOverlay.hidden, #adminChangePwOverlay.hidden { display: none; }
+        /* ── AUTO-LOGOUT MODAL ── */
+        #adminAutoLogoutModal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 10001;
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(4px);
+        }
+        #adminAutoLogoutModal.hidden { display: none; }
+        .admin-logout-card {
+            background: #1a1a2e;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px 32px;
+            width: 100%; max-width: 360px;
+            text-align: center;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+        }
+        .admin-logout-icon { font-size: 3rem; margin-bottom: 16px; line-height: 1; }
+        .admin-logout-title { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+        .admin-logout-msg { font-size: 0.875rem; color: rgba(255,255,255,0.55); line-height: 1.65; margin-bottom: 28px; }
+        .admin-logout-msg strong { color: rgba(255,255,255,0.8); }
+        .admin-logout-btn {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #6c63ff, #a78bfa);
+            color: #fff; border: none; border-radius: 12px;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer;
+            transition: opacity 0.2s; letter-spacing: -0.01em;
+        }
+        .admin-logout-btn:hover { opacity: 0.88; }
         .pw-requirements {
             display: grid; grid-template-columns: 1fr 1fr;
             gap: 6px; margin: 4px 0 14px;
@@ -1045,9 +1076,11 @@ _fbAuth.onAuthStateChanged(async function(user) {
         const now        = Date.now();
         const loginTime  = parseInt(sessionStorage.getItem(ADMIN_LOGIN_TIME_KEY)  || '0');
         const activeTime = parseInt(sessionStorage.getItem(ADMIN_ACTIVE_TIME_KEY) || '0');
-        if (loginTime && (now - loginTime > ADMIN_REFRESH_TOKEN_MS || now - activeTime > ADMIN_ACCESS_TOKEN_MS)) {
-            doAdminLogout(true);
-            return;
+        if (loginTime && now - loginTime > ADMIN_REFRESH_TOKEN_MS) {
+            doAdminLogout(true, 'refresh'); return;
+        }
+        if (loginTime && now - activeTime > ADMIN_ACCESS_TOKEN_MS) {
+            doAdminLogout(true, 'access'); return;
         }
 
         // DB에서 어드민 등록 확인 (admins.read: true → Bearer 토큰 불필요, 초기화 타이밍 오류 방지)
@@ -1325,9 +1358,10 @@ function _clearAdminSession() {
 }
 
 // ── 어드민 로그아웃 ──────────────────────────────────────────────────
-function doAdminLogout(isAuto = false) {
+function doAdminLogout(isAuto = false, reason = '') {
     const logEmail = sessionStorage.getItem(ADMIN_EMAIL_KEY) || '';
     _auditLog('adminLogout', logEmail, isAuto ? '자동 로그아웃 (세션 만료)' : '수동 로그아웃');
+    _fbAuth.signOut().catch(() => {});
     _clearAdminSession();
     document.getElementById('adminEmail').value = '';
     document.getElementById('adminPw').value    = '';
@@ -1336,6 +1370,29 @@ function doAdminLogout(isAuto = false) {
     document.getElementById('adminEmailBadge').style.display = 'none';
     document.getElementById('adminChangePwOverlay').classList.add('hidden');
     document.getElementById('loginOverlay').classList.remove('hidden');
+
+    if (isAuto) {
+        const modal   = document.getElementById('adminAutoLogoutModal');
+        const titleEl = document.getElementById('adminAutoLogoutTitle');
+        const msgEl   = document.getElementById('adminAutoLogoutMsg');
+        if (reason === 'refresh') {
+            titleEl.textContent = '세션이 만료되었습니다';
+            msgEl.innerHTML     = '로그인 후 <strong>2시간</strong>이 경과하여<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
+        } else if (reason === 'revoked') {
+            titleEl.textContent = '접근 권한 해제';
+            msgEl.innerHTML     = '어드민 권한이 해제되었거나<br>계정이 삭제되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
+        } else {
+            titleEl.textContent = '자동 로그아웃';
+            msgEl.innerHTML     = '<strong>1시간</strong> 동안 활동이 없어<br>자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.';
+        }
+        modal.classList.remove('hidden');
+    } else {
+        setTimeout(() => document.getElementById('adminEmail').focus(), 100);
+    }
+}
+
+function closeAdminAutoLogoutModal() {
+    document.getElementById('adminAutoLogoutModal').classList.add('hidden');
     setTimeout(() => document.getElementById('adminEmail').focus(), 100);
 }
 
@@ -2127,8 +2184,7 @@ async function _verifyAdminSessionInDB() {
         const res     = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
         const account = res.ok ? await res.json() : null;
         if (!account || !account.email) {
-            alert('어드민 권한이 해제되었거나 계정이 삭제되었습니다.\n다시 로그인해주세요.');
-            doAdminLogout(true);
+            doAdminLogout(true, 'revoked');
         }
     } catch(e) {
         // 네트워크 오류 시 로그아웃하지 않음 — 다음 주기에 재시도
@@ -2285,14 +2341,8 @@ function checkAdminTokenExpiry() {
     const loginTime  = parseInt(sessionStorage.getItem(ADMIN_LOGIN_TIME_KEY)  || '0');
     const activeTime = parseInt(sessionStorage.getItem(ADMIN_ACTIVE_TIME_KEY) || '0');
     if (!loginTime) return;
-    if (now - loginTime  > ADMIN_REFRESH_TOKEN_MS) {
-        alert('로그인 후 2시간이 경과하여 자동 로그아웃 되었습니다.\n다시 로그인해주세요.');
-        doAdminLogout(true); return;
-    }
-    if (now - activeTime > ADMIN_ACCESS_TOKEN_MS) {
-        alert('1시간 동안 활동이 없어 자동 로그아웃 되었습니다.\n다시 로그인해주세요.');
-        doAdminLogout(true); return;
-    }
+    if (now - loginTime  > ADMIN_REFRESH_TOKEN_MS) { doAdminLogout(true, 'refresh'); return; }
+    if (now - activeTime > ADMIN_ACCESS_TOKEN_MS)  { doAdminLogout(true, 'access');  return; }
     // 30분마다 DB에서 어드민 권한 재검증
     if (now - _lastSessionVerifyAt > SESSION_VERIFY_INTERVAL_MS) {
         _lastSessionVerifyAt = now;
@@ -2318,5 +2368,15 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pageshow', () => checkAdminTokenExpiry());
 setInterval(checkAdminTokenExpiry, 60 * 1000);
 </script>
+
+<!-- ADMIN AUTO LOGOUT MODAL -->
+<div id="adminAutoLogoutModal" class="hidden">
+    <div class="admin-logout-card">
+        <div class="admin-logout-icon">⏱️</div>
+        <div class="admin-logout-title" id="adminAutoLogoutTitle">자동 로그아웃</div>
+        <div class="admin-logout-msg" id="adminAutoLogoutMsg">보안을 위해 자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.</div>
+        <button class="admin-logout-btn" onclick="closeAdminAutoLogoutModal()">다시 로그인</button>
+    </div>
+</div>
 </body>
 </html>
