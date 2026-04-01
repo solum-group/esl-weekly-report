@@ -486,29 +486,40 @@
             border: 1px solid #fdba74;
         }
         .text-muted { color: var(--text-3); font-size: 0.85rem; }
-        .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+        .actions-cell { display: flex; gap: 6px; flex-wrap: nowrap; align-items: center; }
+        .action-btn { white-space: nowrap; }
         /* ── 이름 인라인 편집 ── */
-        .name-edit-wrapper { display: flex; align-items: center; gap: 5px; }
+        .name-cell  { padding-left: 12px !important; padding-right: 8px  !important; }
+        .manage-cell { padding-left: 12px !important; padding-right: 16px !important; }
+        .name-edit-wrapper { display: flex; align-items: center; gap: 6px; }
         .name-input {
             flex: 1; min-width: 0;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 8px; padding: 5px 10px;
-            color: #fff; font-size: 0.8rem; outline: none;
+            background: var(--bg-base);
+            border: 1.5px solid var(--border);
+            border-radius: 8px; padding: 6px 10px;
+            color: var(--text-primary);
+            font-size: 0.8rem; font-family: inherit; outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
+        .name-input:hover { border-color: #c4c9d0; }
         .name-input:focus {
-            border-color: rgba(108,99,255,0.6);
-            background: rgba(255,255,255,0.08);
+            border-color: #7c5cfc;
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.1);
+            background: #fff;
         }
-        .name-input::placeholder { color: rgba(255,255,255,0.2); }
+        .name-input::placeholder {
+            color: var(--text-tertiary);
+            font-size: 0.78rem;
+        }
         .name-save-btn {
-            flex-shrink: 0; padding: 4px 10px;
+            flex-shrink: 0; padding: 5px 12px;
             background: #6c63ff; color: #fff;
-            border: none; border-radius: 6px;
-            font-size: 0.72rem; font-weight: 700; cursor: pointer;
-            white-space: nowrap; transition: opacity 0.15s;
+            border: none; border-radius: 8px;
+            font-size: 0.72rem; font-weight: 700;
+            cursor: pointer; font-family: inherit;
+            white-space: nowrap; transition: background 0.15s;
         }
-        .name-save-btn:hover { opacity: 0.85; }
+        .name-save-btn:hover { background: #5b52e8; }
         .name-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .name-save-btn.hidden { display: none; }
 
@@ -858,13 +869,13 @@
                 <thead>
                     <tr>
                         <th style="width:48px;">#</th>
-                        <th style="width:160px;">이름</th>
+                        <th style="width:180px;">이름</th>
                         <th>이메일</th>
                         <th style="width:130px;">비밀번호 상태</th>
-                        <th style="width:160px;">마지막 접속</th>
-                        <th style="width:100px;">이전 실패</th>
-                        <th style="width:160px;">생성일</th>
-                        <th style="width:200px;">관리</th>
+                        <th style="width:150px;">마지막 접속</th>
+                        <th style="width:90px;">이전 실패</th>
+                        <th style="width:150px;">생성일</th>
+                        <th style="width:220px;">관리</th>
                     </tr>
                 </thead>
                 <tbody id="accountsTableBody">
@@ -1831,12 +1842,12 @@ async function loadAccounts() {
             return `
             <tr>
                 <td class="rank">${i + 1}</td>
-                <td>
+                <td class="name-cell">
                     <div class="name-edit-wrapper">
                         <input class="name-input" type="text"
                             id="name-${escapedKey}"
                             value="${escapedName}"
-                            placeholder="이름 입력"
+                            placeholder="이름을 입력하세요"
                             oninput="onAccountNameInput('${escapedKey}')">
                         <button class="name-save-btn hidden"
                             id="name-save-${escapedKey}"
@@ -1848,7 +1859,7 @@ async function loadAccounts() {
                 <td class="date-cell">${lastSeenCell}</td>
                 <td style="text-align:center;">${failBadge}</td>
                 <td class="date-cell">${fmtDate(r.createdAt)}</td>
-                <td>
+                <td class="manage-cell">
                     <div class="actions-cell">
                         <button class="action-btn reset"
                             data-key="${escapedKey}" data-email="${escapedEmail}"
