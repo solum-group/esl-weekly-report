@@ -487,6 +487,30 @@
         }
         .text-muted { color: var(--text-3); font-size: 0.85rem; }
         .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+        /* ── 이름 인라인 편집 ── */
+        .name-edit-wrapper { display: flex; align-items: center; gap: 5px; }
+        .name-input {
+            flex: 1; min-width: 0;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px; padding: 5px 10px;
+            color: #fff; font-size: 0.8rem; outline: none;
+        }
+        .name-input:focus {
+            border-color: rgba(108,99,255,0.6);
+            background: rgba(255,255,255,0.08);
+        }
+        .name-input::placeholder { color: rgba(255,255,255,0.2); }
+        .name-save-btn {
+            flex-shrink: 0; padding: 4px 10px;
+            background: #6c63ff; color: #fff;
+            border: none; border-radius: 6px;
+            font-size: 0.72rem; font-weight: 700; cursor: pointer;
+            white-space: nowrap; transition: opacity 0.15s;
+        }
+        .name-save-btn:hover { opacity: 0.85; }
+        .name-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .name-save-btn.hidden { display: none; }
 
         /* ── FOOTER ── */
         .footer {
@@ -788,6 +812,10 @@
             <div class="create-card-title">신규 계정 생성</div>
             <div class="create-card-desc">생성된 계정은 초기 비밀번호로 설정되며, 최초 로그인 시 비밀번호 변경을 요구합니다.</div>
             <div class="create-row">
+                <input class="create-input" type="text" id="newAccountName"
+                    placeholder="이름 (선택)"
+                    style="max-width:160px;"
+                    onkeydown="if(event.key==='Enter') createAccount()">
                 <input class="create-input" type="email" id="newAccountEmail"
                     placeholder="name@solum-group.com"
                     onkeydown="if(event.key==='Enter') createAccount()">
@@ -830,6 +858,7 @@
                 <thead>
                     <tr>
                         <th style="width:48px;">#</th>
+                        <th style="width:160px;">이름</th>
                         <th>이메일</th>
                         <th style="width:130px;">비밀번호 상태</th>
                         <th style="width:160px;">마지막 접속</th>
@@ -839,7 +868,7 @@
                     </tr>
                 </thead>
                 <tbody id="accountsTableBody">
-                    <tr class="loading-row"><td colspan="7">데이터 로딩 중…</td></tr>
+                    <tr class="loading-row"><td colspan="8">데이터 로딩 중…</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1752,7 +1781,7 @@ async function loadAccounts() {
         const loginData = loginRes.ok ? await loginRes.json() : {};
 
         if (!data || typeof data !== 'object') {
-            tbody.innerHTML = `<tr class="empty-row"><td colspan="7">생성된 계정이 없습니다.</td></tr>`;
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="8">생성된 계정이 없습니다.</td></tr>`;
             return;
         }
         const rows = Object.entries(data)
@@ -1761,7 +1790,7 @@ async function loadAccounts() {
             .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
         if (rows.length === 0) {
-            tbody.innerHTML = `<tr class="empty-row"><td colspan="7">생성된 계정이 없습니다.</td></tr>`;
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="8">생성된 계정이 없습니다.</td></tr>`;
             return;
         }
 
@@ -1796,9 +1825,24 @@ async function loadAccounts() {
                 ? `<span class="fail-badge" title="마지막 실패: ${failAt ? fmtDate(failAt) : '–'}">${failCount}회</span>`
                 : `<span class="text-muted">–</span>`;
 
+            const escapedKey   = escapeHtml(r.key);
+            const escapedEmail = escapeHtml(r.email);
+            const escapedName  = escapeHtml(r.name || '');
             return `
             <tr>
                 <td class="rank">${i + 1}</td>
+                <td>
+                    <div class="name-edit-wrapper">
+                        <input class="name-input" type="text"
+                            id="name-${escapedKey}"
+                            value="${escapedName}"
+                            placeholder="이름 입력"
+                            oninput="onAccountNameInput('${escapedKey}')">
+                        <button class="name-save-btn hidden"
+                            id="name-save-${escapedKey}"
+                            onclick="saveAccountName('${escapedKey}', '${escapedEmail}')">저장</button>
+                    </div>
+                </td>
                 <td class="email-cell">${escapeHtml(r.email)}</td>
                 <td>${pwBadge}</td>
                 <td class="date-cell">${lastSeenCell}</td>
@@ -1807,10 +1851,10 @@ async function loadAccounts() {
                 <td>
                     <div class="actions-cell">
                         <button class="action-btn reset"
-                            data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
+                            data-key="${escapedKey}" data-email="${escapedEmail}"
                             data-action="reset-account">🔄 초기화</button>
                         <button class="action-btn delete"
-                            data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
+                            data-key="${escapedKey}" data-email="${escapedEmail}"
                             data-action="delete-account">🗑 삭제</button>
                     </div>
                 </td>
@@ -1818,17 +1862,49 @@ async function loadAccounts() {
         }).join('');
 
     } catch (e) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="7">데이터를 불러오지 못했습니다.</td></tr>`;
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="8">데이터를 불러오지 못했습니다.</td></tr>`;
         console.error(e);
     }
     btn.classList.remove('spinning'); btn.disabled = false;
 }
 
+// ── 이름 인라인 편집 ──────────────────────────────────────────────────
+function onAccountNameInput(key) {
+    document.getElementById('name-save-' + key).classList.remove('hidden');
+}
+
+async function saveAccountName(key, email) {
+    const input = document.getElementById('name-' + key);
+    const btn   = document.getElementById('name-save-' + key);
+    const name  = input.value.trim();
+
+    btn.disabled = true; btn.textContent = '저장 중…';
+    try {
+        const res = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}/name.json`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(name || null)
+        });
+        if (!res.ok) throw new Error(`PUT ${res.status}`);
+        await _auditLog('updateAccountName', email, `이름 변경: "${name || '(삭제)'}"`);
+        input.value = name;
+        btn.classList.add('hidden');
+    } catch (e) {
+        console.error('이름 저장 오류:', e);
+        btn.textContent = '오류';
+        setTimeout(() => { btn.textContent = '저장'; btn.disabled = false; }, 2000);
+        return;
+    }
+    btn.textContent = '저장'; btn.disabled = false;
+}
+
 async function createAccount() {
     const emailEl  = document.getElementById('newAccountEmail');
+    const nameEl   = document.getElementById('newAccountName');
     const errorEl  = document.getElementById('createError');
     const btn      = document.getElementById('createBtn');
     const email    = emailEl.value.trim().toLowerCase();
+    const name     = nameEl ? nameEl.value.trim() : '';
 
     emailEl.classList.remove('error');
     errorEl.textContent = '';
@@ -1870,22 +1946,21 @@ async function createAccount() {
         await _fbAuth.sendPasswordResetEmail(email);
 
         // DB에 계정 메타데이터 저장
-        const now = new Date().toISOString();
+        const now     = new Date().toISOString();
+        const payload = { email, mustChangePassword: true, createdAt: now };
+        if (name) payload.name = name;
         const res = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({
-                email,
-                mustChangePassword: true,
-                createdAt:          now
-            })
+            body:    JSON.stringify(payload)
         });
         if (!res.ok) throw new Error(`PUT ${res.status}`);
 
         emailEl.value       = '';
+        if (nameEl) nameEl.value = '';
         errorEl.textContent = '';
         errorEl.style.color = '#16a34a';
-        await _auditLog('createAccount', email, '신규 계정 생성 + 비밀번호 설정 이메일 발송');
+        await _auditLog('createAccount', email, `신규 계정 생성 + 비밀번호 설정 이메일 발송${name ? ' (이름: ' + name + ')' : ''}`);
         errorEl.textContent = `✓ ${email} 계정이 생성되었습니다. 비밀번호 설정 이메일이 발송되었습니다.`;
         setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
         loadAccounts();
@@ -1898,11 +1973,12 @@ async function createAccount() {
             await _authFetch(`${FIREBASE_DB_URL}/accounts/${key2}.json`, {
                 method:  'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify({ email, mustChangePassword: true, createdAt: new Date().toISOString() })
+                body:    JSON.stringify(Object.assign({ email, mustChangePassword: true, createdAt: new Date().toISOString() }, name ? { name } : {}))
             });
             await _fbAuth.sendPasswordResetEmail(email);
-            await _auditLog('createAccount', email, 'Firebase Auth 기존 계정 → DB 등록');
+            await _auditLog('createAccount', email, `Firebase Auth 기존 계정 → DB 등록${name ? ' (이름: ' + name + ')' : ''}`);
             emailEl.value = '';
+            if (nameEl) nameEl.value = '';
             errorEl.style.color = '#16a34a';
             errorEl.textContent = `✓ ${email} 계정이 등록되었습니다. 비밀번호 재설정 이메일이 발송되었습니다.`;
             setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
@@ -2197,6 +2273,7 @@ const ACTION_LABELS = {
     adminLogin:          '로그인',
     adminLogout:         '로그아웃',
     createAccount:       '계정 생성',
+    updateAccountName:   '이름 변경',
     deleteAccount:       '계정 삭제',
     resetPassword:       '비밀번호 초기화',
     createAdmin:         '어드민 생성',
@@ -2254,6 +2331,7 @@ async function loadAuditLog() {
         const actionColor = {
             deleteAccount: '#ef4444', deleteAdmin: '#ef4444',
             createAccount: '#16a34a', createAdmin: '#16a34a',
+            updateAccountName: '#0ea5e9',
             adminLogin: '#2563eb', adminLogout: '#6b7280',
             resetPassword: '#f59e0b', resetAdminPassword: '#f59e0b',
             updateBootstrapCode: '#7c3aed',
