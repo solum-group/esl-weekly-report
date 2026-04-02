@@ -159,7 +159,7 @@
         }
         .header-inner {
             display: flex; align-items: center; justify-content: space-between;
-            width: 100%; max-width: 1100px; margin: 0 auto;
+            width: 100%; max-width: 1440px; margin: 0 auto;
         }
         .header-brand { display: flex; align-items: center; gap: 10px; }
         .header-icon {
@@ -191,7 +191,7 @@
         .logout-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
         /* ── MAIN ── */
-        .container { max-width: 1100px; margin: 0 auto; padding: 32px 40px; }
+        .container { max-width: 1440px; margin: 0 auto; padding: 32px 40px; }
 
         /* ── STAT CARDS ── */
         .stats-row {
@@ -523,6 +523,53 @@
         .name-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .name-save-btn.hidden { display: none; }
 
+        /* ── ACCOUNT SEARCH & FILTER BAR ── */
+        .acc-filter-bar {
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+            background: var(--bg-white);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 14px 20px;
+            margin-bottom: 12px;
+        }
+        .acc-search-wrap {
+            display: flex; align-items: center; gap: 8px;
+            flex: 1; min-width: 200px;
+            background: var(--bg-base);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-full);
+            padding: 7px 14px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .acc-search-wrap:focus-within {
+            border-color: #7c5cfc;
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.08);
+            background: #fff;
+        }
+        .acc-search-wrap svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-tertiary); }
+        .acc-search-input {
+            flex: 1; border: none; background: transparent; outline: none;
+            font-size: 0.82rem; font-family: inherit; color: var(--text-primary);
+        }
+        .acc-search-input::placeholder { color: var(--text-tertiary); }
+        .acc-filter-divider {
+            width: 1px; height: 20px; background: var(--border); flex-shrink: 0;
+        }
+        .acc-pw-filter { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .acc-pw-filter-label {
+            font-size: 0.72rem; font-weight: 700;
+            color: var(--text-tertiary); white-space: nowrap; letter-spacing: 0.3px;
+        }
+        .acc-result-count {
+            font-size: 0.75rem; color: var(--text-tertiary); font-weight: 600;
+            margin-left: auto; white-space: nowrap;
+        }
+        /* 테이블 가로 스크롤 wrapper (계정/어드민 목록) */
+        .table-overflow-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         /* ── FOOTER ── */
         .footer {
             text-align: center; padding: 24px;
@@ -850,6 +897,26 @@
             </div>
         </div>
 
+        <!-- 계정 목록 검색/필터 바 -->
+        <div class="acc-filter-bar">
+            <div class="acc-search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input class="acc-search-input" type="text" id="accountSearchInput"
+                    placeholder="이름 또는 이메일 검색…"
+                    oninput="filterAndRenderAccounts()">
+            </div>
+            <div class="acc-filter-divider"></div>
+            <span class="acc-pw-filter-label">비밀번호 상태</span>
+            <div class="acc-pw-filter">
+                <button class="filter-pill active" id="acc-pill-all"         onclick="setAccountPwFilter('all')">전체</button>
+                <button class="filter-pill"        id="acc-pill-normal"      onclick="setAccountPwFilter('normal')">✓ 정상</button>
+                <button class="filter-pill"        id="acc-pill-need-change" onclick="setAccountPwFilter('need-change')">✉ 메일 미확인</button>
+            </div>
+            <span class="acc-result-count" id="accResultCount"></span>
+        </div>
+
         <!-- 계정 목록 -->
         <div class="table-card">
             <div class="table-header">
@@ -865,23 +932,25 @@
                     새로고침
                 </button>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width:48px;">#</th>
-                        <th style="width:180px;">이름</th>
-                        <th>이메일</th>
-                        <th style="width:130px;">비밀번호 상태</th>
-                        <th style="width:150px;">마지막 접속</th>
-                        <th style="width:90px;">이전 실패</th>
-                        <th style="width:150px;">생성일</th>
-                        <th style="width:220px;">관리</th>
-                    </tr>
-                </thead>
-                <tbody id="accountsTableBody">
-                    <tr class="loading-row"><td colspan="8">데이터 로딩 중…</td></tr>
-                </tbody>
-            </table>
+            <div class="table-overflow-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:48px;">#</th>
+                            <th style="width:180px;">이름</th>
+                            <th style="min-width:200px;">이메일</th>
+                            <th style="width:130px;">비밀번호 상태</th>
+                            <th style="width:150px;">마지막 접속</th>
+                            <th style="width:90px;">이전 실패</th>
+                            <th style="width:150px;">생성일</th>
+                            <th style="width:230px;">관리</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountsTableBody">
+                        <tr class="loading-row"><td colspan="8">데이터 로딩 중…</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -1777,6 +1846,11 @@ function renderTrendChart() {
 }
 
 // ── 계정 관리 ─────────────────────────────────────────────────────────
+// 검색/필터용 전역 상태
+let _allAccountRows   = [];   // 전체 계정 rows (로드 후 캐시)
+let _accountLoginData = {};   // logins 데이터 캐시
+let _accountPwFilter  = 'all'; // 'all' | 'normal' | 'need-change'
+
 async function loadAccounts() {
     const btn   = document.getElementById('refreshAccountsBtn');
     const tbody = document.getElementById('accountsTableBody');
@@ -1789,24 +1863,27 @@ async function loadAccounts() {
             _authFetch(`${FIREBASE_DB_URL}/logins.json`)
         ]);
         const data      = await accRes.json();
-        const loginData = loginRes.ok ? await loginRes.json() : {};
+        _accountLoginData = loginRes.ok ? (await loginRes.json() || {}) : {};
 
         if (!data || typeof data !== 'object') {
+            _allAccountRows = [];
             tbody.innerHTML = `<tr class="empty-row"><td colspan="8">생성된 계정이 없습니다.</td></tr>`;
+            _updateAccResultCount(0, 0);
             return;
         }
-        const rows = Object.entries(data)
+        _allAccountRows = Object.entries(data)
             .filter(([, v]) => v && v.email)
             .map(([key, v]) => ({ key, ...v }))
             .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
-        if (rows.length === 0) {
+        if (_allAccountRows.length === 0) {
             tbody.innerHTML = `<tr class="empty-row"><td colspan="8">생성된 계정이 없습니다.</td></tr>`;
+            _updateAccResultCount(0, 0);
             return;
         }
 
         // passwordHash 마이그레이션 경고
-        const legacyCount = rows.filter(r => r.passwordHash).length;
+        const legacyCount = _allAccountRows.filter(r => r.passwordHash).length;
         const banner      = document.getElementById('migrationWarningBanner');
         const bannerText  = document.getElementById('migrationWarningText');
         if (legacyCount > 0) {
@@ -1818,65 +1895,123 @@ async function loadAccounts() {
             banner.style.display = '';
         }
 
-        tbody.innerHTML = rows.map((r, i) => {
-            const loginInfo  = (loginData && loginData[r.key]) || {};
-            const lastSeen   = loginInfo.lastSeen  || null;
-            const failCount  = r.loginFailCount    || 0;
-            const failAt     = r.loginFailAt        || null;
-
-            const pwBadge = r.mustChangePassword
-                ? `<span class="pw-status-badge need-change">✉ 메일 미확인</span>`
-                : `<span class="pw-status-badge normal">✓ 정상</span>`;
-
-            const lastSeenCell = lastSeen
-                ? `<span class="date-cell" title="${lastSeen}">${fmtDate(lastSeen)}</span>`
-                : `<span class="text-muted">–</span>`;
-
-            const failBadge = failCount > 0
-                ? `<span class="fail-badge" title="마지막 실패: ${failAt ? fmtDate(failAt) : '–'}">${failCount}회</span>`
-                : `<span class="text-muted">–</span>`;
-
-            const escapedKey   = escapeHtml(r.key);
-            const escapedEmail = escapeHtml(r.email);
-            const escapedName  = escapeHtml(r.name || '');
-            return `
-            <tr>
-                <td class="rank">${i + 1}</td>
-                <td class="name-cell">
-                    <div class="name-edit-wrapper">
-                        <input class="name-input" type="text"
-                            id="name-${escapedKey}"
-                            value="${escapedName}"
-                            placeholder="이름을 입력하세요"
-                            oninput="onAccountNameInput('${escapedKey}')">
-                        <button class="name-save-btn hidden"
-                            id="name-save-${escapedKey}"
-                            onclick="saveAccountName('${escapedKey}', '${escapedEmail}')">저장</button>
-                    </div>
-                </td>
-                <td class="email-cell">${escapeHtml(r.email)}</td>
-                <td>${pwBadge}</td>
-                <td class="date-cell">${lastSeenCell}</td>
-                <td style="text-align:center;">${failBadge}</td>
-                <td class="date-cell">${fmtDate(r.createdAt)}</td>
-                <td class="manage-cell">
-                    <div class="actions-cell">
-                        <button class="action-btn reset"
-                            data-key="${escapedKey}" data-email="${escapedEmail}"
-                            data-action="reset-account">🔄 초기화</button>
-                        <button class="action-btn delete"
-                            data-key="${escapedKey}" data-email="${escapedEmail}"
-                            data-action="delete-account">🗑 삭제</button>
-                    </div>
-                </td>
-            </tr>`;
-        }).join('');
+        // 검색어/필터 초기화 후 렌더링
+        const searchInput = document.getElementById('accountSearchInput');
+        if (searchInput) searchInput.value = '';
+        _accountPwFilter = 'all';
+        ['all', 'normal', 'need-change'].forEach(t => {
+            const el = document.getElementById('acc-pill-' + t);
+            if (el) el.classList.toggle('active', t === 'all');
+        });
+        filterAndRenderAccounts();
 
     } catch (e) {
         tbody.innerHTML = `<tr class="empty-row"><td colspan="8">데이터를 불러오지 못했습니다.</td></tr>`;
         console.error(e);
     }
     btn.classList.remove('spinning'); btn.disabled = false;
+}
+
+// ── 계정 목록 검색/필터 ────────────────────────────────────────────────
+function setAccountPwFilter(type) {
+    _accountPwFilter = type;
+    ['all', 'normal', 'need-change'].forEach(t => {
+        const el = document.getElementById('acc-pill-' + t);
+        if (el) el.classList.toggle('active', t === type);
+    });
+    filterAndRenderAccounts();
+}
+
+function filterAndRenderAccounts() {
+    const keyword = (document.getElementById('accountSearchInput')?.value || '').trim().toLowerCase();
+    let rows = _allAccountRows;
+
+    // 키워드 필터 (이름 + 이메일)
+    if (keyword) {
+        rows = rows.filter(r =>
+            (r.name  || '').toLowerCase().includes(keyword) ||
+            (r.email || '').toLowerCase().includes(keyword)
+        );
+    }
+    // 비밀번호 상태 필터
+    if (_accountPwFilter === 'normal') {
+        rows = rows.filter(r => !r.mustChangePassword);
+    } else if (_accountPwFilter === 'need-change') {
+        rows = rows.filter(r => !!r.mustChangePassword);
+    }
+
+    _updateAccResultCount(rows.length, _allAccountRows.length);
+    renderAccountRows(rows);
+}
+
+function _updateAccResultCount(shown, total) {
+    const el = document.getElementById('accResultCount');
+    if (!el) return;
+    if (total === 0) { el.textContent = ''; return; }
+    el.textContent = shown === total ? `총 ${total}명` : `${shown} / ${total}명`;
+}
+
+// ── 계정 rows 렌더링 ─────────────────────────────────────────────────
+function renderAccountRows(rows) {
+    const tbody = document.getElementById('accountsTableBody');
+    if (!tbody) return;
+    if (rows.length === 0) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="8">검색 결과가 없습니다.</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = rows.map((r, i) => {
+        const loginInfo  = (_accountLoginData && _accountLoginData[r.key]) || {};
+        const lastSeen   = loginInfo.lastSeen || null;
+        const failCount  = r.loginFailCount   || 0;
+        const failAt     = r.loginFailAt      || null;
+
+        const pwBadge = r.mustChangePassword
+            ? `<span class="pw-status-badge need-change">✉ 메일 미확인</span>`
+            : `<span class="pw-status-badge normal">✓ 정상</span>`;
+
+        const lastSeenCell = lastSeen
+            ? `<span class="date-cell" title="${lastSeen}">${fmtDate(lastSeen)}</span>`
+            : `<span class="text-muted">–</span>`;
+
+        const failBadge = failCount > 0
+            ? `<span class="fail-badge" title="마지막 실패: ${failAt ? fmtDate(failAt) : '–'}">${failCount}회</span>`
+            : `<span class="text-muted">–</span>`;
+
+        const escapedKey   = escapeHtml(r.key);
+        const escapedEmail = escapeHtml(r.email);
+        const escapedName  = escapeHtml(r.name || '');
+        return `
+        <tr>
+            <td class="rank">${i + 1}</td>
+            <td class="name-cell">
+                <div class="name-edit-wrapper">
+                    <input class="name-input" type="text"
+                        id="name-${escapedKey}"
+                        value="${escapedName}"
+                        placeholder="이름을 입력하세요"
+                        oninput="onAccountNameInput('${escapedKey}')">
+                    <button class="name-save-btn hidden"
+                        id="name-save-${escapedKey}"
+                        onclick="saveAccountName('${escapedKey}', '${escapedEmail}')">저장</button>
+                </div>
+            </td>
+            <td class="email-cell">${escapeHtml(r.email)}</td>
+            <td>${pwBadge}</td>
+            <td class="date-cell">${lastSeenCell}</td>
+            <td style="text-align:center;">${failBadge}</td>
+            <td class="date-cell">${fmtDate(r.createdAt)}</td>
+            <td class="manage-cell">
+                <div class="actions-cell">
+                    <button class="action-btn reset"
+                        data-key="${escapedKey}" data-email="${escapedEmail}"
+                        data-action="reset-account">🔄 초기화</button>
+                    <button class="action-btn delete"
+                        data-key="${escapedKey}" data-email="${escapedEmail}"
+                        data-action="delete-account">🗑 삭제</button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
 }
 
 // ── 이름 인라인 편집 ──────────────────────────────────────────────────
