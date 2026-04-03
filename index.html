@@ -1276,11 +1276,18 @@ function populateYearSelect() {
 }
 
 function getWeekWednesdayYearMonth(r) {
-    // weekId는 월요일 "YYYY-MM-DD" → 수요일 = +2일
-    // 수요일이 속한 연/월을 해당 주의 대표 월로 사용
-    const mon = new Date(r.weekId + 'T00:00:00');
+    // weekLabel "YYYY.MM.DD ~ YYYY.MM.DD" 의 시작일을 파싱해 수요일(+2일)을 구함
+    // weekId가 월요일이 아닌 경우도 있으므로 weekLabel 기준으로 계산
+    let startStr = r.weekId; // 기본값: weekId
+    if (r.weekLabel) {
+        const labelStart = r.weekLabel.split(' ~ ')[0].trim(); // "YYYY.MM.DD"
+        if (labelStart && labelStart.length === 10) {
+            startStr = labelStart.replace(/\./g, '-'); // "YYYY-MM-DD"
+        }
+    }
+    const mon = new Date(startStr + 'T00:00:00');
     const wed = new Date(mon);
-    wed.setDate(mon.getDate() + 2);
+    wed.setDate(mon.getDate() + 2); // 시작일(월요일) + 2 = 수요일
     return {
         year: String(wed.getFullYear()),
         month: String(wed.getMonth() + 1).padStart(2, '0')
