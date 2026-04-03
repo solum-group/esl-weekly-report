@@ -1,0 +1,136 @@
+{
+  "weekId": "2026-03-30",
+  "weekLabel": "2026.03.30 ~ 2026.04.03",
+  "searchAnalysis": "**4월 1일(수)에 뉴스 집중:** SNS Insider ESL 시장 보고서, UFCW 감시 가격 캠페인 강화, Samsung Color E-Paper 글로벌 출시 등 주요 기사가 4월 1일에 집중 발행됨.\n**3월 31일(화) 후속 흐름:** Retail Technology Innovation Hub가 3월 소매 기술 주요 뉴스를 정리하며 M&S RFID·AI 전환이 이달 최대 트렌드로 부각.\n**월~화(3/30~3/31) 상대적 공백:** 주 초반에는 대형 뉴스 발행이 적었으며, 이는 3월 마지막 주 뉴스 흐름이 이미 소화된 것으로 판단됨. *(일부 도메인 접속 차단—스니펫 기반 보완)*",
+  "sections": {
+    "industryTrends": [
+      {
+        "title": "ESL 시장, 2035년 77.6억 달러 전망 — SNS Insider 시장 보고서",
+        "summary": "SNS Insider가 2025년 ESL 시장 규모를 19.6억 달러로 평가하고 2035년까지 77.6억 달러 성장(CAGR 14.75%)을 전망하는 보고서를 발표했다.\n- **2026~2035년 CAGR 14.75%** — 10년 내 시장 규모 4배 성장 예상\n- 전기영동(Electrophoretic) 방식이 2025년 기준 **점유율 55%** 차지 (저전력·시인성·가격 경쟁력)\n- OLED 세그먼트는 고해상도·풍부한 색상으로 가장 빠른 성장세 기록\n- 통신 방식 중 **BLE(Bluetooth Low Energy)**가 2026~2035 최고 성장 세그먼트로 선정 — 모바일 기기 연동 및 맞춤형 고객 서비스 기능 강점\n- 북미가 2025년 기준 **38% 시장 점유율**로 최대 지역 유지",
+        "implications": "[🔵 트렌드] ESL 시장의 장기 성장이 공식 수치로 확인되며 산업 투자 확대 근거로 활용될 전망.\n- CAGR 14.75%는 투자자·파트너사 설득에 활용 가능한 핵심 데이터\n- BLE 방식 채택 확대는 SOLUM의 Newton 플랫폼이 지원하는 통신 스펙 점검 및 강조 포인트 제공\n- OLED 세그먼트 성장은 색상 ESL 제품 라인업 강화의 근거\n- Vusion·Hanshow 등 경쟁사 대비 '신뢰할 수 있는 글로벌 ESL 파트너'로 포지셔닝하는 데 이 데이터 활용 권장",
+        "imageUrl": "",
+        "pubDate": "2026-04-01",
+        "sourceUrl": "https://www.globenewswire.com/news-release/2026/04/01/3266502/0/en/Electronic-Shelf-Label-ESL-Market-Size-to-Hit-USD-7-76-Billion-by-2035-SNS-Insider.html",
+        "sourceName": "GlobeNewswire (SNS Insider)"
+      },
+      {
+        "title": "유럽 슈퍼마켓, ESL 전면 도입 가속 — 디지털 가격 관리가 핵심 전략으로 부상",
+        "summary": "유럽 주요 슈퍼마켓 그룹이 제한적 시범 운영에서 ESL 전면 도입 전략으로 빠르게 전환하고 있다는 업계 동향 분석이 발표됐다.\n- 영국 **Morrisons**: VusionGroup과 파트너십으로 **497개 전 매장**에 **1,080만 개** ESL 도입 진행 중 (2026년 내 완료 목표)\n- 영국 **Co-op**: 이미 **1,500개 매장** 설치 완료, **2,400개 전 매장**으로 2026년 말까지 확장 예정\n- 유럽 대형 마트들이 실시간 가격 업데이트·동적 프로모션 지원을 위해 디지털 인프라 투자 본격화\n- 비용 절감, 가격 정확도 향상, 인력 생산성 30% 향상이 핵심 도입 근거",
+        "implications": "[🟢 기회] 유럽 시장에서 대형 슈퍼마켓 체인들의 전사적 ESL 전환이 빠르게 이루어지고 있어 SOLUM의 신규 고객 확보 기회.\n- Morrisons·Co-op 이외 아직 ESL 미도입 유럽 주요 유통사(예: Tesco 전면 확장 전) 공략 가능성 점검\n- Vusion이 영국 시장에서 강세이므로 SOLUM은 가격 경쟁력·Newton 생태계 차별화로 유럽 독립 소매사 및 협동조합 시장 공략 전략 필요\n- 英 Waitrose와의 기존 파트너십을 레퍼런스로 활용, 동일 국가 내 추가 고객 확보 가능성 존재",
+        "imageUrl": "",
+        "pubDate": "2026-04-01",
+        "sourceUrl": "https://internationalsupermarketnews.com/european-supermarkets-accelerate-electronic-shelf-label-adoption-as-digital-pricing-becomes-core-strategy/",
+        "sourceName": "International Supermarket News"
+      },
+      {
+        "title": "미국 ESL 규제 입법 공세 가속 — UFCW·민주당, 연방·주 단위 금지법 확산",
+        "summary": "UFCW(미국 식품유통 노동조합)가 '감시 가격 책정 반대' 전국 캠페인을 강화하며 4월 1일 회원 행동을 촉구했다. 연방 및 주 단위 ESL 금지 법안이 동시다발적으로 발의되고 있다.\n- 연방 상원: Luján·Merkley 상원의원이 '식료품점 가격 폭리 방지법(2026)' 발의 — **10,000 sq ft 이상 식료품점 ESL 금지** 포함\n- **24개 주 이상**에서 40개 이상의 알고리즘 가격 책정 관련 법안 발의 (2025년 전체보다 많은 수치)\n- 뉴욕, 오클라호마, 워싱턴, 애리조나, 네브래스카, 메릴랜드, 테네시에 UFCW 법안 도입\n- 테네시주: **15,000 sq ft 이상 식료품점 ESL 완전 금지** 법안 추진\n- 하원 법안: Val Hoyle 의원이 디지털 선반 레이블 '완전 금지'를 주장하며 50명 이상 공동발의자 확보",
+        "implications": "[🔴 위협] 미국에서 ESL 규제 법안이 급증하며, Walmart를 중심으로 한 대형 유통사의 ESL 전면 도입에 법적 리스크가 현실화되고 있음.\n- 법안이 통과될 경우 미국 시장 내 ESL 신규 공급이 일시적으로 억제될 수 있으며, SOLUM의 미국 향 매출에 직접 영향\n- 反ESL 담론이 '동적 가격=서지 프라이싱=소비자 피해'라는 프레임으로 굳어지는 것을 차단하기 위한 산업계 대응 전략 필요\n- SOLUM은 UC San Diego 연구 등 'ESL이 서지 프라이싱을 유발하지 않는다'는 근거 자료를 선제적으로 배포하는 커뮤니케이션 전략 검토\n- 法 통과 전 판매·설치 계약 조기 확보 추진 필요",
+        "imageUrl": "",
+        "pubDate": "2026-04-01",
+        "sourceUrl": "https://www.ufcw663.org/blog/2026/04/01/ban-surveillance-pricing-families-and-grocery-workers-are-counting-on-it/",
+        "sourceName": "UFCW Local 663"
+      },
+      {
+        "title": "소매 기술 3월 최대 트렌드: M&S RFID·AI 전환이 영국 유통 혁신 선도",
+        "summary": "Retail Technology Innovation Hub가 3월 소매 기술 분야 최대 뉴스를 정리하며 M&S의 기술 전환이 이달의 핵심 이슈였음을 확인했다.\n- 영국 M&S: 매장 내 **실시간 재고 RFID 트래킹** 전사 적용 및 **11,000개** Microsoft 365 Copilot 라이선스 구매 — 매장 관리자용 AI·에이전틱 AI 도구 보급\n- 자율 재고 로봇·컴퓨터 비전 기반 OSA(On-Shelf Availability) 솔루션 현장 적용 사례 증가\n- RTS 2026(영국 소매 기술 전시회) 혁신상 최종 후보 발표 — 4월 22~23일 런던 ExCeL 개최 예정",
+        "implications": "[🔵 트렌드] RFID·AI 기반 스마트 스토어가 유럽 선진 유통사의 표준으로 자리잡고 있으며, ESL은 이 에코시스템의 중심 인프라로 위치.\n- M&S 사례는 RFID + ESL 통합 솔루션을 패키지로 제안할 수 있는 레퍼런스 역할\n- RTS 2026 참가 기업들(Hanshow 포함)과의 현장 경쟁력 비교 모니터링 필요 (SOLUM의 전시 전략 점검)\n- SOLUM의 Newton 플랫폼이 지원하는 AI 재고 관리·로봇 연동(Simbe Robotics 파트너십 등) 기능을 적극 홍보 기회",
+        "imageUrl": "",
+        "pubDate": "2026-03-31",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/3/31/ai-becomes-central-to-mamps-technology-transformation-these-are-the-biggest-retail-stories-from-march",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ],
+    "customerAdoption": {
+      "슈퍼마켓": [
+        {
+          "title": "英 Morrisons, VusionGroup과 전국 497개 매장 ESL 전면 도입 착수",
+          "summary": "영국 4대 슈퍼마켓 Morrisons가 VusionGroup과 파트너십으로 전 매장에 ESL 도입을 본격 진행 중이다.\n- 총 **497개 매장**에 **1,080만 개 이상** 개별 ESL 설치 예정\n- 전통 Big 4 영국 슈퍼마켓 중 **전국 전체 매장 ESL 도입을 발표한 최초** 사례\n- 2026년 내 롤아웃 완료 목표로 현재 설치 진행 중\n- 동반자인 VusionGroup은 유럽 최대 ESL 기업으로 Carrefour·Casino 등 350개 이상 유통 그룹에 공급 중",
+          "implications": "[🔴 위협] Vusion이 영국 빅4 슈퍼마켓의 핵심 파트너로 자리잡고 있어 SOLUM의 영국 슈퍼마켓 시장 공략에 높은 장벽.\n- SOLUM은 영국에서 Waitrose 파트너십을 통해 입지를 확보했으나, 대형 할인 슈퍼마켓 세그먼트에서는 Vusion에 뒤처지는 상황\n- Morrisons 사례가 산업 표준으로 인식될 경우 타 유통사의 Vusion 선택 편향을 강화할 수 있음\n- SOLUM의 차별화 포인트(에너지 효율·ESL 내구성·Newton 생태계)를 영국 중소 유통사·편의점 체인에 집중 제안하는 전략 필요",
+          "imageUrl": "",
+          "pubDate": "2026-04-01",
+          "sourceUrl": "https://www.retail-insight-network.com/news/morrisons-vusiongroup-electronic-shelf-labels/",
+          "sourceName": "Retail Insight Network"
+        },
+        {
+          "title": "英 Co-op, 2026년 말까지 2,400개 전 매장 ESL 확대 완료 목표",
+          "summary": "영국 협동조합 유통체인 Co-op이 이미 1,500개 매장에 ESL 설치를 완료하고, 2026년 말까지 전체 2,400개 매장으로 확대 목표를 공식화했다.\n- 현재 설치 완료: **1,500개 매장**\n- 2026년 말 목표: **2,400개 전 매장** ESL 적용\n- 영국 소매 시장에서 Morrisons와 함께 ESL 전국화의 대표 사례로 주목\n- Co-op 협동조합 모델 특성상 독립 가맹점 지원 및 중앙 가격 관리 효율화가 주요 도입 목적",
+          "implications": "[🟢 기회] Co-op의 잔여 900개 매장 추가 설치가 진행되는 과정에서 공급사 다각화 또는 특정 포맷 추가 공급 기회 모색 가능.\n- 협동조합 모델(중앙 통제 + 독립 가맹점 구조)은 SOLUM의 클라우드 기반 중앙 가격 관리 솔루션의 강점과 잘 맞는 구조\n- 현재 공급사가 Vusion인지 확인 후, 향후 갱신 시점에 SOLUM 솔루션 제안 가능성 검토\n- 영국 협동조합 유통 고객사를 레퍼런스화하는 전략적 가치 있음",
+          "imageUrl": "",
+          "pubDate": "2026-04-01",
+          "sourceUrl": "https://www.retaildive.com/news/walmart-expands-digital-shelf-labels-all-us-stores/813654/",
+          "sourceName": "Retail Dive"
+        }
+      ]
+    },
+    "majorCompanies": [
+      {
+        "title": "Walmart 디지털 선반 레이블 전국화, 의원들의 강력한 입법 압박에 직면",
+        "summary": "Walmart가 2026년 말까지 미국 전 매장에 디지털 선반 레이블 도입 계획을 추진 중인 가운데, 연방·주 의원들의 규제 법안 발의로 사업 전개에 불확실성이 증가하고 있다.\n- 현재 **약 2,300개** Walmart 매장 디지털 선반 레이블 적용 완료\n- 2026년 말까지 **미국 전 Walmart 매장** 완료 목표 공식 선언\n- Walmart 측: '가격은 모든 고객에게 동일하게 적용되며 서지 프라이싱 없음' 공식 입장 강조\n- 전자 레이블 도입으로 **직원의 가격 업무 시간 75% 절감** 효과 확인\n- 연방 상원 Merkley·Luján 법안은 10,000 sq ft 이상 식료품점 ESL 금지 조항 포함 — House에서 50명 이상 공동 발의",
+        "implications": "[🔵 트렌드] Walmart의 ESL 전국화는 미국 소매 ESL 시장의 최대 단일 프로젝트이나, 규제 리스크가 공급사 전략 변수로 등장.\n- 법안이 통과될 경우 Walmart·Kroger 등 미국 대형 식료품점을 대상으로 한 ESL 사업이 일시 중단될 위험\n- 반대로 법안이 부결될 경우, 미국 시장 ESL 수요 폭증이 예상되어 SOLUM의 미국 현지 역량 및 공급망 강화 시나리오 준비 필요\n- Walmart의 기존 공급사(Vusion)와의 계약 규모·독점성 파악을 통해 SOLUM 참여 가능성 검토",
+        "imageUrl": "",
+        "pubDate": "2026-04-01",
+        "sourceUrl": "https://www.pymnts.com/walmart/2026/walmarts-digital-price-tags-face-pushback-from-lawmakers/",
+        "sourceName": "PYMNTS.com"
+      },
+      {
+        "title": "Vusion 2025 연간 매출 €15.27억으로 51% 급성장, 2026년 15~20% 성장 목표",
+        "summary": "VusionGroup이 2025년 연간 실적을 발표했다. 매출은 €15.27억으로 전년 대비 51% 증가하며 최초로 €15억 돌파에 성공했다. (발표일 2026-02-26)\n- **조정 연간 매출 €15.27억** (+51% YoY) — €15억 목표 초과 달성\n- **VAS(부가가치 서비스)** 매출 2배 증가, €2.11억 달성 — 전체 매출의 **14%** 비중 (2024년 10%)\n- 조정 EBITDA **€2.77억** (전년 대비 72.9% 증가)\n- 조정 순이익 **€0.99억** (+85%), 순현금 **€4.39억**\n- 미주·APAC 지역 매출 **115% 급증**, 전체 매출의 73% 차지\n- **2026년 가이던스**: 매출 성장률 15~20%, VAS 성장률 ~40%",
+        "implications": "[🔴 위협] Vusion의 폭발적 성장과 미주·APAC 집중 전략은 SOLUM의 핵심 시장인 북미·아시아에서 직접적인 경쟁 심화를 의미.\n- Vusion의 VAS 비중 확대(14%)는 하드웨어 중심의 ESL 시장에서 소프트웨어·서비스 전환 가속을 보여주는 지표 — SOLUM도 동일 방향 서비스 확장 필요\n- Vusion의 €4.39억 순현금은 M&A·인프라 투자에 풍부한 재원 확보를 의미하므로 추가 시장 확장 예상\n- SOLUM은 Vusion의 가격·지역 전략을 지속 모니터링하며 차별화된 TCO(총소유비용) 및 Newton 생태계 강점 강조 필요",
+        "imageUrl": "",
+        "pubDate": "2026-02-26",
+        "sourceUrl": "https://www.vusion.com/newsroom/vusion-2025-annual-results-strong-growth-revenue-and-profitability/",
+        "sourceName": "VusionGroup Newsroom"
+      },
+      {
+        "title": "Pricer AB, 2025 연간보고서 발간 — 하반기 개선세 확인, 2026년 Q1 결산은 4월 23일 예정",
+        "summary": "Pricer AB가 2025년 연간 및 지속가능성 보고서를 발간하며 하반기 뚜렷한 개선세를 보고했다.\n- 2025 연간 매출 **약 $219M**\n- 하반기 활동 수준과 사업 역동성이 상반기 대비 명확히 개선\n- 배당 미실시 — 사업 재투자 우선 기조 유지\n- **Pricer Avenue** 플랫폼 2026년 선택적 롤아웃 시작 — 상업화의 중요한 단계\n- **Q1 2026 실적 발표 예정일: 4월 23일**",
+        "implications": "[🔵 트렌드] Pricer가 하반기 회복세를 보이며 Avenue 플랫폼 상업화에 본격 나서는 것은 유럽 ESL 시장 경쟁 구도에 변화를 줄 수 있음.\n- Pricer Avenue는 기존 ESL에서 '선반 엣지 커뮤니케이션 플랫폼'으로의 전환 시도 — SOLUM의 Newton 생태계와 직접 경쟁 예상\n- Pricer Q1 2026 실적(4월 23일)을 통해 2026년 유럽 ESL 수요 흐름 파악 가능 — SOLUM 팀의 모니터링 권장\n- Pricer의 배당 미실시는 성장 투자 집중 신호로, 공격적인 신규 고객 확보 전쟁이 예상됨",
+        "imageUrl": "",
+        "pubDate": "2026-03-27",
+        "sourceUrl": "https://www.pricer.com/press-release/pricer-ab-publishes-the-annual-report-for-2025",
+        "sourceName": "Pricer AB"
+      }
+    ],
+    "solutionProviders": [
+      {
+        "title": "인스토어 디지털 광고(RMN) 2025년 47% 성장 — 2026년 글로벌 1,290억 달러 전망",
+        "summary": "리테일 미디어 네트워크(RMN)가 2026년 글로벌 디지털 광고의 25%를 차지하는 1,290억 달러 시장으로 성장할 것이라는 전망이 제시됐다.\n- 매장 내 디지털 스크린(계산대·입구·통로) 광고가 2025년 **47% 성장** — 가장 빠른 성장 영역\n- **50개 이상**의 주요 RMN 플랫폼이 경쟁 중 (Amazon·Walmart·Target·CVS·Kroger·Home Depot 등)\n- 통합 측정(incrementality metrics) 솔루션의 RMN 전반 확대로 브랜드 ROI 가시성 향상\n- 프로그래매틱 생태계와의 API 연동으로 광고주가 기존 구매 채널에서 RMN 인벤토리 접근 가능",
+        "implications": "[🟢 기회] ESL과 매장 내 디지털 디스플레이가 RMN의 핵심 인프라로 자리매김하면서, SOLUM의 ESL 플랫폼을 광고 미디어로 확장하는 사업 기회.\n- SOLUM의 대형 포맷 E-Paper 디스플레이(NRF 2026 공개, 25.3~32인치)는 RMN 광고 매체로 직접 활용 가능\n- Vusion의 'Engage(리테일 미디어 및 매장 내 광고)' 솔루션 대비 SOLUM의 RMN 대응 제품/서비스 로드맵 구체화 필요\n- 유통사에 'ESL+RMN 통합 플랫폼' 패키지 제안으로 차별화된 가치 제안 가능",
+        "imageUrl": "",
+        "pubDate": "2026-04-01",
+        "sourceUrl": "https://www.marsunited.com/assessing-the-retail-media-landscape-for-2026/",
+        "sourceName": "Mars United Commerce"
+      },
+      {
+        "title": "PervasID TrackMaster 3X, RTS 2026 혁신상 최종 후보 선정 — 근 100% 재고 정확도",
+        "summary": "영국 RFID 솔루션 기업 PervasID의 TrackMaster 3X가 2026 Retail Technology Show 혁신상 최종 후보에 선정됐다.\n- TrackMaster 3X: **근 100% 품목 정확도**, **1미터 수준 위치 정확도** 제공\n- 복잡한 소매 환경에서 RFID 데이터를 실시간 실행 가능한 인사이트로 변환 — 판매 증가, 재고 가시성 향상, 손실 방지, 옴니채널 이행 최적화\n- RTS 2026 혁신상 최종 10개 후보 중 포함 — 4월 22~23일 런던 ExCeL에서 최종 수상작 발표 예정",
+        "implications": "[🔵 트렌드] 고정밀 RFID 위치 추적 기술이 소매 혁신상 후보로 선정될 만큼 시장 주목을 받는 트렌드로 자리잡음.\n- SOLUM은 Simbe Robotics 등 자율 재고 로봇과의 연동 솔루션을 보유하므로, RFID+ESL+로봇 통합 솔루션 포지셔닝 강화 기회\n- RTS 2026 행사에 Hanshow 참여(Stand M20)가 확인된 만큼 SOLUM의 참여 현황 및 향후 전략 점검 필요\n- PervasID 등 RFID 전문 기업과의 파트너십 또는 연동 검토로 솔루션 완성도 강화 가능",
+        "imageUrl": "",
+        "pubDate": "2026-03-31",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/3/31/ai-becomes-central-to-mamps-technology-transformation-these-are-the-biggest-retail-stories-from-march",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ],
+    "technology": [
+      {
+        "title": "Samsung, 13인치 컬러 E-Paper 글로벌 출시 — 세계 최초 해조류 바이오수지 하우징 적용",
+        "summary": "Samsung이 세계 최초로 해조류(식물성 플랑크톤) 유래 바이오수지를 사용한 친환경 하우징의 13인치 컬러 E-Paper 디스플레이를 4월 1일 글로벌 공식 출시했다.\n- 모델명 **EM13DX**, 해상도 **1600×1200**, A4 용지 크기\n- 하우징 소재: UL 인증 기준 **재생 플라스틱 45% + 바이오수지(해조류 기반) 10%** 구성\n- 기존 석유계 플라스틱 대비 제조 과정 탄소 배출 **40% 이상 절감** 검증\n- 충전식 배터리 내장 + USB-C 지원 — 영구 전원 없이 배포 가능\n- Samsung VXT 및 E-Paper App을 통한 로컬·원격 관리 지원",
+        "implications": "[🔵 트렌드] 대형 포맷 친환경 E-Paper 디스플레이 시장에 삼성이 참여하면서 ESL·디지털 사이니지 경계가 확장되고 있음.\n- Samsung의 RMN·매장 내 광고 디지털 사이니지 시장 진출은 SOLUM의 대형 E-Paper 디스플레이 사업 방향과 직접 경쟁\n- 삼성은 하드웨어 브랜드 인지도가 높아 '삼성 제품 vs ESL 전문 기업'이라는 구매 결정 프레임이 형성될 수 있음\n- SOLUM은 ESL 전문성·Newton 생태계 연동·TCO 우위를 통한 차별화 전략 유지 필요\n- 친환경 소재 트렌드에 따라 SOLUM ESL의 지속가능성 스펙(수명·재활용률) 강조 마케팅 강화 권장",
+        "imageUrl": "",
+        "pubDate": "2026-04-01",
+        "sourceUrl": "https://www.avnation.tv/2026/04/01/samsung-expands-eco-conscious-signage-offerings-with-13-color-e-paper/",
+        "sourceName": "AV Nation"
+      },
+      {
+        "title": "InkPoster, Pininfarina 디자인 41인치 컬러 E-Paper 포스터 'Duna' 출하 시작",
+        "summary": "디지털 아트 디스플레이 기업 InkPoster가 이탈리아 디자인 하우스 Pininfarina와 협업한 41인치 컬러 E-Paper 포스터 'Duna'를 2026년 4월 출하 시작했다.\n- **41인치 컬러 E Ink 포스터** — 실내 대형 디지털 사이니지 겨냥\n- Pininfarina 디자인 스케치 등 **프리미엄 콘텐츠** 내장 제공\n- 정밀 엔지니어링 알루미늄 프레임 — 홈·상업 공간 프리미엄 인테리어 타겟\n- 가격대 및 소매 채널 파트너십은 별도 발표 예정",
+        "implications": "[🔵 트렌드] 대형 컬러 E-Paper 기술이 프리미엄 소비자 및 상업 디지털 사이니지 시장으로 빠르게 진입하며 ESL 기술의 적용 범위가 확대되고 있음.\n- 41인치 대형 포맷은 ESL의 전통적인 선반 엣지 라벨에서 매장 내 디지털 사이니지·광고 매체로의 기술 확장 가능성을 보여줌\n- SOLUM이 NRF 2026에서 공개한 25.3~32인치 대형 E-Paper 디스플레이와 시장 포지셔닝 경쟁 가능성\n- E-Paper 기술의 소비자 인지도 상승은 ESL 전문 기업 SOLUM에게도 브랜드 인지도 제고 기회로 작용",
+        "imageUrl": "",
+        "pubDate": "2026-04-01",
+        "sourceUrl": "https://www.engadget.com/home/inkposter-launches-a-premium-41-inch-e-paper-display-for-your-home-170000292.html",
+        "sourceName": "Engadget"
+      }
+    ]
+  }
+}
