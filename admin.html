@@ -1086,6 +1086,9 @@ const ADMIN_ACTIVE_TIME_KEY  = 'esl_admin_active_time';
 const ADMIN_ACCESS_TOKEN_MS  =  1 * 60 * 60 * 1000;  // 1시간 (idle timeout)
 const ADMIN_REFRESH_TOKEN_MS =  2 * 60 * 60 * 1000;  // 2시간 (hard limit)
 
+// signOut() 처리 중 onAuthStateChanged(user) 재인증 방지 플래그
+let _adminLoggingOut = false;
+
 // ── 브루트포스 방어 (5회 실패→30초, 10회→5분 잠금) ──────────────────
 let _adminFailCount = 0;
 let _adminLockUntil = 0;
@@ -1181,6 +1184,9 @@ function switchTab(name) {
 // ── 초기화 (Firebase Auth onAuthStateChanged) ────────────────────────
 _fbAuth.onAuthStateChanged(async function(user) {
     if (user) {
+        // signOut() 처리 중이면 재인증 방지 (자동 로그아웃 race condition 방어)
+        if (_adminLoggingOut) return;
+
         // Firebase에 로그인된 사용자 있음 → 세션 만료 체크
         const now        = Date.now();
         const loginTime  = parseInt(sessionStorage.getItem(ADMIN_LOGIN_TIME_KEY)  || '0');
@@ -1226,6 +1232,7 @@ _fbAuth.onAuthStateChanged(async function(user) {
     }
 
     // Firebase에 로그인된 사용자 없음
+    _adminLoggingOut = false; // signOut 완료 → 재인증 허용 플래그 복구
     _clearAdminSession();
     // 어드민이 한 명도 없으면 부트스트랩 설정 화면 표시
     try {
@@ -1468,6 +1475,7 @@ function _clearAdminSession() {
 
 // ── 어드민 로그아웃 ──────────────────────────────────────────────────
 function doAdminLogout(isAuto = false, reason = '') {
+    _adminLoggingOut = true;            // onAuthStateChanged(user) 재인증 방지
     const logEmail = sessionStorage.getItem(ADMIN_EMAIL_KEY) || '';
     _auditLog('adminLogout', logEmail, isAuto ? '자동 로그아웃 (세션 만료)' : '수동 로그아웃');
     _fbAuth.signOut().catch(() => {});

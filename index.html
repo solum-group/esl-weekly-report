@@ -1866,6 +1866,10 @@ const AUTH_ACTIVE_TIME_KEY = 'esl_auth_active_time';  // 마지막 활동 시각
 const ACCESS_TOKEN_MS      = 60 * 60 * 1000;          // 1시간 (idle timeout)
 const REFRESH_TOKEN_MS     =  2 * 60 * 60 * 1000;     //  2시간 (hard limit)
 
+// signOut() 처리 중 onAuthStateChanged(user) 재인증 방지 플래그
+// doLogout() 호출 시 true → onAuthStateChanged(null) 수신 후 false로 복구
+let _loggingOut = false;
+
 // SHA-256 해시 (Web Crypto API — 브라우저 내장)
 async function sha256(text) {
     const encoder = new TextEncoder();
@@ -1918,6 +1922,9 @@ function checkPwRequirements(pw) {
 // ── 초기 인증 상태 확인 (Firebase Auth onAuthStateChanged) ───────────
 _fbAuth.onAuthStateChanged(function(user) {
     if (user) {
+        // signOut() 처리 중이면 재인증 방지 (자동 로그아웃 race condition 방어)
+        if (_loggingOut) return;
+
         // Firebase Auth에 로그인된 사용자가 있음
         const now        = Date.now();
         const loginTime  = parseInt(sessionStorage.getItem(AUTH_LOGIN_TIME_KEY)  || '0');
@@ -1940,6 +1947,7 @@ _fbAuth.onAuthStateChanged(function(user) {
     } else {
         // Firebase Auth가 null을 반환 — doLogout() 호출 후 signOut()이 트리거한 경우와
         // Firebase가 독립적으로 세션을 만료시킨 경우 모두 처리
+        _loggingOut = false; // signOut 완료 → 재인증 허용 플래그 복구
         const wasLoggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
         sessionStorage.removeItem(AUTH_KEY);
         sessionStorage.removeItem(AUTH_EMAIL_KEY);
@@ -2295,6 +2303,7 @@ async function doChangePassword() {
 // ── 로그아웃 ─────────────────────────────────────────────
 // isAuto: 자동 로그아웃 여부 / reason: 'access'(1hr idle) | 'refresh'(24hr 만료)
 function doLogout(isAuto = false, reason = '') {
+    _loggingOut = true;                 // onAuthStateChanged(user) 재인증 방지
     _fbAuth.signOut().catch(() => {});  // Firebase Auth 로그아웃
     sessionStorage.removeItem(AUTH_KEY);
     sessionStorage.removeItem(AUTH_EMAIL_KEY);
