@@ -1,3 +1,57 @@
 [
-  { "weekId": "2026-03-30", "weekLabel": "2026.03.30 ~ 2026.04.03", "articleCount": 12 }
+  {
+    "weekId": "2025-11-24",
+    "weekLabel": "2025.11.24 ~ 2025.11.30",
+    "articleCount": 1
+  },
+  {
+    "weekId": "2025-12-15",
+    "weekLabel": "2025.12.15 ~ 2025.12.21",
+    "articleCount": 1
+  },
+  {
+    "weekId": "2026-01-05",
+    "weekLabel": "2026.01.05 ~ 2026.01.11",
+    "articleCount": 1
+  },
+  {
+    "weekId": "2026-01-12",
+    "weekLabel": "2026.01.12 ~ 2026.01.18",
+    "articleCount": 6
+  },
+  {
+    "weekId": "2026-02-16",
+    "weekLabel": "2026.02.16 ~ 2026.02.22",
+    "articleCount": 8
+  },
+  {
+    "weekId": "2026-02-24",
+    "weekLabel": "2026.02.23 ~ 2026.03.01",
+    "articleCount": 15
+  },
+  {
+    "weekId": "2026-03-02",
+    "weekLabel": "2026.03.02 ~ 2026.03.08",
+    "articleCount": 7
+  },
+  {
+    "weekId": "2026-03-09",
+    "weekLabel": "2026.03.09 ~ 2026.03.15",
+    "articleCount": 10
+  },
+  {
+    "weekId": "2026-03-16",
+    "weekLabel": "2026.03.16 ~ 2026.03.22",
+    "articleCount": 7
+  },
+  {
+    "weekId": "2026-03-23",
+    "weekLabel": "2026.03.23 ~ 2026.03.29",
+    "articleCount": 6
+  },
+  {
+    "weekId": "2026-03-30",
+    "weekLabel": "2026.03.30 ~ 2026.04.03",
+    "articleCount": 12
+  }
 ]
