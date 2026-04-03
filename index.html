@@ -1227,10 +1227,29 @@ async function fetchIndex() {
     setCache(CACHE_PREFIX + 'index', data);
     return data;
 }
+function countCachedArticles(data) {
+    // index.json의 articleCount와 비교하기 위해 캐시된 데이터의 실제 기사 수 계산
+    const s = data.sections || {};
+    const ca = s.customerAdoption || {};
+    return (s.industryTrends    || []).length +
+           Object.values(ca).reduce((sum, arr) => sum + arr.length, 0) +
+           (s.majorCompanies    || []).length +
+           (s.solutionProviders || []).length +
+           (s.technology        || []).length;
+}
+
 async function fetchWeekData(weekId) {
     const cached = getCache(CACHE_PREFIX + weekId, CACHE_TTL_WEEK);
-    if (cached) return cached;
-    const res = await fetch(`./data/${weekId}.json?v=${weekId}`);
+    if (cached) {
+        // index.json의 articleCount와 캐시된 기사 수를 비교 — 불일치 시 캐시 무효화
+        const indexEntry = weekIndex.find(r => r.weekId === weekId);
+        if (indexEntry && indexEntry.articleCount !== countCachedArticles(cached)) {
+            localStorage.removeItem(CACHE_PREFIX + weekId);
+        } else {
+            return cached;
+        }
+    }
+    const res = await fetch(`./data/${weekId}.json?v=${Date.now()}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     setCache(CACHE_PREFIX + weekId, data);
