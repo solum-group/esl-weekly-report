@@ -1,7 +1,7 @@
 {
   "weekId": "2026-03-30",
   "weekLabel": "2026.03.30 ~ 2026.04.03",
-  "searchAnalysis": "**4월 1일(수)에 뉴스 집중:** SNS Insider ESL 시장 보고서, UFCW 감시 가격 캠페인 강화, Samsung Color E-Paper 글로벌 출시 등 주요 기사가 4월 1일에 집중 발행됨.\n**3월 31일(화) 후속 흐름:** Retail Technology Innovation Hub가 3월 소매 기술 주요 뉴스를 정리하며 M&S RFID·AI 전환이 이달 최대 트렌드로 부각.\n**월~화(3/30~3/31) 상대적 공백:** 주 초반에는 대형 뉴스 발행이 적었으며, 이는 3월 마지막 주 뉴스 흐름이 이미 소화된 것으로 판단됨. *(일부 도메인 접속 차단—스니펫 기반 보완)*",
+  "searchAnalysis": "**4월 1일(수)에 뉴스 집중:** SNS Insider ESL 시장 보고서, UFCW 감시 가격 캠페인 강화, Samsung Color E-Paper 글로벌 출시 등 주요 기사가 4월 1일에 집중 발행됨.\n**3월 31일(화) 후속 흐름:** Retail Technology Innovation Hub가 3월 소매 기술 주요 뉴스를 정리하며 M&S RFID·AI 전환이 이달 최대 트렌드로 부각. 중국 상하이 SRS 스마트 리테일 전시회(3/31~4/3) 개막으로 아시아 시장 동향 주목.\n**아시아·오세아니아 보완:** 일본어·중국어 키워드 검색 추가로 SOLUM의 RetailTech Japan 2026 참가(3/3) 및 Hanshow의 호주 APP 2026 데뷔(3/14) 기사를 이번 주차에 보완 수록함. *(일부 도메인 접속 차단—스니펫 기반 보완)*",
   "sections": {
     "industryTrends": [
       {
@@ -39,9 +39,29 @@
         "pubDate": "2026-03-31",
         "sourceUrl": "https://retailtechinnovationhub.com/home/2026/3/31/ai-becomes-central-to-mamps-technology-transformation-these-are-the-biggest-retail-stories-from-march",
         "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "상하이 국제 스마트 리테일 전시회 SRS 2026 개막 — 전자가격표·AI 가격 관리 집중 전시",
+        "summary": "중국 최대 규모의 스마트 리테일 전문 전시회 'SRS 2026(上海国际智慧零售展览会)'이 3월 31일부터 4월 3일까지 상하이 신국제박람센터(SNIEC)에서 개최됐다.\n- 전시 면적 **25,000㎡**, 참가 기업 **300개사**, 전문 관람객 **50,000명 이상** 예상\n- 전시 품목: 전자가격표(电子价签/ESL), AI SaaS 가격 관리 시스템, 스마트 POS, 자율 자판기, IoT 리테일 솔루션, 상업 디스플레이 등\n- **汉朔(Hanshow)** 등 중국 내 ESL 주요 기업 참가 — 국내 시장 점유율 62% 1위 Hanshow의 최신 솔루션 공개\n- 중국 스마트 리테일 시장 규모: 전자가격표 국내 시장 연간 출하량 **2억 개** 이상, 전 세계 시장의 주요 공급 거점으로 성장",
+        "implications": "[🔵 트렌드] 중국 스마트 리테일 생태계가 국내 시장을 넘어 글로벌 ESL 공급망의 핵심 거점으로 부상하고 있음.\n- Hanshow의 중국 내 압도적 점유율(62%)은 글로벌 가격 경쟁력의 기반 — SOLUM이 유럽·아시아에서 가격 경쟁 시 주요 변수\n- SRS와 같은 중국 현지 전시회에서 공개되는 Hanshow의 신제품·신기술은 6~12개월 내 글로벌 시장에 투입될 가능성이 높아 선제적 모니터링 필요\n- SOLUM은 중국 시장 직접 진출보다 Hanshow와의 기술 격차를 유지하는 프리미엄 전략이 현실적인 대응 방향",
+        "imageUrl": "",
+        "pubDate": "2026-03-31",
+        "sourceUrl": "https://www.jufair.com/exhibition/3144.html",
+        "sourceName": "聚展 (JuFair)"
       }
     ],
     "customerAdoption": {
+      "약국/헬스": [
+        {
+          "title": "Hanshow, 호주 최대 약국 컨퍼런스 APP 2026 첫 참가 — 호주·뉴질랜드 2,500만 개 ESL 설치 완료",
+          "summary": "Hanshow가 3월 12~14일 Gold Coast 컨벤션센터에서 열린 남반구 최대 약국 전문 컨퍼런스 'APP 2026'에 처음으로 참가해 호주·뉴질랜드 시장에서의 ESL 성과를 공개했다.\n- 호주·뉴질랜드 전역 **2,500만 개 이상** ESL 설치 완료 (FutureShelf와 **10년 파트너십**)\n- **Polaris Pro·Polaris Series** ESL 솔루션 전시: LED 픽투라이트 기능으로 약사 업무 효율화, NFC 기술로 고객 스마트폰 연동 확장 정보 제공\n- **5세대 액세스 포인트** 기반 고안정성·고속 데이터 전송 시스템 시연\n- 전시 테마: 'Reimagine Pharmacy Retail — Smarter, Simpler, Future-ready'\n- 약국 특화 기능: 수동 종이 가격표 교체 제거로 **약사 고객 케어 집중 시간 확보**",
+          "implications": "[🔴 위협] Hanshow가 호주·뉴질랜드 약국 시장에서 2,500만 개 설치 레퍼런스를 보유한 강력한 현지 입지를 구축하고 있음.\n- 호주·뉴질랜드는 SOLUM도 자회사를 설립한 전략 시장 — Hanshow와의 직접 경쟁이 본격화될 전망\n- 약국 세그먼트는 ESL의 헬스케어 확장 전략에서 중요한 거점 — SOLUM의 약국 특화 기능(복약 정보 표시·재고 관리 연동) 개발 우선순위 검토 필요\n- FutureShelf라는 현지 파트너사 모델을 벤치마킹하여 SOLUM도 호주·뉴질랜드 현지 약국 전문 유통 파트너 발굴 추진 권장",
+          "imageUrl": "",
+          "pubDate": "2026-03-14",
+          "sourceUrl": "https://www.hanshow.com/en/news/hanshow-debuts-at-app-2026,-reinforcing-commitment-to-australia%E2%80%99s-pharmacy-retail-market",
+          "sourceName": "Hanshow"
+        }
+      ],
       "슈퍼마켓": [
         {
           "title": "英 Morrisons, VusionGroup과 전국 497개 매장 ESL 전면 도입 착수",
@@ -90,6 +110,15 @@
         "pubDate": "2026-03-27",
         "sourceUrl": "https://www.pricer.com/press-release/pricer-ab-publishes-the-annual-report-for-2025",
         "sourceName": "Pricer AB"
+      },
+      {
+        "title": "SOLUM, 'RetailTech Japan 2026' 참가 — BIPROGY와 일본 유통 DX 가속화",
+        "summary": "SOLUM이 3월 3~6일 도쿄 빅사이트에서 개최된 아시아 최대 유통 DX 전시회 'RetailTech Japan 2026'에 참가해 일본 시장 공략 전략을 본격화했다.\n- 핵심 비전 **'Retail in Sync'** 발표 — ESL을 허브로 POS·재고 관리·모바일 앱을 실시간으로 통합하는 생태계 시연\n- **4개 Innovation Zone** 구성: ① LED 블링킹+위치 안내 ② 선반 무게 센서 기반 자동 재고 관리 ③ RMN 데이터 분석 ④ 친환경 매장 관리\n- 일본 대형 SI 기업 **BIPROGY와 공동 부스** 운영 — 일본 소매업 맞춤 데이터 기반 자동화 모델 제안\n- RetailTech Japan은 연간 **8만 명 이상** 전문가 참가하는 아시아 최대 유통 전시회\n- 전체 솔루션은 자사 통합 운영 체제 **SOLUM Solution Platform(SSP)**으로 관리",
+        "implications": "[🟢 기회] SOLUM이 일본 최대 유통 전시회에서 현지 SI 대형사 BIPROGY와 협력하며 일본 유통 DX 시장 진입 교두보를 확보.\n- BIPROGY는 일본 대형 유통사(이온·세븐&아이 계열)와의 접점을 보유 — SOLUM의 일본 대형 유통사 레퍼런스 확보 가능성\n- 일본 편의점 체인(세븐일레븐·패밀리마트·로손)은 전국 약 58,000개 점포로 ESL 대량 도입 잠재 고객 — 파이프라인 개발 권장\n- 일본 시장은 Hanshow 일본 법인도 6년간 활동 중이므로 BIPROGY 파트너십을 통한 차별화된 SI 채널 전략 유지 필요",
+        "imageUrl": "",
+        "pubDate": "2026-03-03",
+        "sourceUrl": "https://www.rutlandherald.com/news/business/solum-accelerates-japan-s-retail-dx-at-retailtech-japan-2026/article_44ab5c16-eb99-504d-8adb-55f0edc336b5.html",
+        "sourceName": "Rutland Herald (SOLUM 보도자료)"
       }
     ],
     "solutionProviders": [
