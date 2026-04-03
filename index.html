@@ -1265,13 +1265,26 @@ function populateYearSelect() {
     const count = document.getElementById('reportCount');
     count.textContent = `총 ${weekIndex.length}개 리포트`;
 
-    const years = [...new Set(weekIndex.map(r => r.weekId.substring(0, 4)))].sort().reverse();
+    // 수요일 기준 연도로 집계 (월 경계 주차가 연 경계에 걸치는 경우도 대응)
+    const years = [...new Set(weekIndex.map(r => getWeekWednesdayYearMonth(r).year))].sort().reverse();
     years.forEach(year => {
         const opt = document.createElement('option');
         opt.value = year;
         opt.textContent = `${year}년`;
         yearSelect.appendChild(opt);
     });
+}
+
+function getWeekWednesdayYearMonth(r) {
+    // weekId는 월요일 "YYYY-MM-DD" → 수요일 = +2일
+    // 수요일이 속한 연/월을 해당 주의 대표 월로 사용
+    const mon = new Date(r.weekId + 'T00:00:00');
+    const wed = new Date(mon);
+    wed.setDate(mon.getDate() + 2);
+    return {
+        year: String(wed.getFullYear()),
+        month: String(wed.getMonth() + 1).padStart(2, '0')
+    };
 }
 
 function onYearChange(year) {
@@ -1284,9 +1297,13 @@ function onYearChange(year) {
 
     if (!year) { monthSelect.disabled = true; return; }
 
-    const months = [...new Set(
-        weekIndex.filter(r => r.weekId.startsWith(year)).map(r => parseInt(r.weekId.substring(5, 7)))
-    )].sort((a, b) => b - a);
+    // 수요일 기준으로 해당 연도에 속하는 주의 월 목록 수집
+    const monthSet = new Set();
+    weekIndex.forEach(r => {
+        const wYM = getWeekWednesdayYearMonth(r);
+        if (wYM.year === year) monthSet.add(parseInt(wYM.month));
+    });
+    const months = [...monthSet].sort((a, b) => b - a);
 
     months.forEach(m => {
         const opt = document.createElement('option');
@@ -1305,9 +1322,12 @@ function onMonthChange(month) {
     weekSelect.innerHTML = '<option value="">주간 선택</option>';
     if (!month || !year) { weekSelect.disabled = true; return; }
 
-    const prefix = `${year}-${month}`;
+    // 수요일 기준으로 선택된 연/월에 속하는 주만 표시
     weekIndex
-        .filter(r => r.weekId.startsWith(prefix))
+        .filter(r => {
+            const wYM = getWeekWednesdayYearMonth(r);
+            return wYM.year === year && wYM.month === month;
+        })
         .sort((a, b) => b.weekId.localeCompare(a.weekId))
         .forEach(r => {
             const opt = document.createElement('option');
@@ -1344,17 +1364,22 @@ async function loadWeek(weekId) {
     currentWeekId = weekId;
 
     // Sync hierarchical selects
-    const year = weekId.substring(0, 4);
-    const month = weekId.substring(5, 7);
+    // 수요일 기준으로 해당 주의 연/월을 결정
+    const wedYM = getWeekWednesdayYearMonth({ weekId });
+    const year  = wedYM.year;
+    const month = wedYM.month;
 
     const yearSelect = document.getElementById('yearSelect');
     yearSelect.value = year;
 
     const monthSelect = document.getElementById('monthSelect');
     monthSelect.innerHTML = '<option value="">월 선택</option>';
-    const months = [...new Set(
-        weekIndex.filter(r => r.weekId.startsWith(year)).map(r => parseInt(r.weekId.substring(5, 7)))
-    )].sort((a, b) => b - a);
+    const syncMonthSet = new Set();
+    weekIndex.forEach(r => {
+        const wYM = getWeekWednesdayYearMonth(r);
+        if (wYM.year === year) syncMonthSet.add(parseInt(wYM.month));
+    });
+    const months = [...syncMonthSet].sort((a, b) => b - a);
     months.forEach(m => {
         const opt = document.createElement('option');
         opt.value = String(m).padStart(2, '0');
@@ -1366,9 +1391,11 @@ async function loadWeek(weekId) {
 
     const weekSelect = document.getElementById('weekSelect');
     weekSelect.innerHTML = '<option value="">주간 선택</option>';
-    const prefix = `${year}-${month}`;
     weekIndex
-        .filter(r => r.weekId.startsWith(prefix))
+        .filter(r => {
+            const wYM = getWeekWednesdayYearMonth(r);
+            return wYM.year === year && wYM.month === month;
+        })
         .sort((a, b) => b.weekId.localeCompare(a.weekId))
         .forEach(r => {
             const opt = document.createElement('option');
