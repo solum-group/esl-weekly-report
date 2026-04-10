@@ -52,6 +52,80 @@
             padding: 24px;
         }
         #setupOverlay.hidden, #adminChangePwOverlay.hidden { display: none; }
+        /* ── SET PASSWORD MODAL ── */
+        #setPasswordModal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10002;
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(4px);
+        }
+        #setPasswordModal.hidden { display: none; }
+        .set-pw-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 36px 32px;
+            max-width: 440px; width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .set-pw-title {
+            font-size: 1.15rem; font-weight: 800; color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .set-pw-sub {
+            font-size: 0.82rem; color: #64748b; margin-bottom: 20px;
+        }
+        .set-pw-email-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #f1f5f9; border: 1px solid #e2e8f0;
+            border-radius: 8px; padding: 7px 12px;
+            font-size: 0.82rem; color: #334155; font-weight: 600;
+            margin-bottom: 20px; width: 100%; box-sizing: border-box;
+        }
+        .set-pw-label {
+            font-size: 0.78rem; font-weight: 700; color: #475569;
+            margin-bottom: 5px;
+        }
+        .set-pw-input {
+            width: 100%; box-sizing: border-box;
+            padding: 10px 14px; border-radius: 10px;
+            border: 1.5px solid #e2e8f0;
+            font-size: 0.88rem; font-family: inherit;
+            outline: none; transition: border 0.15s;
+            margin-bottom: 14px;
+        }
+        .set-pw-input:focus { border-color: #2563eb; }
+        .set-pw-input.error { border-color: #ef4444; }
+        .set-pw-err {
+            font-size: 0.76rem; color: #ef4444;
+            margin-top: -10px; margin-bottom: 10px; min-height: 16px;
+        }
+        .set-pw-strength {
+            font-size: 0.74rem; margin-top: -10px; margin-bottom: 14px; min-height: 16px;
+        }
+        .set-pw-hint {
+            font-size: 0.74rem; color: #64748b;
+            background: #f8fafc; border-radius: 8px; padding: 9px 12px;
+            margin-bottom: 20px; line-height: 1.5;
+        }
+        .set-pw-actions { display: flex; gap: 10px; justify-content: flex-end; }
+        .set-pw-cancel {
+            padding: 9px 20px; border-radius: 10px;
+            border: 1.5px solid #e2e8f0; background: #fff;
+            color: #64748b; font-size: 0.85rem; font-weight: 700;
+            cursor: pointer; font-family: inherit;
+        }
+        .set-pw-cancel:hover { background: #f8fafc; }
+        .set-pw-submit {
+            padding: 9px 20px; border-radius: 10px;
+            border: none; background: #2563eb;
+            color: #fff; font-size: 0.85rem; font-weight: 700;
+            cursor: pointer; font-family: inherit;
+            transition: background 0.15s;
+        }
+        .set-pw-submit:hover { background: #1d4ed8; }
+        .set-pw-submit:disabled { opacity: 0.6; cursor: not-allowed; }
         /* ── AUTO-LOGOUT MODAL ── */
         #adminAutoLogoutModal {
             position: fixed; inset: 0;
@@ -460,6 +534,10 @@
             background: #fff7ed; color: #ea580c; border-color: #fdba74;
         }
         .action-btn.reset:hover { background: #ffedd5; }
+        .action-btn.set-pw {
+            background: #eff6ff; color: #2563eb; border-color: #93c5fd;
+        }
+        .action-btn.set-pw:hover { background: #dbeafe; }
         .action-btn.delete {
             background: #fff1f2; color: #e11d48; border-color: #fca5a5;
         }
@@ -2010,6 +2088,9 @@ function renderAccountRows(rows) {
             <td class="date-cell">${fmtDate(r.createdAt)}</td>
             <td class="manage-cell">
                 <div class="actions-cell">
+                    <button class="action-btn set-pw"
+                        data-key="${escapedKey}" data-email="${escapedEmail}"
+                        data-action="set-pw-account">🔑 설정</button>
                     <button class="action-btn reset"
                         data-key="${escapedKey}" data-email="${escapedEmail}"
                         data-action="reset-account">🔄 초기화</button>
@@ -2225,6 +2306,11 @@ async function loadAdmins() {
                 <td class="date-cell">${fmtDate(r.createdAt)}</td>
                 <td>
                     <div class="actions-cell">
+                        ${r.email !== myEmail
+                            ? `<button class="action-btn set-pw"
+                                data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
+                                data-action="set-pw-admin">🔑 설정</button>`
+                            : ''}
                         <button class="action-btn reset"
                             data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
                             data-action="reset-admin">🔄 초기화</button>
@@ -2389,6 +2475,132 @@ async function deleteAdmin(key, email) {
     }
 }
 
+// ── 비밀번호 직접 설정 ───────────────────────────────────────────────
+let _setPwTarget = null; // { key, email, type: 'account' | 'admin' }
+
+function openSetPasswordModal(key, email, type) {
+    _setPwTarget = { key, email, type };
+    document.getElementById('setPwEmailDisplay').textContent = email;
+    document.getElementById('setPwSub').textContent =
+        type === 'admin'
+            ? '어드민 계정의 비밀번호를 직접 지정합니다.'
+            : '사용자 계정의 비밀번호를 직접 지정합니다.';
+    document.getElementById('setPwHint').innerHTML =
+        type === 'admin'
+            ? '✅ DB에 즉시 반영됩니다. 다음 로그인 시 적용됩니다.<br>⚠️ Firebase Auth 동기화를 위해 비밀번호 재설정 이메일도 함께 발송됩니다.'
+            : '✅ DB에 즉시 반영되며, 이메일 없이 바로 적용됩니다.<br>사용자에게 새 비밀번호를 별도로 안내해 주세요.';
+    const newEl = document.getElementById('setPwNew');
+    const cfEl  = document.getElementById('setPwConfirm');
+    newEl.value = ''; cfEl.value = '';
+    newEl.classList.remove('error'); cfEl.classList.remove('error');
+    document.getElementById('setPwErr').textContent      = '';
+    document.getElementById('setPwStrength').textContent = '';
+    document.getElementById('setPwSubmitBtn').disabled   = false;
+    document.getElementById('setPwSubmitBtn').textContent = '비밀번호 설정';
+    document.getElementById('setPasswordModal').classList.remove('hidden');
+    setTimeout(() => newEl.focus(), 100);
+}
+
+function closeSetPasswordModal() {
+    document.getElementById('setPasswordModal').classList.add('hidden');
+    _setPwTarget = null;
+}
+
+// 모달 바깥 클릭 시 닫기
+document.getElementById('setPasswordModal').addEventListener('click', function(e) {
+    if (e.target === this) closeSetPasswordModal();
+});
+
+// 비밀번호 강도 실시간 표시
+document.getElementById('setPwNew').addEventListener('input', function() {
+    const pw  = this.value;
+    const el  = document.getElementById('setPwStrength');
+    if (!pw) { el.textContent = ''; return; }
+    const ok  = isStrongPassword(pw);
+    const len = pw.length >= 8;
+    const let_ = /[a-zA-Z]/.test(pw);
+    const num = /[0-9]/.test(pw);
+    const spc = /[!@#$%^&*()\-_=+\[\]{};:'",.<>?/\\|`~]/.test(pw);
+    if (ok) {
+        el.style.color = '#16a34a';
+        el.textContent = '✓ 사용 가능한 비밀번호입니다';
+    } else {
+        const missing = [];
+        if (!len)  missing.push('8자 이상');
+        if (!let_) missing.push('영문자');
+        if (!num)  missing.push('숫자');
+        if (!spc)  missing.push('특수문자');
+        el.style.color = '#dc2626';
+        el.textContent = '필요: ' + missing.join(', ');
+    }
+});
+
+async function doSetPassword() {
+    if (!_setPwTarget) return;
+    const { key, email, type } = _setPwTarget;
+    const newEl  = document.getElementById('setPwNew');
+    const cfEl   = document.getElementById('setPwConfirm');
+    const errEl  = document.getElementById('setPwErr');
+    const btn    = document.getElementById('setPwSubmitBtn');
+
+    newEl.classList.remove('error'); cfEl.classList.remove('error');
+    errEl.textContent = '';
+
+    const pw = newEl.value;
+    const cf = cfEl.value;
+
+    if (!pw) { newEl.classList.add('error'); errEl.textContent = '새 비밀번호를 입력하세요.'; return; }
+    if (!isStrongPassword(pw)) {
+        newEl.classList.add('error');
+        errEl.textContent = '비밀번호는 8자 이상, 영문+숫자+특수문자를 포함해야 합니다.';
+        return;
+    }
+    if (!cf) { cfEl.classList.add('error'); errEl.textContent = '비밀번호 확인을 입력하세요.'; return; }
+    if (pw !== cf) { cfEl.classList.add('error'); errEl.textContent = '비밀번호가 일치하지 않습니다.'; return; }
+
+    btn.disabled = true; btn.textContent = '설정 중…';
+    try {
+        const hash   = await sha256(pw);
+        const dbPath = type === 'admin'
+            ? `${FIREBASE_DB_URL}/admins/${key}.json`
+            : `${FIREBASE_DB_URL}/accounts/${key}.json`;
+
+        // 기존 계정 정보 읽기 (덮어쓰기 방지)
+        const getRes  = await _authFetch(dbPath);
+        const account = getRes.ok ? await getRes.json() : {};
+
+        // passwordHash 업데이트 + mustChangePassword 해제
+        const payload = { ...account, passwordHash: hash, mustChangePassword: false };
+        const putRes  = await _authFetch(dbPath, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload)
+        });
+        if (!putRes.ok) throw new Error(`PUT ${putRes.status}`);
+
+        // 어드민 계정은 Firebase Auth 동기화를 위해 비밀번호 재설정 이메일 발송
+        if (type === 'admin') {
+            try { await _fbAuth.sendPasswordResetEmail(email); } catch (_) { /* silent */ }
+        }
+
+        const actionLabel = type === 'admin' ? 'setAdminPassword' : 'setAccountPassword';
+        await _auditLog(actionLabel, email, '비밀번호 직접 설정 완료');
+
+        closeSetPasswordModal();
+        if (type === 'admin') {
+            alert(`✅ ${email} 어드민의 비밀번호가 설정되었습니다.\n비밀번호 재설정 이메일도 함께 발송되었습니다.`);
+            loadAdmins();
+        } else {
+            alert(`✅ ${email} 계정의 비밀번호가 설정되었습니다.\n사용자에게 새 비밀번호를 별도로 안내해 주세요.`);
+            loadAccounts();
+        }
+    } catch (e) {
+        errEl.textContent = '비밀번호 설정 중 오류가 발생했습니다.';
+        console.error(e);
+    }
+    btn.disabled = false; btn.textContent = '비밀번호 설정';
+}
+
 // ── 테이블 버튼 이벤트 델리게이션 (XSS 방어: onclick 속성 대신 data-* 사용) ──
 document.addEventListener('click', function(e) {
     const btn = e.target.closest('button[data-action]');
@@ -2396,10 +2608,12 @@ document.addEventListener('click', function(e) {
     const action = btn.dataset.action;
     const key    = btn.dataset.key;
     const email  = btn.dataset.email;
-    if (action === 'reset-account') resetPassword(key, email);
-    else if (action === 'delete-account') deleteAccount(key, email);
-    else if (action === 'reset-admin')   resetAdminPassword(key, email);
-    else if (action === 'delete-admin')  deleteAdmin(key, email);
+    if (action === 'set-pw-account')  openSetPasswordModal(key, email, 'account');
+    else if (action === 'set-pw-admin')    openSetPasswordModal(key, email, 'admin');
+    else if (action === 'reset-account')   resetPassword(key, email);
+    else if (action === 'delete-account')  deleteAccount(key, email);
+    else if (action === 'reset-admin')     resetAdminPassword(key, email);
+    else if (action === 'delete-admin')    deleteAdmin(key, email);
 });
 
 // ── 세션 DB 재검증 (30분마다 어드민 권한 확인) ────────────────────────
@@ -2430,9 +2644,11 @@ const ACTION_LABELS = {
     updateAccountName:   '이름 변경',
     deleteAccount:       '계정 삭제',
     resetPassword:       '비밀번호 초기화',
+    setAccountPassword:  '비밀번호 직접 설정',
     createAdmin:         '어드민 생성',
     deleteAdmin:         '어드민 삭제',
     resetAdminPassword:  '어드민 비밀번호 초기화',
+    setAdminPassword:    '어드민 비밀번호 직접 설정',
     updateBootstrapCode: '부트스트랩 코드 변경',
 };
 
@@ -2488,6 +2704,7 @@ async function loadAuditLog() {
             updateAccountName: '#0ea5e9',
             adminLogin: '#2563eb', adminLogout: '#6b7280',
             resetPassword: '#f59e0b', resetAdminPassword: '#f59e0b',
+            setAccountPassword: '#2563eb', setAdminPassword: '#2563eb',
             updateBootstrapCode: '#7c3aed',
         };
 
@@ -2600,6 +2817,31 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pageshow', () => checkAdminTokenExpiry());
 setInterval(checkAdminTokenExpiry, 60 * 1000);
 </script>
+
+<!-- SET PASSWORD MODAL -->
+<div id="setPasswordModal" class="hidden">
+    <div class="set-pw-card">
+        <div class="set-pw-title">🔑 비밀번호 직접 설정</div>
+        <div class="set-pw-sub" id="setPwSub">선택한 계정의 비밀번호를 직접 지정합니다.</div>
+        <div class="set-pw-email-badge">
+            <span>📧</span>
+            <span id="setPwEmailDisplay"></span>
+        </div>
+        <div class="set-pw-label">새 비밀번호 <span style="font-weight:500;color:#94a3b8;">(8자 이상, 영문+숫자+특수문자)</span></div>
+        <input class="set-pw-input" type="password" id="setPwNew" placeholder="새 비밀번호 입력" autocomplete="new-password">
+        <div class="set-pw-strength" id="setPwStrength"></div>
+        <div class="set-pw-label">비밀번호 확인</div>
+        <input class="set-pw-input" type="password" id="setPwConfirm" placeholder="비밀번호 재입력" autocomplete="new-password">
+        <div class="set-pw-err" id="setPwErr"></div>
+        <div class="set-pw-hint" id="setPwHint">
+            ✅ 설정 즉시 적용됩니다. 사용자에게 새 비밀번호를 별도로 안내해 주세요.
+        </div>
+        <div class="set-pw-actions">
+            <button class="set-pw-cancel" onclick="closeSetPasswordModal()">취소</button>
+            <button class="set-pw-submit" id="setPwSubmitBtn" onclick="doSetPassword()">비밀번호 설정</button>
+        </div>
+    </div>
+</div>
 
 <!-- ADMIN AUTO LOGOUT MODAL -->
 <div id="adminAutoLogoutModal" class="hidden">
