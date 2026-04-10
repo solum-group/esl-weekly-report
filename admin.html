@@ -2513,21 +2513,21 @@ function closeSetPasswordModal() {
     _setPwTarget = null;
 }
 
-// 모달 바깥 클릭 시 닫기
-document.getElementById('setPasswordModal').addEventListener('click', function(e) {
-    if (e.target === this) closeSetPasswordModal();
+// 모달 바깥 클릭 닫기 + 비밀번호 강도 표시 — 이벤트 위임 방식 (모달 HTML이 </script> 이후에 위치)
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'setPasswordModal') closeSetPasswordModal();
 });
-
-// 비밀번호 강도 실시간 표시
-document.getElementById('setPwNew').addEventListener('input', function() {
-    const pw  = this.value;
+document.addEventListener('input', function(e) {
+    if (!e.target || e.target.id !== 'setPwNew') return;
+    const pw  = e.target.value;
     const el  = document.getElementById('setPwStrength');
+    if (!el) return;
     if (!pw) { el.textContent = ''; return; }
-    const ok  = isStrongPassword(pw);
-    const len = pw.length >= 8;
+    const ok   = isStrongPassword(pw);
+    const len  = pw.length >= 8;
     const let_ = /[a-zA-Z]/.test(pw);
-    const num = /[0-9]/.test(pw);
-    const spc = /[!@#$%^&*()\-_=+\[\]{};:'",.<>?/\\|`~]/.test(pw);
+    const num  = /[0-9]/.test(pw);
+    const spc  = /[!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|`~]/.test(pw);
     if (ok) {
         el.style.color = '#16a34a';
         el.textContent = '✓ 사용 가능한 비밀번호입니다';
