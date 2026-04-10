@@ -1201,6 +1201,13 @@ async function sha256(text) {
         .map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+function isStrongPassword(pw) {
+    return pw.length >= 8 &&
+           /[a-zA-Z]/.test(pw) &&
+           /[0-9]/.test(pw) &&
+           /[!@#$%^&*()\-_=+\[\]{};':",.<>/?\\|`~]/.test(pw);
+}
+
 // Firebase Auth 토큰 가져오기 (DB REST API 인증용)
 async function _getAuthToken() {
     const user = _fbAuth.currentUser;
