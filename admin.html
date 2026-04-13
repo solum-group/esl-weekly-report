@@ -126,6 +126,52 @@
         }
         .set-pw-submit:hover { background: #1d4ed8; }
         .set-pw-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        /* ── 비밀번호 복사 안내 모달 ── */
+        #pwCopyModal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 10003;
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px; backdrop-filter: blur(4px);
+        }
+        #pwCopyModal.hidden { display: none; }
+        .pw-copy-card {
+            background: #fff; border-radius: 20px;
+            padding: 32px 28px; max-width: 400px; width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+        }
+        .pw-copy-title { font-size: 1.05rem; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
+        .pw-copy-sub { font-size: 0.8rem; color: #64748b; margin-bottom: 18px; line-height: 1.5; }
+        .pw-copy-box {
+            display: flex; align-items: center; gap: 8px;
+            background: #f1f5f9; border: 1.5px solid #e2e8f0;
+            border-radius: 10px; padding: 10px 14px; margin-bottom: 18px;
+        }
+        .pw-copy-value {
+            flex: 1; font-family: 'Courier New', monospace;
+            font-size: 0.95rem; font-weight: 700; color: #1e293b;
+            word-break: break-all; letter-spacing: 0.04em;
+        }
+        .pw-copy-btn {
+            padding: 6px 14px; border-radius: 8px;
+            border: 1.5px solid #2563eb; background: #eff6ff;
+            color: #2563eb; font-size: 0.78rem; font-weight: 700;
+            cursor: pointer; font-family: inherit; white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .pw-copy-btn:hover { background: #2563eb; color: #fff; }
+        .pw-copy-warn {
+            font-size: 0.74rem; color: #b45309;
+            background: #fef9c3; border-radius: 8px; padding: 8px 12px;
+            margin-bottom: 18px; line-height: 1.5;
+        }
+        .pw-copy-close {
+            width: 100%; padding: 10px; border-radius: 10px;
+            border: none; background: #2563eb; color: #fff;
+            font-size: 0.88rem; font-weight: 700; cursor: pointer;
+            font-family: inherit; transition: background 0.15s;
+        }
+        .pw-copy-close:hover { background: #1d4ed8; }
         /* ── AUTO-LOGOUT MODAL ── */
         #adminAutoLogoutModal {
             position: fixed; inset: 0;
@@ -946,33 +992,26 @@
         <!-- 계정 생성 -->
         <div class="create-card">
             <div class="create-card-title">신규 계정 생성</div>
-            <div class="create-card-desc">생성된 계정은 초기 비밀번호로 설정되며, 최초 로그인 시 비밀번호 변경을 요구합니다.</div>
-            <div class="create-row">
+            <div class="create-card-desc">이름·이메일·비밀번호를 입력하면 계정이 즉시 생성됩니다. 비밀번호는 사용자에게 별도 안내해 주세요.</div>
+            <div class="create-row" style="flex-wrap:wrap; gap:10px;">
                 <input class="create-input" type="text" id="newAccountName"
                     placeholder="이름 (선택)"
-                    style="max-width:160px;"
+                    style="max-width:140px;"
                     onkeydown="if(event.key==='Enter') createAccount()">
                 <input class="create-input" type="email" id="newAccountEmail"
                     placeholder="name@solum-group.com"
                     onkeydown="if(event.key==='Enter') createAccount()">
+                <input class="create-input" type="password" id="newAccountPw"
+                    placeholder="비밀번호 (8자+영문+숫자+특수)"
+                    style="max-width:220px;"
+                    onkeydown="if(event.key==='Enter') createAccount()">
                 <button class="create-btn" id="createBtn" onclick="createAccount()">계정 생성</button>
             </div>
-            <div class="create-error" id="createError"></div>
-        </div>
-
-        <!-- passwordHash 마이그레이션 경고 배너 -->
-        <div id="migrationWarningBanner" class="hidden" style="
-            background: #fff3cd; border: 1px solid #ffc107; border-radius: 10px;
-            padding: 14px 18px; margin-bottom: 16px;
-            display: flex; align-items: flex-start; gap: 12px; font-size: 13.5px; color: #7d5700;">
-            <span style="font-size:18px;line-height:1.2;">⚠️</span>
-            <div>
-                <strong>레거시 passwordHash 필드 감지</strong> —
-                <span id="migrationWarningText"></span>
-                <br><span style="font-size:12px;color:#9a6e00;">
-                    사용자가 다음 로그인 시 자동으로 마이그레이션됩니다. 이미 로그인된 계정은 조치 불필요.
-                </span>
+            <div style="margin-top:8px; display:flex; align-items:center; gap:8px; font-size:0.8rem; color:var(--text-secondary);">
+                <input type="checkbox" id="sendResetEmailChk" checked style="width:15px;height:15px;cursor:pointer;accent-color:var(--blue);">
+                <label for="sendResetEmailChk" style="cursor:pointer;">비밀번호 재설정 이메일 함께 발송 (이메일 수신 가능한 경우)</label>
             </div>
+            <div class="create-error" id="createError"></div>
         </div>
 
         <!-- 계정 목록 검색/필터 바 -->
@@ -1136,8 +1175,6 @@
 <script>
 // ── CONFIG ───────────────────────────────────────────────────────────
 const FIREBASE_DB_URL    = 'https://esl-weekly-report-default-rtdb.asia-southeast1.firebasedatabase.app';
-// 보안: 부트스트랩 코드를 SHA-256 해시로 저장 (평문 노출 방지)
-// sha256('solum_admin_2026') = 아래 값
 const BOOTSTRAP_CODE_HASH = '2f43dd5129b9183c0eca06b7bb7d311529ec6bdcb91afbaf0d53f0387c14fa29';
 // ─────────────────────────────────────────────────────────────────────
 
@@ -2007,19 +2044,6 @@ async function loadAccounts() {
             return;
         }
 
-        // passwordHash 마이그레이션 경고
-        const legacyCount = _allAccountRows.filter(r => r.passwordHash).length;
-        const banner      = document.getElementById('migrationWarningBanner');
-        const bannerText  = document.getElementById('migrationWarningText');
-        if (legacyCount > 0) {
-            bannerText.textContent = `${legacyCount}개 계정에 레거시 passwordHash 필드가 남아 있습니다. Firebase Authentication으로 마이그레이션 필요.`;
-            banner.classList.remove('hidden');
-            banner.style.display = 'flex';
-        } else {
-            banner.classList.add('hidden');
-            banner.style.display = '';
-        }
-
         // 검색어/필터 초기화 후 렌더링
         const searchInput = document.getElementById('accountSearchInput');
         if (searchInput) searchInput.value = '';
@@ -2129,7 +2153,8 @@ function renderAccountRows(rows) {
                 <div class="actions-cell">
                     <button class="action-btn set-pw"
                         data-key="${escapedKey}" data-email="${escapedEmail}"
-                        data-action="set-pw-account">🔑 설정</button>
+                        data-action="set-pw-account"
+                        onclick="openSetPasswordModal(this.dataset.key, this.dataset.email, 'account')">🔑 설정</button>
                     <button class="action-btn reset"
                         data-key="${escapedKey}" data-email="${escapedEmail}"
                         data-action="reset-account">🔄 초기화</button>
@@ -2175,14 +2200,19 @@ async function saveAccountName(key, email) {
 async function createAccount() {
     const emailEl  = document.getElementById('newAccountEmail');
     const nameEl   = document.getElementById('newAccountName');
+    const pwEl     = document.getElementById('newAccountPw');
     const errorEl  = document.getElementById('createError');
     const btn      = document.getElementById('createBtn');
     const email    = emailEl.value.trim().toLowerCase();
     const name     = nameEl ? nameEl.value.trim() : '';
+    const pw       = pwEl ? pwEl.value : '';
 
     emailEl.classList.remove('error');
+    if (pwEl) pwEl.classList.remove('error');
     errorEl.textContent = '';
+    errorEl.style.color = '';
 
+    // ① 입력 검증
     if (!email) {
         emailEl.classList.add('error');
         errorEl.textContent = '이메일을 입력하세요.';
@@ -2193,12 +2223,23 @@ async function createAccount() {
         errorEl.textContent = '올바른 이메일 형식을 입력하세요.';
         return;
     }
+    if (!pw) {
+        if (pwEl) pwEl.classList.add('error');
+        errorEl.textContent = '비밀번호를 입력하세요.';
+        return;
+    }
+    if (!isStrongPassword(pw)) {
+        if (pwEl) pwEl.classList.add('error');
+        errorEl.textContent = '비밀번호는 8자 이상, 영문·숫자·특수문자를 포함해야 합니다.';
+        return;
+    }
 
     btn.textContent = '생성 중…'; btn.disabled = true;
 
     try {
-        const key   = email.replace(/[@.]/g, '_');
-        // 이미 존재하는 계정 확인 (DB)
+        const key = email.replace(/[@.]/g, '_');
+
+        // ② 이미 존재하는 계정 확인 (DB)
         const chk      = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`);
         const existing = chk.ok ? await chk.json() : null;
         if (existing && existing.email) {
@@ -2208,20 +2249,12 @@ async function createAccount() {
             return;
         }
 
-        // Secondary Firebase app으로 사용자 계정 생성 (현재 어드민 세션 유지)
-        const secApp  = firebase.initializeApp(_firebaseConfig, 'sec_' + Date.now());
-        const secAuth = secApp.auth();
-        // 임시 랜덤 비밀번호로 계정 생성
-        const tempPw  = 'Temp_' + Math.random().toString(36).slice(2) + '!9';
-        await secAuth.createUserWithEmailAndPassword(email, tempPw);
-        await secApp.delete();
+        // ③ 비밀번호 해시 생성
+        const pwHash = await sha256(pw);
 
-        // 비밀번호 재설정 이메일 발송 (사용자가 이메일로 비밀번호 설정)
-        await _fbAuth.sendPasswordResetEmail(email);
-
-        // DB에 계정 메타데이터 저장
+        // ④ DB에 계정 저장 (passwordHash 포함, 이메일 의존 없음)
         const now     = new Date().toISOString();
-        const payload = { email, mustChangePassword: true, createdAt: now };
+        const payload = { email, passwordHash: pwHash, mustChangePassword: false, createdAt: now };
         if (name) payload.name = name;
         const res = await _authFetch(`${FIREBASE_DB_URL}/accounts/${key}.json`, {
             method:  'PUT',
@@ -2230,39 +2263,38 @@ async function createAccount() {
         });
         if (!res.ok) throw new Error(`PUT ${res.status}`);
 
-        emailEl.value       = '';
+        // ⑤ Firebase Auth 계정 생성 (백그라운드, 실패해도 DB 계정에 영향 없음)
+        try {
+            const secApp  = firebase.initializeApp(_firebaseConfig, 'sec_' + Date.now());
+            const secAuth = secApp.auth();
+            await secAuth.createUserWithEmailAndPassword(email, pw);
+            await secApp.delete();
+        } catch (fbErr) {
+            if (fbErr.code !== 'auth/email-already-in-use') {
+                console.warn('Firebase Auth 계정 생성 실패 (DB 계정은 정상 생성):', fbErr.code);
+            }
+        }
+
+        // ⑥ 비밀번호 재설정 이메일 발송 (선택 사항)
+        const sendEmail = document.getElementById('sendResetEmailChk');
+        if (sendEmail && sendEmail.checked) {
+            try { await _fbAuth.sendPasswordResetEmail(email); } catch (_) {}
+        }
+
+        await _auditLog('createAccount', email, `신규 계정 생성 (비밀번호 직접 설정${name ? ', 이름: ' + name : ''})`);
+
+        // ⑦ 입력 초기화 후 비밀번호 복사 모달 표시
+        emailEl.value = '';
         if (nameEl) nameEl.value = '';
-        errorEl.textContent = '';
-        errorEl.style.color = '#16a34a';
-        await _auditLog('createAccount', email, `신규 계정 생성 + 비밀번호 설정 이메일 발송${name ? ' (이름: ' + name + ')' : ''}`);
-        errorEl.textContent = `✓ ${email} 계정이 생성되었습니다. 비밀번호 설정 이메일이 발송되었습니다.`;
-        setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
-        loadAccounts();
+        if (pwEl)   pwEl.value   = '';
+        btn.textContent = '계정 생성'; btn.disabled = false;
+        openPwCopyModal(email, pw, loadAccounts);
 
     } catch (e) {
-        const code = e.code || '';
-        if (code === 'auth/email-already-in-use') {
-            // Firebase Auth에 이미 존재 → DB만 등록
-            const key2  = email.replace(/[@.]/g, '_');
-            await _authFetch(`${FIREBASE_DB_URL}/accounts/${key2}.json`, {
-                method:  'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(Object.assign({ email, mustChangePassword: true, createdAt: new Date().toISOString() }, name ? { name } : {}))
-            });
-            await _fbAuth.sendPasswordResetEmail(email);
-            await _auditLog('createAccount', email, `Firebase Auth 기존 계정 → DB 등록${name ? ' (이름: ' + name + ')' : ''}`);
-            emailEl.value = '';
-            if (nameEl) nameEl.value = '';
-            errorEl.style.color = '#16a34a';
-            errorEl.textContent = `✓ ${email} 계정이 등록되었습니다. 비밀번호 재설정 이메일이 발송되었습니다.`;
-            setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = ''; }, 5000);
-            loadAccounts();
-        } else {
-            errorEl.textContent = '계정 생성 중 오류가 발생했습니다.';
-            console.error(e);
-        }
+        errorEl.textContent = '계정 생성 중 오류가 발생했습니다. (' + (e.message || '알 수 없음') + ')';
+        console.error(e);
+        btn.textContent = '계정 생성'; btn.disabled = false;
     }
-    btn.textContent = '계정 생성'; btn.disabled = false;
 }
 
 async function resetPassword(key, email) {
@@ -2348,7 +2380,8 @@ async function loadAdmins() {
                         ${r.email !== myEmail
                             ? `<button class="action-btn set-pw"
                                 data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
-                                data-action="set-pw-admin">🔑 설정</button>`
+                                data-action="set-pw-admin"
+                                onclick="openSetPasswordModal(this.dataset.key, this.dataset.email, 'admin')">🔑 설정</button>`
                             : ''}
                         <button class="action-btn reset"
                             data-key="${escapeHtml(r.key)}" data-email="${escapeHtml(r.email)}"
@@ -2545,6 +2578,37 @@ function closeSetPasswordModal() {
     _setPwTarget = null;
 }
 
+// ── 비밀번호 복사 안내 모달 ───────────────────────────────────────────
+let _pwCopyCallback = null;
+function openPwCopyModal(email, pw, callback) {
+    _pwCopyCallback = callback || null;
+    document.getElementById('pwCopyEmail').textContent = `대상: ${email}`;
+    document.getElementById('pwCopyValue').textContent = pw;
+    document.getElementById('pwCopyBtn').textContent = '복사';
+    document.getElementById('pwCopyModal').classList.remove('hidden');
+}
+function closePwCopyModal() {
+    document.getElementById('pwCopyModal').classList.add('hidden');
+    document.getElementById('pwCopyValue').textContent = ''; // 비밀번호 즉시 지우기
+    if (_pwCopyCallback) { _pwCopyCallback(); _pwCopyCallback = null; }
+}
+function copyPwToClipboard() {
+    const val = document.getElementById('pwCopyValue').textContent;
+    if (!val) return;
+    navigator.clipboard.writeText(val).then(() => {
+        const btn = document.getElementById('pwCopyBtn');
+        btn.textContent = '✓ 복사됨';
+        setTimeout(() => { btn.textContent = '복사'; }, 2000);
+    }).catch(() => {
+        // 클립보드 API 미지원 시 선택 방식으로 대체
+        const el = document.getElementById('pwCopyValue');
+        const range = document.createRange();
+        range.selectNode(el);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+    });
+}
+
 // 모달 바깥 클릭 닫기 + 비밀번호 강도 표시 — 이벤트 위임 방식 (모달 HTML이 </script> 이후에 위치)
 document.addEventListener('click', function(e) {
     if (e.target && e.target.id === 'setPasswordModal') closeSetPasswordModal();
@@ -2626,13 +2690,7 @@ async function doSetPassword() {
         await _auditLog(actionLabel, email, '비밀번호 직접 설정 완료');
 
         closeSetPasswordModal();
-        if (type === 'admin') {
-            alert(`✅ ${email} 어드민의 비밀번호가 설정되었습니다.\n비밀번호 재설정 이메일도 함께 발송되었습니다.`);
-            loadAdmins();
-        } else {
-            alert(`✅ ${email} 계정의 비밀번호가 설정되었습니다.\n사용자에게 새 비밀번호를 별도로 안내해 주세요.`);
-            loadAccounts();
-        }
+        openPwCopyModal(email, pw, type === 'admin' ? loadAdmins : loadAccounts);
     } catch (e) {
         errEl.textContent = '비밀번호 설정 중 오류가 발생했습니다.';
         console.error(e);
@@ -2889,6 +2947,20 @@ setInterval(checkAdminTokenExpiry, 60 * 1000);
         <div class="admin-logout-title" id="adminAutoLogoutTitle">자동 로그아웃</div>
         <div class="admin-logout-msg" id="adminAutoLogoutMsg">보안을 위해 자동 로그아웃 되었습니다.<br>계속 사용하려면 다시 로그인해주세요.</div>
         <button class="admin-logout-btn" onclick="closeAdminAutoLogoutModal()">다시 로그인</button>
+    </div>
+</div>
+
+<!-- PASSWORD COPY MODAL -->
+<div id="pwCopyModal" class="hidden">
+    <div class="pw-copy-card">
+        <div class="pw-copy-title">✅ 비밀번호가 설정되었습니다</div>
+        <div class="pw-copy-sub" id="pwCopyEmail"></div>
+        <div class="pw-copy-box">
+            <span class="pw-copy-value" id="pwCopyValue"></span>
+            <button class="pw-copy-btn" id="pwCopyBtn" onclick="copyPwToClipboard()">복사</button>
+        </div>
+        <div class="pw-copy-warn">⚠️ 이 창을 닫으면 비밀번호를 다시 확인할 수 없습니다. 지금 복사하여 사용자에게 안내해 주세요.</div>
+        <button class="pw-copy-close" onclick="closePwCopyModal()">확인, 닫기</button>
     </div>
 </div>
 </body>
