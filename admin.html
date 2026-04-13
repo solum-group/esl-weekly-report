@@ -2643,7 +2643,7 @@ function copyPwToClipboard() {
     });
 }
 
-// 모달 바깥 클릭 닫기 + 비밀번호 강도 표시 — 이벤트 위임 방식 (모달 HTML이 </script> 이후에 위치)
+// 모달 바깥 클릭 닫기 + 비밀번호 강도 표시 — 이벤트 위임 방식 (모달 HTML이 스크립트 블록 이후에 위치)
 document.addEventListener('click', function(e) {
     if (e.target && e.target.id === 'setPasswordModal') closeSetPasswordModal();
 });
