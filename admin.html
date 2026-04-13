@@ -1348,7 +1348,7 @@ function showDashboard(email) {
     badge.style.display = email ? '' : 'none';
 }
 
-// ── 어드민 로그인 (Firebase 계정 기반) ──────────────────────────────
+// ── 어드민 로그인 (DB hash 우선 → Firebase Auth 백그라운드 동기화) ──
 async function doAdminLogin() {
     const emailEl    = document.getElementById('adminEmail');
     const pwEl       = document.getElementById('adminPw');
@@ -1373,20 +1373,58 @@ async function doAdminLogin() {
     btn.textContent = '확인 중…'; btn.disabled = true;
 
     try {
-        // ① Firebase Auth로 로그인
-        await _fbAuth.signInWithEmailAndPassword(email, pw);
+        const key = email.replace(/[@.]/g, '_');
 
-        // ② DB에서 어드민 등록 확인 (admins.read: true → Bearer 토큰 불필요, 초기화 타이밍 오류 방지)
-        const key   = email.replace(/[@.]/g, '_');
-        const res     = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
-        const account = res.ok ? await res.json() : null;
+        // ① DB에서 어드민 확인 (admins.read: true, 인증 불필요)
+        let dbRes;
+        try {
+            dbRes = await fetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
+        } catch (_) {
+            pwErrEl.textContent = '서버에 연결할 수 없습니다. 인터넷 연결을 확인하세요.';
+            btn.textContent = '로그인'; btn.disabled = false; return;
+        }
+        const account = dbRes.ok ? await dbRes.json() : null;
 
-        if (!account) {
-            // Firebase Auth 성공이나 DB에 어드민 아님 → 차단
-            await _fbAuth.signOut();
+        if (!account || !account.email) {
             emailEl.classList.add('error');
             emailErrEl.textContent = '등록되지 않은 어드민 계정입니다.';
             btn.textContent = '로그인'; btn.disabled = false; return;
+        }
+
+        // ② 비밀번호 검증: DB passwordHash 우선, 없으면 Firebase Auth
+        if (account.passwordHash) {
+            // DB hash 검증 (Firebase Auth 네트워크 불필요)
+            const inputHash = await sha256(pw);
+            if (inputHash !== account.passwordHash) {
+                pwEl.classList.add('error');
+                _recordAdminLoginFail(pwErrEl, btn);
+                if (!pwErrEl.textContent) pwErrEl.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+                btn.textContent = '로그인'; btn.disabled = false; return;
+            }
+            // DB 인증 성공 → Firebase Auth 백그라운드 동기화 (실패해도 로그인 진행)
+            _fbAuth.signInWithEmailAndPassword(email, pw).catch(() => {});
+
+        } else {
+            // DB hash 없음 (비밀번호 재설정 이메일로 설정한 경우) → Firebase Auth 필수
+            try {
+                await _fbAuth.signInWithEmailAndPassword(email, pw);
+            } catch (fbErr) {
+                const code = fbErr.code || '';
+                if (code === 'auth/user-not-found' || code === 'auth/wrong-password' ||
+                    code === 'auth/invalid-credential' || code === 'auth/invalid-email') {
+                    pwEl.classList.add('error');
+                    _recordAdminLoginFail(pwErrEl, btn);
+                    if (!pwErrEl.textContent) pwErrEl.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+                } else if (code === 'auth/too-many-requests') {
+                    pwErrEl.textContent = '로그인 시도 횟수 초과. 잠시 후 다시 시도하세요.';
+                } else if (code === 'auth/network-request-failed') {
+                    pwErrEl.textContent = 'Firebase 인증 서버에 연결할 수 없습니다. 관리자에게 비밀번호를 직접 설정 요청하세요.';
+                } else {
+                    pwErrEl.textContent = `로그인 오류가 발생했습니다. (${code || '알 수 없음'})`;
+                    console.error(fbErr);
+                }
+                btn.textContent = '로그인'; btn.disabled = false; return;
+            }
         }
 
         // ③ 로그인 성공 → 카운터 초기화
@@ -1406,18 +1444,8 @@ async function doAdminLogin() {
             loadData();
         }
     } catch (e) {
-        const code = e.code || '';
-        if (code === 'auth/user-not-found' || code === 'auth/wrong-password' ||
-            code === 'auth/invalid-credential' || code === 'auth/invalid-email') {
-            pwEl.classList.add('error');
-            _recordAdminLoginFail(pwErrEl, btn);
-            if (!pwErrEl.textContent) pwErrEl.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
-        } else if (code === 'auth/too-many-requests') {
-            pwErrEl.textContent = '로그인 시도 횟수 초과. 잠시 후 다시 시도하세요.';
-        } else {
-            pwErrEl.textContent = '네트워크 오류가 발생했습니다.';
-            console.error(e);
-        }
+        pwErrEl.textContent = `예기치 않은 오류가 발생했습니다. (${e.message || ''})`;
+        console.error(e);
     }
     btn.textContent = '로그인'; btn.disabled = false;
 }
@@ -1513,37 +1541,41 @@ async function doAdminChangePassword() {
     btn.textContent = '변경 중…'; btn.disabled = true;
 
     try {
-        const user = _fbAuth.currentUser;
-        if (!user) throw Object.assign(new Error(), { code: 'auth/user-not-found' });
-
-        // Firebase Auth로 비밀번호 변경
-        await user.updatePassword(newPw);
-
-        // DB에서 mustChangePassword: false 업데이트
         const email = sessionStorage.getItem(ADMIN_EMAIL_KEY);
         const key   = email.replace(/[@.]/g, '_');
+        const hash  = await sha256(newPw);
+
+        // Firebase Auth 비밀번호 변경 시도 (네트워크 차단 시 DB 업데이트만으로 대체)
+        const user = _fbAuth.currentUser;
+        if (user) {
+            try {
+                await user.updatePassword(newPw);
+            } catch (fbErr) {
+                if (fbErr.code === 'auth/requires-recent-login') {
+                    newPwErr.textContent = '보안을 위해 다시 로그인한 후 비밀번호를 변경해주세요.';
+                    setTimeout(() => doAdminLogout(), 2000);
+                    btn.textContent = '비밀번호 변경'; btn.disabled = false; return;
+                }
+                // 그 외 오류(네트워크 등) → DB hash 업데이트만으로 진행
+                console.warn('Firebase Auth 비밀번호 변경 실패, DB만 업데이트:', fbErr.code);
+            }
+        }
+
+        // DB에 passwordHash 업데이트 + mustChangePassword: false
         const getRes  = await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`);
         const account = getRes.ok ? await getRes.json() : {};
-        // passwordHash 필드 제거 (Firebase Auth로 관리)
-        const { passwordHash: _removed, ...rest } = account;
         await _authFetch(`${FIREBASE_DB_URL}/admins/${key}.json`, {
             method:  'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ ...rest, mustChangePassword: false })
+            body:    JSON.stringify({ ...account, passwordHash: hash, mustChangePassword: false })
         });
 
         sessionStorage.removeItem(ADMIN_MUST_CHANGE_KEY);
         document.getElementById('adminChangePwOverlay').classList.add('hidden');
         loadData();
     } catch (e) {
-        const code = e.code || '';
-        if (code === 'auth/requires-recent-login') {
-            newPwErr.textContent = '보안을 위해 다시 로그인한 후 비밀번호를 변경해주세요.';
-            setTimeout(() => doAdminLogout(), 2000);
-        } else {
-            newPwErr.textContent = '변경 중 오류가 발생했습니다.';
-            console.error(e);
-        }
+        newPwErr.textContent = '변경 중 오류가 발생했습니다.';
+        console.error(e);
     }
     btn.textContent = '비밀번호 변경'; btn.disabled = false;
 }
