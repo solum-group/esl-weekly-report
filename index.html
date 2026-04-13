@@ -1206,6 +1206,7 @@ const CACHE_VERSION = 'v6';   // 캐시 구조가 바뀌면 올려서 구버전 
 const CACHE_PREFIX = `esl_${CACHE_VERSION}_`;
 const CACHE_TTL_INDEX = 5 * 60 * 1000;           // index: 5분 (새 주차 즉시 반영)
 const CACHE_TTL_WEEK  = 7 * 24 * 60 * 60 * 1000; // 주차 데이터: 7일
+let _indexMemCache = null; // 페이지 세션 내 인메모리 캐시 (새로고침 시 항상 초기화)
 
 function getCache(key, ttl) {
     try {
@@ -1220,12 +1221,25 @@ function setCache(key, data) {
 
 // ── 데이터 fetch ───────────────────────────────────────
 async function fetchIndex() {
+    // 1) 같은 페이지 세션 내 재요청은 인메모리 캐시 반환 (네트워크 절약)
+    if (_indexMemCache) return _indexMemCache;
+    // 2) 서버에서 항상 최신 index.json 취득 (?v= 로 브라우저 HTTP 캐시 우회)
+    const res = await fetch(`./data/index.json?v=${Date.now()}`);
+    const fresh = await res.json();
+    // 3) localStorage에 저장된 이전 index 캐시와 weekLabel 비교 → 변경 시 해당 주차 캐시 무효화
     const cached = getCache(CACHE_PREFIX + 'index', CACHE_TTL_INDEX);
-    if (cached) return cached;
-    const res = await fetch('./data/index.json');
-    const data = await res.json();
-    setCache(CACHE_PREFIX + 'index', data);
-    return data;
+    if (cached) {
+        fresh.forEach(newEntry => {
+            const oldEntry = cached.find(r => r.weekId === newEntry.weekId);
+            if (oldEntry && oldEntry.weekLabel !== newEntry.weekLabel) {
+                // weekLabel이 바뀐 주차는 localStorage 캐시 삭제 → 다음 접근 시 재취득
+                localStorage.removeItem(CACHE_PREFIX + newEntry.weekId);
+            }
+        });
+    }
+    setCache(CACHE_PREFIX + 'index', fresh);
+    _indexMemCache = fresh;
+    return fresh;
 }
 function countCachedArticles(data) {
     // index.json의 articleCount와 비교하기 위해 캐시된 데이터의 실제 기사 수 계산
