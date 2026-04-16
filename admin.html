@@ -1852,9 +1852,33 @@ function renderAccess() {
 
 function filterRows(rows, from, to) {
     if (!from && !to) return rows;
+
+    // lastSeen 기반 비교 외에, monthly/weekly 서브카운터에도 해당 기간 데이터가 있으면 포함.
+    // recordLogin이 세션 복구 시 누락된 경우를 보완하고, lastSeen과 실제 접속 기간이
+    // 불일치하는 엣지케이스(예: 이번 주에 접속했지만 이전 주 lastSeen이 남아 있는 경우)를 방어함.
+    const fromMonthKey = from ? getMonthKey(from) : null;
+    const toMonthKey   = to   ? getMonthKey(to)   : null;
+    const fromWeekKey  = from ? getWeekKey(from)  : null;
+    const toWeekKey    = to   ? getWeekKey(to)    : null;
+
     return rows.filter(r => {
+        // ① lastSeen이 기간 내에 있으면 포함
         const d = new Date(r.lastSeen);
-        return (!from || d >= from) && (!to || d <= to);
+        if ((!from || d >= from) && (!to || d <= to)) return true;
+
+        // ② weekly 서브카운터에 기간 내 기록이 있으면 포함 (주차별 필터에서 정확)
+        if (r.weekly && fromWeekKey && toWeekKey) {
+            if (Object.entries(r.weekly).some(([k, v]) =>
+                    v > 0 && k >= fromWeekKey && k <= toWeekKey)) return true;
+        }
+
+        // ③ monthly 서브카운터에 기간 내 기록이 있으면 포함 (월별 필터에서 정확)
+        if (r.monthly && fromMonthKey && toMonthKey) {
+            if (Object.entries(r.monthly).some(([k, v]) =>
+                    v > 0 && k >= fromMonthKey && k <= toMonthKey)) return true;
+        }
+
+        return false;
     });
 }
 

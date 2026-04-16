@@ -1969,6 +1969,19 @@ _fbAuth.onAuthStateChanged(function(user) {
         if (sessionStorage.getItem(MUST_CHANGE_KEY) === 'true') {
             showChangePwOverlay();
         }
+
+        // ── 세션 복구 시 당일 접속 기록 (Firebase Auth 토큰이 살아 있어 로그인 폼을
+        //    거치지 않고 자동 진입하는 경우에도 recordLogin이 호출되도록 보장)
+        // sessionStorage 'esl_recorded_day'가 오늘 날짜가 아닐 때만 기록 →
+        // 같은 탭 내 새로고침 중복 방지, 탭을 새로 열면 재기록
+        (function _ensureTodayRecorded() {
+            const todayKey = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+            if (sessionStorage.getItem('esl_recorded_day') !== todayKey) {
+                sessionStorage.setItem('esl_recorded_day', todayKey);
+                recordLogin(user.email);
+            }
+        })();
+
     } else {
         // Firebase Auth가 null을 반환 — doLogout() 호출 후 signOut()이 트리거한 경우와
         // Firebase가 독립적으로 세션을 만료시킨 경우 모두 처리
@@ -1976,7 +1989,20 @@ _fbAuth.onAuthStateChanged(function(user) {
 
         // DB Auth 세션 중이면 Firebase null은 정상 (어드민이 직접 설정한 비밀번호로 로그인)
         // Firebase Auth 동기화 전까지 세션 유지 → overlay 표시 방지
-        if (sessionStorage.getItem(DB_AUTH_KEY) === 'true') return;
+        if (sessionStorage.getItem(DB_AUTH_KEY) === 'true') {
+            // DB Auth 경로는 Firebase 토큰이 없어 _authFetch가 401로 실패할 수 있음.
+            // 세션 복구(새로고침) 시에도 당일 기록이 누락되지 않도록 재시도.
+            // recordLogin 내부에서 _authFetch가 401 반환 시 GET에서 early-return하므로,
+            // DB Auth 사용자는 /logins에 쓰기 권한이 없는 경우가 많음 → 관리자에게 마이그레이션 권고.
+            // 단, esl_recorded_day가 오늘이 아닌 경우에만 시도 (중복 방지)
+            const todayKeyDb = new Date().toISOString().slice(0, 10);
+            const emailDb    = sessionStorage.getItem(AUTH_EMAIL_KEY);
+            if (emailDb && sessionStorage.getItem('esl_recorded_day') !== todayKeyDb) {
+                sessionStorage.setItem('esl_recorded_day', todayKeyDb);
+                recordLogin(emailDb);
+            }
+            return;
+        }
 
         const wasLoggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
         sessionStorage.removeItem(AUTH_KEY);
