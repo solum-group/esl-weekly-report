@@ -1,7 +1,7 @@
 {
   "weekId": "2026-04-13",
   "weekLabel": "2026.04.13 ~ 2026.04.16",
-  "searchAnalysis": "이번 주(4월 13~16일)는 **Hanshow의 HARB Data 100% 인수 완료**와 **SOLUM의 레드닷 디자인 어워드 2관왕** 소식이 ESL 기업 뉴스의 중심을 이뤘다. 대만 최대 유통사 **PX Mart가 ESL 전국 배포 일정을 6개월 앞당기고 투자 규모를 상향**하며 아시아·태평양 ESL 보급 가속화의 신호탄을 쏘아 올렸고, 4월 22~23일 런던 소매 기술 전시회(RTS 2026)를 일주일 앞두고 솔루션 기업들의 사전 공개 발표가 이어졌다. 전반적으로 하드웨어 혁신, AI 통합, 그리고 아시아 시장 확대가 이번 주 ESL 산업의 핵심 키워드였다. *(일부 도메인 접속 차단—스니펫 기반 보완)*",
+  "searchAnalysis": "이번 주(4월 13~16일)는 **Hanshow의 HARB Data 100% 인수 완료**와 **SOLUM의 레드닷 디자인 어워드 2관왕** 소식이 ESL 기업 뉴스의 중심을 이뤘다. 대만 최대 유통사 **PX Mart가 ESL 전국 배포 일정을 6개월 앞당기고 투자 규모를 상향**하며 아시아·태평양 ESL 보급 가속화의 신호탄을 쏘아 올렸고, 4월 22~23일 런던 소매 기술 전시회(RTS 2026)를 일주일 앞두고 솔루션 기업들의 사전 공개 발표가 이어졌다. 전반적으로 하드웨어 혁신, AI 통합, 그리고 아시아 시장 확대가 이번 주 ESL 산업의 핵심 키워드였다. *(일부 도메인 접속 차단—스니펫 기반 보완)*\n**유럽·지역 미디어 보완(수요일 RSS):** 1건 추가—Carrefour-Vusion 2030 스마트 매장 파트너십 유럽 심층 분석(ISN, 4/14) 수집.",
   "sections": {
     "industryTrends": [
       {
@@ -37,6 +37,15 @@
       "공공/기타": []
     },
     "majorCompanies": [
+      {
+        "title": "카르푸, Vusion과 2030 스마트 매장 전면 디지털화 파트너십 체결 배경 심층 분석",
+        "summary": "International Supermarket News가 카르푸(Carrefour)가 '2030 플랜' 실행 파트너로 VusionGroup을 선택한 전략적 이유를 심층 분석한 기사를 4월 14일 발행했다. 카르푸는 2026년 2월 Vusion과 전략적 파트너십을 체결, 2030년까지 프랑스 내 전체 하이퍼마켓·슈퍼마켓을 디지털화하기로 선언했다.\n\n- 이 파트너십은 **최신 세대 ESL, 스마트 레일, AI 카메라** 배포를 포괄하는 종합적 매장 디지털화 이니셔티브\n- 미국 월마트의 EdgeSense 전 매장 도입에 이어, **카르푸가 유럽 최초로 최신 세대 Vusion 플랫폼을 대규모 배포**하는 주요 유통사로 기록됨\n- AI 활용·운영 성과 개선·인스토어 소비자 데이터 활성화를 위한 **공동 연구소('Next Retail Experience Center')** 설립 예정\n- E-커머스 가속화·인건비 상승·소비자 요구 증가 등 물리적 소매업 전방위 압박에 대응한 결정적 선택으로 분석됨\n- 기존 독점 공급사였던 Pricer를 교체하며 Vusion을 선택한 카르푸의 결정은 Pricer의 유럽 최대 고객 이탈로 기록됨",
+        "implications": "[🔴 위협] 카르푸-Vusion 협력은 ESL 공급사 경쟁 구도에서 Vusion의 유럽 시장 지배력을 결정적으로 강화하는 사건이다. 카르푸가 Pricer(20년 거래 파트너)를 교체하고 Vusion을 선택한 이유를 SOLUM 전략팀이 면밀히 분석할 필요가 있다.\n\n- Vusion의 'EdgeSense AI' 통합 플랫폼(ESL+스마트레일+AI카메라+클라우드)이 단순 레이블을 넘어 **매장 운영 자동화 OS** 포지셔닝으로 경쟁 우위를 형성 — SOLUM의 Totus Platform도 유사한 통합 플랫폼 전략 강화 필요\n- 카르푸는 유럽 내 Vusion의 핵심 레퍼런스로서 타 유럽 대형 유통사들의 Vusion 선택을 연쇄 촉진할 파급 효과 예상\n- [⚡ 액션] SOLUM은 AI·클라우드 통합 역량을 강조하는 유럽 대형 유통사 공략 영업 전략을 Carrefour-Vusion 사례 기준으로 재점검 필요",
+        "imageUrl": "",
+        "pubDate": "2026-04-14",
+        "sourceUrl": "https://internationalsupermarketnews.com/why-carrefour-chose-vusion-for-its-2030-stores-of-the-future/",
+        "sourceName": "International Supermarket News"
+      },
       {
         "title": "Hanshow, AI·빅데이터 전문기업 HARB Data 100% 인수 완료로 스마트 리테일 데이터 역량 강화",
         "summary": "Hanshow Technology가 소매·소비재 분야 AI 및 빅데이터 솔루션 기업 **HARB Data의 지분 100%를 취득**했다고 2026년 4월 15일 발표했다. 이번 인수를 통해 Hanshow의 IoT 하드웨어(ESL·디지털 디스플레이·스마트 카트)와 HARB Data의 AI·빅데이터 역량이 통합된다.\n\n- **HARB Data** (2015년 설립): 정밀 마케팅, 풀펀넬 비즈니스 인텔리전스, 예측 분석, 광고 어트리뷰션·측정 전문 기업\n- 인수 후 Hanshow의 IoT 터치포인트(ESL, 디지털 디스플레이, 스마트 카트)에서 수집된 **퍼스트파티 데이터**(고객 트래픽, 상호작용, 전환 데이터)에 HARB의 AI 알고리즘을 적용\n- '지능형 감지(Intelligent Sensing) → 지능형 의사결정(Intelligent Decision-making)' 클로즈드 루프 구현이 최종 목표\n- 리테일 미디어 네트워크(RMN) 시장을 직접 겨냥한 통합 데이터 서비스 제공 능력 확보",
