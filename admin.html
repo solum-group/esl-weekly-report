@@ -1860,6 +1860,8 @@ function filterRows(rows, from, to) {
     const toMonthKey   = to   ? getMonthKey(to)   : null;
     const fromWeekKey  = from ? getWeekKey(from)  : null;
     const toWeekKey    = to   ? getWeekKey(to)    : null;
+    // 주차 필터 여부: 같은 ISO 주 내 범위 (이번 주 / 지난 주)
+    const isWeekFilter = fromWeekKey && toWeekKey && fromWeekKey === toWeekKey;
 
     return rows.filter(r => {
         // ① lastSeen이 기간 내에 있으면 포함
@@ -1873,7 +1875,8 @@ function filterRows(rows, from, to) {
         }
 
         // ③ monthly 서브카운터에 기간 내 기록이 있으면 포함 (월별 필터에서 정확)
-        if (r.monthly && fromMonthKey && toMonthKey) {
+        // ※ 주차 필터일 때는 생략 — 같은 달 내 다른 주 데이터가 오염되는 것을 방지
+        if (!isWeekFilter && r.monthly && fromMonthKey && toMonthKey) {
             if (Object.entries(r.monthly).some(([k, v]) =>
                     v > 0 && k >= fromMonthKey && k <= toMonthKey)) return true;
         }
@@ -1933,14 +1936,24 @@ function updateStats(rows, from, to, type) {
 
 // monthly/weekly 서브카운터 합산 (없으면 count 전체로 fallback)
 function computePeriodCount(rows, from, to) {
-    // Date 객체를 "YYYY-MM" 문자열로 변환해 비교 (타임존 영향 없음)
-    const fromKey = from ? `${from.getFullYear()}-${String(from.getMonth()+1).padStart(2,'0')}` : null;
-    const toKey   = to   ? `${to.getFullYear()}-${String(to.getMonth()+1).padStart(2,'0')}`   : null;
+    const fromMonthKey = from ? `${from.getFullYear()}-${String(from.getMonth()+1).padStart(2,'0')}` : null;
+    const toMonthKey   = to   ? `${to.getFullYear()}-${String(to.getMonth()+1).padStart(2,'0')}`   : null;
+    const fromWeekKey  = from ? getWeekKey(from) : null;
+    const toWeekKey    = to   ? getWeekKey(to)   : null;
+    // 주차 필터: 같은 ISO 주 내 범위
+    const isWeekFilter = fromWeekKey && toWeekKey && fromWeekKey === toWeekKey;
+
     let total = 0;
     for (const r of rows) {
-        if (r.monthly) {
+        if (isWeekFilter && r.weekly) {
+            // 주차 필터: weekly 서브카운터 합산 (월별 카운터는 달 전체이므로 사용 불가)
+            for (const [k, v] of Object.entries(r.weekly)) {
+                if (k >= fromWeekKey && k <= toWeekKey) total += v;
+            }
+        } else if (r.monthly) {
+            // 월별·기간 필터: monthly 서브카운터 합산
             for (const [k, v] of Object.entries(r.monthly)) {
-                if ((!fromKey || k >= fromKey) && (!toKey || k <= toKey)) {
+                if ((!fromMonthKey || k >= fromMonthKey) && (!toMonthKey || k <= toMonthKey)) {
                     total += v;
                 }
             }
@@ -1980,6 +1993,19 @@ function renderTable(rows, from, to) {
 }
 
 function getPeriodCountForUser(r, from, to) {
+    const fromWeekKey = from ? getWeekKey(from) : null;
+    const toWeekKey   = to   ? getWeekKey(to)   : null;
+    const isWeekFilter = fromWeekKey && toWeekKey && fromWeekKey === toWeekKey;
+
+    // 주차 필터: weekly 서브카운터 우선 사용
+    if (isWeekFilter && r.weekly) {
+        let total = 0;
+        for (const [k, v] of Object.entries(r.weekly)) {
+            if (k >= fromWeekKey && k <= toWeekKey) total += v;
+        }
+        return total;
+    }
+
     if (!r.monthly) return r.count || 0;
     const fromKey = from ? `${from.getFullYear()}-${String(from.getMonth()+1).padStart(2,'0')}` : null;
     const toKey   = to   ? `${to.getFullYear()}-${String(to.getMonth()+1).padStart(2,'0')}`   : null;
