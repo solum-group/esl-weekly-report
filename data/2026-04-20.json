@@ -1,9 +1,28 @@
 {
   "weekId": "2026-04-20",
   "weekLabel": "2026.04.20 ~ 2026.04.26",
-  "searchAnalysis": "이번 주(4월 20~22일)는 **런던 ExCeL에서 열린 Retail Technology Show(RTS) 2026(4월 22~23일)**이 ESL 업계의 최대 화두였다. SOLUM은 Newton Core+를 영국 시장에 공식 론칭하고 Gander와의 파트너십 솔루션을 시연하며 스탠드 M60에서 'Retail in Sync' 비전을 선보였다. Pricer는 배터리 프리 Pricer Avenue™ 플랫폼과 함께 지속가능성 주제 메인 스테이지 세션을 운영했다. 전날인 4월 21일에는 VusionGroup이 Q1 2026 실적을 발표, 조정 매출 €294m(+26% YoY)로 Walmart·Carrefour 롤아웃이 동시에 견인한 강력한 성장세를 증명했다. 이번 주 키워드: **RTS 2026 현장 론칭, VusionGroup 호실적, 배터리 프리 ESL, 식품 폐기물 감축**.",
+  "searchAnalysis": "이번 주(4월 20~23일)는 **런던 ExCeL에서 열린 Retail Technology Show(RTS) 2026(4월 22~23일)**이 ESL 업계의 최대 화두였다. SOLUM은 Newton Core+ 영국 공식 론칭, Rynly 풀필먼트 오케스트레이션 파트너십, Gander 식품 폐기물 솔루션 시연을 통해 'Retail in Sync' 비전을 선보였고, Pricer는 배터리 프리 Avenue™ 플랫폼으로 지속가능성 수익화 메시지를 강조했다. VusionGroup은 4월 21일 Q1 2026 조정 매출 €294m(+26% YoY)를 발표하며 Walmart·Carrefour 동시 가속 성장세를 증명했다. 규제 측면에서는 **메릴랜드주가 미국 최초로 알고리즘 기반 감시 가격 책정 금지법을 통과**시키며 ESL 입법 논쟁을 새 국면으로 끌어올렸고, Grocery Dive는 Whole Foods vs Aldi의 ESL 가격 인식 딜레마를 심층 분석했다. 이번 주 키워드: **RTS 2026 현장 론칭, VusionGroup 호실적, 메릴랜드 ESL 규제법, 옴니채널 피킹 통합**. *(일부 도메인 접속 차단—스니펫 기반 보완)*",
   "sections": {
-    "industryTrends": [],
+    "industryTrends": [
+      {
+        "title": "메릴랜드, 미국 최초 감시 가격 책정 금지법 통과 — ESL 규제 논쟁 새 국면",
+        "summary": "메릴랜드주가 **미국 최초로 알고리즘 기반 감시 가격 책정(Surveillance Pricing)을 금지하는 법안 HB 895(Protection from Predatory Pricing Act)**를 4월 20일 주의회에서 통과시켰다. 무어(Moore) 주지사 서명 후 2026년 10월 1일 발효 예정이다.\n\n- 법안 핵심: 소비자 개인 정보(위치·신체적 특징·구매 이력 등)를 활용한 **개인화 가격 책정 금지**, 위반 시 건당 최대 $10,000 벌금\n- ESL과의 직접 연관: 법안 발의 과정에서 전자 가격 표시기가 실시간 개인 맞춤형 서지 프라이싱 도구로 오인되는 논거가 작용\n- 메릴랜드는 Costco·Whole Foods 등 대형 식료품 체인의 주요 운영 지역으로, 법안 실효성에 업계의 이목 집중\n- 연방 차원의 Stop Price Gouging in Grocery Stores Act와 맥을 같이하며, 40개 이상 주에서 유사 법안 논의 중 — 전국적 규제 도미노 가능성 제기\n- FMI(식품산업협회): 'ESL은 서지 프라이싱 도구가 아니며, 법안 적용 범위가 모호하다'는 입장 재확인",
+        "implications": "[🔴 위협] 메릴랜드의 선례는 미국 내 유사 입법을 촉진하는 촉매가 될 가능성이 높다. ESL이 '서지 프라이싱 도구'로 오인되는 내러티브가 입법 기록으로 굳어질 경우, 미국 시장 전반의 ESL 도입에 장기적 역풍이 예상된다.\n\n- SOLUM 미국 영업팀은 HB 895의 구체적 조항을 분석하여 Newton ESL이 법안 금지 행위(개인화 감시 가격)와 무관함을 명확히 설명하는 **법적 컴플라이언스 세일즈 자료** 준비 필요\n- 메릴랜드·캘리포니아·뉴욕 등 입법 선도 주 의회 동향 모니터링을 정례화하여 조기 대응 체계 구축\n- [⚡ 액션] FMI의 ESL 옹호 논거를 기반으로 SOLUM의 'ESL ≠ 서지 프라이싱' 공식 입장문 및 Q&A 문서 작성, 미국 파트너사 및 잠재 고객에게 선제 배포",
+        "imageUrl": "",
+        "pubDate": "2026-04-20",
+        "sourceUrl": "https://www.grocerydive.com/news/maryland-dynamic-pricing-bill-electronic-shelf-labels/818124/",
+        "sourceName": "Grocery Dive"
+      },
+      {
+        "title": "Whole Foods vs Aldi — ESL, 같은 기술 다른 전략: 가격 가치 인식 딜레마",
+        "summary": "Grocery Dive가 4월 21일 'More than a Store' 시리즈에서 전자 가격 표시기가 소매업체의 가격 가치 인식에 미치는 복잡한 영향을 심층 분석했다. 동일한 ESL 기술이 Whole Foods와 Aldi에서 전혀 다른 소비자 반응을 낳는 '가격 책정 역설'을 조명했다.\n\n- **Whole Foods**: 프리미엄 이미지 브랜드임에도 ESL 도입 후 일부 소비자는 '가격이 언제든 올라갈 수 있다'는 불안감 표출 — 고가 포지션에서 동적 가격 연상 리스크 존재\n- **Aldi**: 초저가 전략의 상징인 Aldi는 ESL 도입으로 오히려 '운영 효율성과 비용 절감을 통해 저가를 유지한다'는 이미지 강화 — EDLP(Everyday Low Price) 전략과 ESL의 시너지\n- 소비자 인식: ESL을 '동적 가격 인상 도구'로 보는 시각과 '정확도·편의 향상 도구'로 보는 시각이 공존, 소매업체 브랜드 포지셔닝에 따라 반응 상이\n- 분석가들은 ESL 도입 시 소비자 커뮤니케이션 전략이 기술 선택만큼 중요하다고 강조",
+        "implications": "[🔵 트렌드] ESL 하드웨어 성능을 넘어, 소매업체가 ESL 도입을 **어떻게 소비자에게 커뮤니케이션하느냐**가 브랜드 가치와 고객 신뢰에 결정적 영향을 미친다는 인식이 확산되고 있다.\n\n- SOLUM은 ESL 공급 시 단순 하드웨어 납품을 넘어, 고객사의 소비자 커뮤니케이션 전략 수립을 지원하는 **컨설팅 세일즈 접근법** 강화 필요\n- 프리미엄 리테일러(백화점·전문점) 대상 영업 시 ESL 도입 후 브랜드 이미지 관리 방안을 패키지로 제공하는 차별화 전략 검토\n- [⚡ 액션] SOLUM 고객사 세분화(EDLP vs 프리미엄)에 따른 ESL 도입 커뮤니케이션 가이드라인 문서 개발, 영업 레퍼런스로 활용",
+        "imageUrl": "",
+        "pubDate": "2026-04-21",
+        "sourceUrl": "https://www.grocerydive.com/news/more-than-a-store-electronic-shelf-labels-grocers-pricing-value/817515/",
+        "sourceName": "Grocery Dive"
+      }
+    ],
     "customerAdoption": {
       "슈퍼마켓": [],
       "편의점": [],
@@ -36,6 +55,15 @@
         "pubDate": "2026-04-22",
         "sourceUrl": "https://www.finanznachrichten.de/nachrichten-2026-04/68264273-solum-launches-newton-core-a-next-generation-esl-in-the-uk-at-retail-technology-show-2026-004.htm",
         "sourceName": "Finanznachrichten (BusinessWire)"
+      },
+      {
+        "title": "SOLUM-Rynly 파트너십 — Newton ESL Pick-by-Light와 풀필먼트 오케스트레이션 통합",
+        "summary": "SOLUM과 풀필먼트 오케스트레이션 전문 기업 **Rynly**가 파트너십을 체결하고 RTS 2026 기간 중 통합 솔루션을 공개했다. Rynly의 주문 처리·피킹 오케스트레이션 플랫폼과 SOLUM Newton ESL의 **Pick-by-Light** 기능을 결합하여 매장 내 온라인 주문 처리 효율을 극대화한다.\n\n- **Pick-by-Light**: Newton ESL의 LED 플래셔 기능을 활용하여 피커(Picker)에게 해당 상품 위치를 시각적으로 안내 — 피킹 오류 감소, 처리 속도 향상\n- Rynly 플랫폼은 온라인 주문을 최적화된 피킹 경로로 분배하고, SOLUM ESL이 정확한 상품 위치를 실시간 표시\n- 식료품 소매업체의 클릭앤콜렉트(Click & Collect)·매장 내 온라인 피킹 운영 효율화에 직접 기여\n- 영국·유럽에서 온라인 식료품 주문 비율이 지속 증가하는 트렌드에 부합하는 옴니채널 통합 솔루션",
+        "implications": "[🟢 기회] SOLUM-Rynly 통합은 ESL을 '가격 표시 도구'에서 '옴니채널 풀필먼트 인프라'로 포지셔닝하는 중요한 확장이다.\n\n- 클릭앤콜렉트 서비스를 운영하는 영국·유럽 슈퍼마켓 체인(Tesco, Sainsbury's, Morrisons 등)에 대한 통합 솔루션 제안으로 신규 수요 발굴 가능\n- Pick-by-Light 기능을 Totus Platform에서 표준 모듈로 강화하여 유사 파트너십 확장 용이성 제고\n- [⚡ 액션] Rynly와의 공동 영업 전략 수립 — 영국 내 온라인 피킹 운영 규모가 큰 식료품 체인 3~5곳을 공동 타깃으로 설정",
+        "imageUrl": "",
+        "pubDate": "2026-04-22",
+        "sourceUrl": "https://finance.yahoo.com/sectors/technology/articles/solum-rynly-partner-advance-retail-080000648.html",
+        "sourceName": "Yahoo Finance"
       },
       {
         "title": "Pricer, RTS 2026서 배터리 프리 'Pricer Avenue™' 공개 — 지속가능성 수익화 메인 스테이지 세션도 운영",
