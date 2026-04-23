@@ -1,0 +1,52 @@
+{
+  "weekId": "2026-04-20",
+  "weekLabel": "2026.04.20 ~ 2026.04.26",
+  "searchAnalysis": "이번 주(4월 20~22일)는 **런던 ExCeL에서 열린 Retail Technology Show(RTS) 2026(4월 22~23일)**이 ESL 업계의 최대 화두였다. SOLUM은 Newton Core+를 영국 시장에 공식 론칭하고 Gander와의 파트너십 솔루션을 시연하며 스탠드 M60에서 'Retail in Sync' 비전을 선보였다. Pricer는 배터리 프리 Pricer Avenue™ 플랫폼과 함께 지속가능성 주제 메인 스테이지 세션을 운영했다. 전날인 4월 21일에는 VusionGroup이 Q1 2026 실적을 발표, 조정 매출 €294m(+26% YoY)로 Walmart·Carrefour 롤아웃이 동시에 견인한 강력한 성장세를 증명했다. 이번 주 키워드: **RTS 2026 현장 론칭, VusionGroup 호실적, 배터리 프리 ESL, 식품 폐기물 감축**.",
+  "sections": {
+    "industryTrends": [],
+    "customerAdoption": {
+      "슈퍼마켓": [],
+      "편의점": [],
+      "약국/헬스": [],
+      "물류/창고": [],
+      "패션": [],
+      "DIY/홈": [],
+      "전자/전문점": [],
+      "협동조합/독립 소매": [],
+      "헬스케어/의료": [],
+      "공공/기타": []
+    },
+    "majorCompanies": [
+      {
+        "title": "VusionGroup, Q1 2026 조정 매출 €294m(+26%) — Walmart·Carrefour 동시 가속으로 역대급 분기 성장",
+        "summary": "VusionGroup(SES-imagotag)이 2026년 4월 21일 1분기 실적을 발표했다. IFRS 기준 매출 €289m(+34% YoY), 조정 기준 매출 €294m(+26% YoY)으로 컨센서스를 상회하는 강력한 성장세를 기록했다.\n\n- **지역별 매출**: EMEA €98.7m(+9.7%) / 나머지 세계 €189.9m(+51.7%)\n- **VusionCloud 연결 ESL 수**: 4억 3,500만 개 (VAS 매출 €51m, +53%)\n- **카르푸 대형 계약**: 프랑스 하이퍼마켓·슈퍼마켓 전체에 EdgeSense·VusionCloud·Captana 3년 독점 배포\n- **Walmart 롤아웃**: 미국 내 성공적 확대 지속, 최대 배포 속도 국면 진입 — 연내 완료 예상\n- **멕시코 확장**: Walmart Mexico Express 매장·슈퍼센터에 EdgeSense 첫 해외 배포 개시\n- **2026 연간 가이던스 유지**: 조정 매출 성장률 15~20%(환율·관세 불변 기준), VAS 성장률 ~40%",
+        "implications": "[🔴 위협] VusionGroup이 Walmart(미국)·Walmart Mexico(신규)·Carrefour(유럽) 3대 대형 계약을 동시에 실행하며 규모의 경제 격차를 벌리고 있다. 분기 매출 €294m은 SOLUM 연간 매출 규모에 근접하는 수준으로, 클라우드·AI 플랫폼 기반의 성장 속도가 SOLUM의 추격 기회를 제한하는 구조가 심화되고 있다.\n\n- VusionCloud 연결 기기 4억 3,500만 개는 Vusion이 데이터·RMN 수익화에서 SOLUM 대비 압도적 우위를 확보했음을 의미 — SOLUM Totus Platform의 연결 기기 데이터 공개 및 클라우드 구독 매출 성장 전략 필요\n- Carrefour 독점 3년 계약은 유럽 ESL 최대 고객을 장기 봉쇄했다는 의미 — SOLUM은 Tesco·Aldi·Lidl·Rewe 등 2선 공략 집중 전환 필요\n- [⚡ 액션] Vusion의 VAS 비중(현재 ~17%, 목표 상향)을 벤치마크하여 SOLUM SaaS/구독 매출 비중 로드맵 재점검",
+        "imageUrl": "",
+        "pubDate": "2026-04-21",
+        "sourceUrl": "https://www.vusion.com/newsroom/q1-sales-2026/",
+        "sourceName": "VusionGroup Newsroom"
+      }
+    ],
+    "solutionProviders": [
+      {
+        "title": "SOLUM, Newton Core+ 영국 공식 론칭 — RTS 2026 스탠드 M60서 'Retail in Sync' 비전 시연",
+        "summary": "SOLUM(KRX: 248070)이 2026년 4월 22일 런던 ExCeL에서 개막한 **Retail Technology Show(RTS) 2026** 스탠드 M60에서 차세대 ESL 플랫폼 **Newton Core+**를 영국 시장에 공식 론칭했다. 레드닷 디자인 어워드 수상 제품인 Newton Core+와 Newton E-Paper 32\"를 필두로 다양한 솔루션을 전시했다.\n\n- **Newton Core+**: 내구성 강화, 디스플레이 선명도 향상, 대형 매장 체인 최적화 설계 — 레드닷 2026 수상\n- **추가 전시 제품**: Newton E-Paper 32\"(레드닷 수상), 4색 Newton Pro Freezer 솔루션, Power Rail ESL, 바형·반외부 디지털 사이니지\n- **'Retail in Sync' 이니셔티브**: 고객 경험(개인화 가이드) + 운영 효율(옴니채널 피킹·재고 관리) + 지속가능성(Gander 협업 유통기한 마크다운) + 데이터 수익화(Vision AI) 4축 통합 솔루션\n- Mark Duckworth(SOLUM 영국·아일랜드 컨트리 매니저): \"RTS 2026은 SOLUM이 영국 소매업체에 더 강력한 제품을 선보이는 중요한 기회\"",
+        "implications": "[🟢 기회] RTS 2026에서의 Newton Core+ 영국 공식 론칭은 SOLUM의 영국·유럽 영업 가속화의 기폭제가 될 수 있다. 레드닷 수상 제품 2개를 동시에 전시함으로써 디자인·기술 경쟁력을 직접 증명하는 자리가 됐다.\n\n- Newton Core+의 영국 출시는 영국 소매 체인(Co-op·Morrisons·Waitrose·Iceland 등)을 대상으로 한 파이프라인 구축의 공식 시작점 — 현장 미팅 리드 후속 관리 중요\n- 'Retail in Sync' 통합 플랫폼 메시지는 Vusion의 'EdgeSense+Cloud+AI' 포지셔닝과 정면 대응하는 전략 — 일관된 대외 커뮤니케이션 유지 필요\n- Gander 협업 솔루션 현장 시연은 식품 폐기물 규제 압박이 강한 영국 시장에서 강력한 차별화 포인트\n- [⚡ 액션] RTS 2026 현장 접촉 바이어 리스트 정리 및 2주 내 팔로업 미팅 설정 목표",
+        "imageUrl": "",
+        "pubDate": "2026-04-22",
+        "sourceUrl": "https://www.finanznachrichten.de/nachrichten-2026-04/68264273-solum-launches-newton-core-a-next-generation-esl-in-the-uk-at-retail-technology-show-2026-004.htm",
+        "sourceName": "Finanznachrichten (BusinessWire)"
+      },
+      {
+        "title": "Pricer, RTS 2026서 배터리 프리 'Pricer Avenue™' 공개 — 지속가능성 수익화 메인 스테이지 세션도 운영",
+        "summary": "Pricer AB가 2026년 4월 22~23일 런던 ExCeL **RTS 2026 스탠드 K50**에서 차세대 배터리 프리 선반 엣지 플랫폼 **Pricer Avenue™**를 전시하고, '지속가능성을 수익으로 전환'이라는 주제의 메인 스테이지 세션을 운영했다.\n\n- **Pricer Avenue™**: 모듈형 파워드 레일 아키텍처로 배터리 불필요, ESL 및 미래 IoT 기기 지원, 대형 'Floating Canvas' 디스플레이 내장, Pricer Plaza™ 클라우드와 실시간 연동\n- **5개국 5,000명 소비자 조사** 기반 설계 — 가격 명확성·프로모션 투명성 요구 증가 반영\n- 메인 스테이지 패널: East of England Co-op CTO·Retail Insight CPO·Company Shop 소매 책임자 등 참여\n- Sofie Wikander(지속가능성 책임자): \"지속가능성은 이제 상업적 회복력의 핵심 — 소매는 식품이 폐기되기 전 마지막 개입 지점\"\n- Finn Wikander(CPO): \"Pricer Avenue™는 마진·참여도·차별화를 이끄는 특정 매장 구역을 미래형 커뮤니케이션으로 격상시키는 플랫폼\"",
+        "implications": "[🔴 위협] Pricer의 배터리 프리 파워드 레일 플랫폼은 프리미엄 섹션·고빈도 프로모션 구역을 위한 차별화된 접근이다. 카르푸를 잃은 Pricer가 '지속가능성 + 수익화'를 새로운 성장 축으로 재포지셔닝하며 영국 시장에 집중하는 전략으로 읽힌다.\n\n- SOLUM의 Power Rail ESL 제품군이 직접 경쟁하는 영역 — Pricer Avenue™의 'Floating Canvas' 대형 디스플레이 통합 방식과 비교하여 SOLUM Power Rail의 차별화 포인트 정리 필요\n- 메인 스테이지 세션을 통한 Pricer의 지속가능성 내러티브 선점 시도 — SOLUM도 RTS 2026 현장 PR 및 이후 콘텐츠 마케팅으로 대응 필요\n- [⚡ 액션] Pricer Avenue™ 스펙 및 가격 정보 수집하여 SOLUM Power Rail 대비 경쟁력 분석 자료 작성",
+        "imageUrl": "",
+        "pubDate": "2026-04-22",
+        "sourceUrl": "https://www.pricer.com/press-release/pricer-spotlights-shelf-edge-innovation-for-sustainable-profitable-growth-at-rts-2026",
+        "sourceName": "Pricer Newsroom"
+      }
+    ],
+    "technology": []
+  }
+}
