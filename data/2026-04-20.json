@@ -1,7 +1,7 @@
 {
   "weekId": "2026-04-20",
   "weekLabel": "2026.04.20 ~ 2026.04.26",
-  "searchAnalysis": "이번 주(4월 20~23일)는 **런던 ExCeL에서 열린 Retail Technology Show(RTS) 2026(4월 22~23일)**이 ESL 업계의 최대 화두였다. SOLUM은 Newton Core+ 영국 공식 론칭, Rynly 풀필먼트 오케스트레이션 파트너십, Gander 식품 폐기물 솔루션 시연을 통해 'Retail in Sync' 비전을 선보였고, Pricer는 배터리 프리 Avenue™ 플랫폼으로 지속가능성 수익화 메시지를 강조했다. VusionGroup은 4월 21일 Q1 2026 조정 매출 €294m(+26% YoY)를 발표하며 Walmart·Carrefour 동시 가속 성장세를 증명했다. 규제 측면에서는 **메릴랜드주가 미국 최초로 알고리즘 기반 감시 가격 책정 금지법을 통과**시키며 ESL 입법 논쟁을 새 국면으로 끌어올렸고, Grocery Dive는 Whole Foods vs Aldi의 ESL 가격 인식 딜레마를 심층 분석했다. 이번 주 키워드: **RTS 2026 현장 론칭, VusionGroup 호실적, 메릴랜드 ESL 규제법, 옴니채널 피킹 통합**. *(일부 도메인 접속 차단—스니펫 기반 보완)*",
+  "searchAnalysis": "이번 주(4월 20~23일)는 **런던 ExCeL에서 열린 Retail Technology Show(RTS) 2026(4월 22~23일)**이 ESL 업계의 최대 화두였다. SOLUM은 Newton Core+ 영국 공식 론칭, Rynly 풀필먼트 오케스트레이션 파트너십, Gander 식품 폐기물 솔루션 시연을 통해 'Retail in Sync' 비전을 선보였고, Pricer는 배터리 프리 Avenue™ 플랫폼으로 지속가능성 수익화 메시지를 강조했다. VusionGroup은 4월 21일 Q1 2026 조정 매출 €294m(+26% YoY)를 발표하며 Walmart·Carrefour 동시 가속 성장세를 증명했다. 규제 측면에서는 **메릴랜드주가 미국 최초로 알고리즘 기반 감시 가격 책정 금지법을 통과**시키며 ESL 입법 논쟁을 새 국면으로 끌어올렸고, Grocery Dive는 Whole Foods vs Aldi의 ESL 가격 인식 딜레마를 심층 분석했다. 이번 주 키워드: **RTS 2026 현장 론칭, VusionGroup 호실적, 메릴랜드 ESL 규제법, 옴니채널 피킹 통합**. *(일부 도메인 접속 차단—스니펫 기반 보완)*\n**4월 23~26일 보완:** 목·금·주말 기사 1건 추가—Pricer Q1 2026 실적 발표(4/23): 매출총이익률 25.3%(2020년 이후 최고), 순이익 흑자 전환(SEK 6.4M), Sobeys USD 51M 계약 배경 설명 포함. 금~일(4/24~26) 신규 기사 없음.",
   "sections": {
     "industryTrends": [
       {
@@ -64,6 +64,15 @@
         "pubDate": "2026-04-22",
         "sourceUrl": "https://finance.yahoo.com/sectors/technology/articles/solum-rynly-partner-advance-retail-080000648.html",
         "sourceName": "Yahoo Finance"
+      },
+      {
+        "title": "Pricer Q1 2026 실적 발표: 매출총이익률 25.3% 2020년 이후 최고 — 순이익 흑자 전환·Sobeys $51M 계약 배경",
+        "summary": "Pricer AB가 2026년 4월 23일 1분기(1~3월) 실적 보고서를 발표했다. 매출은 전년 동기 대비 소폭 감소했으나, **매출총이익률이 25.3%(전년 23.3%)**로 2020년 이후 최고치를 기록했고, 순이익이 SEK 6.4M(전년 -5.9M)으로 흑자 전환에 성공했다.\n\n- **매출 감소 배경**: 캐나다 타이어(Canadian Tire)의 ESL 설치가 대부분 완료되면서 대형 계약 수주 효과가 소멸, 구조적 감소 발생 — 그러나 회사 자체 예상 범위 내\n- **매출총이익**: SEK 123.3M(전년 122.9M), 매출총이익률 25.3%(전년 23.3%) — 원가 절감 및 Pricer Plaza SaaS 매출 비중 확대 효과\n- **영업이익**: SEK 10.7M(전년 12.8M)\n- **순이익**: SEK 6.4M(전년 -5.9M → 흑자 전환)\n- **영업 현금흐름**: SEK 52.7M(강건한 현금 창출력 유지)\n- **Sobeys 대형 계약 언급**: 4월 중 JRTech와 함께 캐나다 Sobeys와 USD 51M 계약 체결(300~350개 매장, 18개월 배포, Pricer Plaza 포함)\n- **카르푸 독점 종료**: Q1 중 독점 공급 계약 해지, 그러나 독립 카르푸 소매상의 주문 증가세 확인\n- **전략적 조직 재검토**: 연간 OPEX SEK 17M 절감 계획, Q2에 일회성 비용 SEK 9M 인식 예정\n- **Pricer Avenue 확대**: 파일럿 수 증가, 미국 시장에서 활동 증가 신호 포착\n- CEO Magnus Larsson: \"매력적인 제품 포트폴리오와 효율화 이니셔티브로 시장 반등 시 성장을 자신한다\"",
+        "implications": "[🔴 위협] Pricer가 원가 절감과 SaaS 비중 확대로 수익성을 강화하면서, 가격 경쟁에서 더 공격적인 포지션을 취할 여력이 생겼다. Sobeys USD 51M 계약은 캐나다 시장에서 경쟁이 단기간 내 SOLUM에게 열리기 어렵다는 의미이기도 하다.\n\n- Pricer의 전략적 OPEX 절감(SEK 17M/년)은 중장기적으로 ESL 단가 인하 여력을 높여 유럽·북미 수주 경쟁 시 SOLUM에 가격 압박이 심화될 수 있음\n- 카르푸 독점 종료 후 독립 카르푸 소매상 주문 증가는 '대형 체인 실패 → 독립 소매상 전환 공략' 전략이 유효함을 시사 — SOLUM도 국내외 독립 소매상 채널 강화 고려\n- Pricer Avenue 파일럿 확대 및 미국 시장 신호 강화는 2026 하반기 Pricer의 북미 수주 재진입 예고 — SOLUM 미국 영업팀 선제 대응 필요\n- [⚡ 액션] Sobeys 배포(18개월)가 완료되는 2027 말 이후를 겨냥하여 캐나다 2위 체인(Metro·Loblaw) 공략 파이프라인 구축 검토. Pricer Plaza 대비 SOLUM Totus 플랫폼의 SaaS 가치 제안 강화 자료 업데이트 필요",
+        "imageUrl": "https://www.pricer.com/hubfs/raw_assets/public/syndicut-boilerplate/resources/images/social-share.jpeg",
+        "pubDate": "2026-04-23",
+        "sourceUrl": "https://www.pricer.com/press-release/interim-report-january-march-2026-pricer-ab",
+        "sourceName": "Pricer Newsroom"
       },
       {
         "title": "Pricer, RTS 2026서 배터리 프리 'Pricer Avenue™' 공개 — 지속가능성 수익화 메인 스테이지 세션도 운영",
