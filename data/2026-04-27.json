@@ -1,0 +1,43 @@
+{
+  "weekId": "2026-04-27",
+  "weekLabel": "2026.04.27 ~ 2026.05.03",
+  "searchAnalysis": "**4월 30일(목) 수집:** 주간 신규 기사 1건(Vusion TIME Top 10 선정, 4/28) 확인. 이번 주(4/27~4/30)는 RTS 2026 이후 뉴스 소강기로, Vusion의 브랜드 인지도 이벤트가 유일한 주요 뉴스였다. 아울러 전전주(4/20) 및 전주(4/22) 수집 누락 중요 기사 2건을 보완 수집했다—①Pricer·JRTech Solutions의 캐나다 Sobeys 5,100만 달러 계약(4/20), ②Hanshow·Superdrug 영국·아일랜드 170만 개 ESL 파트너십(4/22). (일부 도메인 접속 차단—스니펫 기반 보완)",
+  "sections": {
+    "industryTrends": [],
+    "customerAdoption": {
+      "약국/헬스": [
+        {
+          "title": "영국 Superdrug, Hanshow를 공식 ESL 파트너로 선정…영국·아일랜드 170만 개 레이블 전국 배포 추진",
+          "summary": "영국·아일랜드의 주요 헬스앤뷰티 리테일러 Superdrug이 Hanshow를 공식 ESL 파트너로 선정하고 전국 디지털 전환 2단계에 돌입했다. 2025년까지 51개 매장에 ESL 배포를 완료했으며, 2026년에는 신규 출점 포함 90개 매장을 추가 전환할 예정이다. 전환 완료 시 영국·아일랜드 전역에 170만 개 이상의 ESL 유닛이 운영된다. Superdrug은 ESL 기반 중앙 관리 시스템을 통해 매장 직원이 고객 서비스와 온라인 주문 피킹·풀필먼트 등 고부가가치 업무에 집중할 수 있는 환경을 구축하는 것이 목표라고 밝혔다.",
+          "implications": "[🔴 위협] Hanshow가 영국 주요 헬스앤뷰티 체인 Superdrug과 대규모 장기 파트너십을 체결하며 영국 시장 내 거점을 확대하고 있다. SOLUM이 최근 RTS 2026에서 Newton Core+를 영국 론칭했지만, Hanshow의 헬스앤뷰티 세그먼트 선점 속도가 빠르다.\n[🟢 기회] 헬스앤뷰티 리테일의 ESL 도입이 본격화되고 있어 SOLUM의 동일 세그먼트 영업 전략 수립이 시급하다. Boots(영국 최대 헬스앤뷰티 체인) 등 경쟁 체인 공략에 집중할 기회.\n[⚡ 액션] 영국 헬스앤뷰티 리테일 대상 Newton Core+ 특화 피치 자료 준비 및 Boots, Holland & Barrett 등 잠재 고객사 접촉 검토.",
+          "imageUrl": "",
+          "pubDate": "2026-04-22",
+          "sourceUrl": "https://www.prnewswire.co.uk/news-releases/superdrug-names-hanshow-as-digital-shelf-partner-driving-the-next-phase-of-health--beauty-retail-digitalisation-302750136.html",
+          "sourceName": "PR Newswire UK"
+        }
+      ]
+    },
+    "majorCompanies": [],
+    "solutionProviders": [
+      {
+        "title": "Vusion, TIME 선정 '2026 가장 영향력 있는 소매 기업 Top 10' 등극",
+        "summary": "Vusion이 TIME 매거진의 '2026년 가장 영향력 있는 소매 기업 Top 10(TIME100 Companies Industry Leaders)' 중 하나로 선정됐다. Vusion은 전 세계 75,000개 이상의 매장에 6억 5천만 개 이상의 스마트 레이블을 배치하며, 2025년 매출 17억 9,000만 달러(전년 대비 51% 증가)를 기록했다. TIME은 Vusion이 AI·IoT 기반 플랫폼, 스마트 ESL, 컴퓨터 비전, 데이터 분석, 매장 내 리테일 미디어 등을 통합해 물리적 상거래의 디지털 전환을 가속화한 공로를 인정했다. 파트너 리테일러로는 Walmart, Sephora, Carrefour 등 글로벌 최대 유통사가 포함된다.",
+        "implications": "[🔴 위협] 경쟁사 Vusion이 세계 최고 권위의 미디어 브랜드 TIME으로부터 공식 인정을 받으며 글로벌 브랜드 위상이 크게 높아졌다. ESL 산업의 대표 기업 이미지 확립은 신규 고객 유치와 투자자 신뢰에 직접적인 영향을 미친다.\n[⚡ 액션] SOLUM도 글로벌 브랜드 인지도 제고를 위한 전략적 PR·어워드 참여 계획을 수립해야 하며, Newton Core+ 레드닷 수상 등 기술적 성과를 국제 미디어에 적극 노출하는 방안을 검토해야 한다.",
+        "imageUrl": "",
+        "pubDate": "2026-04-28",
+        "sourceUrl": "https://www.morningstar.com/news/business-wire/20260428309737/vusion-named-to-times-top-10-most-influential-retail-companies-of-2026",
+        "sourceName": "Business Wire / Morningstar"
+      },
+      {
+        "title": "Pricer·JRTech Solutions, 캐나다 Sobeys와 5,100만 달러 ESL 대규모 계약 체결",
+        "summary": "Pricer AB의 캐나다 공인 파트너사 JRTech Solutions이 캐나다 2위 슈퍼마켓 체인 Sobeys와 총 5,100만 달러(하드웨어·인프라 기준, Pricer Plaza 클라우드 플랫폼 별도) 규모의 디지털 스토어 전환 계약을 체결했다. 계약 범위는 300~350개 Sobeys 매장에 Pricer의 최신 멀티컬러 ESL과 매장 인프라를 구축하는 것으로, 2026년 5월부터 18개월에 걸쳐 단계적으로 배포될 예정이다. Pricer Plaza 클라우드 플랫폼도 함께 적용된다. Pricer CEO Johan Laurin은 이번 계약이 캐나다 시장에서의 ESL 대규모 도입 트렌드를 반영한다고 언급했다.",
+        "implications": "[🔴 위협] Pricer가 캐나다 주요 슈퍼마켓 체인과 5,000만 달러 이상의 대형 계약을 단독 확보하며 북미 시장 점유율 확대에 나섰다. 북미 시장에서 SOLUM의 Pricer 대비 경쟁력 점검이 필요하다.\n[🔵 트렌드] 멀티컬러 ESL과 클라우드 플랫폼 연동 패키지가 대형 슈퍼마켓 체인의 새로운 표준 발주 단위로 자리잡는 추세다.\n[⚡ 액션] SOLUM의 북미 유통 파트너십 전략 재검토 및 캐나다 시장(Metro, Loblaw 등) 진출 가능성 평가.",
+        "imageUrl": "",
+        "pubDate": "2026-04-20",
+        "sourceUrl": "https://www.pricer.com/press-release/pricer-and-jrtech-solutions-signs-51-musd-digital-store-transformation-deal-with-sobeys-in-canada",
+        "sourceName": "Pricer"
+      }
+    ],
+    "technology": []
+  }
+}
