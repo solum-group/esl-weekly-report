@@ -1,9 +1,28 @@
 {
   "weekId": "2026-04-27",
   "weekLabel": "2026.04.27 ~ 2026.05.03",
-  "searchAnalysis": "**4월 30일(목) 수집:** 주간 신규 기사 1건(Vusion TIME Top 10 선정, 4/28) 확인. 이번 주(4/27~4/30)는 RTS 2026 이후 뉴스 소강기로, Vusion의 브랜드 인지도 이벤트가 유일한 주요 뉴스였다. 아울러 전전주(4/20) 및 전주(4/22) 수집 누락 중요 기사 2건을 보완 수집했다—①Pricer·JRTech Solutions의 캐나다 Sobeys 5,100만 달러 계약(4/20), ②Hanshow·Superdrug 영국·아일랜드 170만 개 ESL 파트너십(4/22). (일부 도메인 접속 차단—스니펫 기반 보완)",
+  "searchAnalysis": "**4월 30일(목) 수집:** 주간 신규 기사 1건(Vusion TIME Top 10 선정, 4/28) 확인. 이번 주(4/27~4/30)는 RTS 2026 이후 뉴스 소강기로, Vusion의 브랜드 인지도 이벤트가 유일한 주요 뉴스였다. 아울러 전전주(4/20) 및 전주(4/22) 수집 누락 중요 기사 2건을 보완 수집했다—①Pricer·JRTech Solutions의 캐나다 Sobeys 5,100만 달러 계약(4/20), ②Hanshow·Superdrug 영국·아일랜드 170만 개 ESL 파트너십(4/22). (일부 도메인 접속 차단—스니펫 기반 보완)\n**5월 6일(수) 보완:** 목·금·주말 기사 3건 추가—①메릴랜드주 미국 최초 서베일런스 프라이싱 금지법 서명(4/30), ②Vusion RTS 2026 이노베이션 어워드 수상(4/30), ③영국 전자선반 레이블 시장 현황 분석(5/1). (일부 도메인 접속 차단—스니펫 기반 보완)",
   "sections": {
-    "industryTrends": [],
+    "industryTrends": [
+      {
+        "title": "메릴랜드주, 미국 최초로 식품 소매업체 대상 '서베일런스 프라이싱' 금지법 서명",
+        "summary": "메릴랜드 주지사 웨스 무어(Wes Moore)가 4월 28일(현지시간 공식 서명, 4/30 발효 고지) HB 895에 서명하며 메릴랜드가 미국 최초로 '서베일런스 프라이싱(감시 기반 가격 책정)' 금지 법률을 제정한 주가 됐다. 이 법은 1만 5,000평방피트 이상의 대형 식품 소매업체와 제3자 배달 서비스가 소비자의 개인 데이터를 활용해 특정 개인에게 차별적으로 높은 가격을 부과하는 행위를 금지한다. 2026년 10월 1일 발효 예정이며, 위반 시 첫 번째 위반은 최대 1만 달러, 이후 위반은 최대 2만 5,000달러의 민사 벌금이 부과된다. 다만 할인, 로열티 프로그램, 프로모션 가격 등은 허용된다. 캘리포니아·뉴욕·하와이·워싱턴주 등 다수의 주에서도 유사 법안이 논의 중이며, 미국 전역으로 규제가 확산될 전망이다.",
+        "implications": "[🔴 위협] ESL 기반 다이내믹 프라이싱에 대한 규제가 미국에서 처음으로 법제화됐다. 소비자 데이터와 결합된 '개인화 가격 책정' 기능이 법적 리스크로 이어질 수 있으며, 규제가 캘리포니아·뉴욕 등 대형 주로 확산될 경우 미국 전체 ESL 시장에 중대한 영향을 미칠 수 있다.\n[🔵 트렌드] 서베일런스 프라이싱 규제 법안이 주(州) 단위에서 연방 단위로 확산 중이다. 상원의원 Jeff Merkley(민주·오리건)가 도입한 연방 법안은 대형 식품 슈퍼마켓에서의 ESL 자체를 금지하는 내용도 포함하고 있어 향후 전개를 주시해야 한다.\n[🟢 기회] SOLUM의 ESL은 개인화 가격 책정이 아닌 운영 효율화(인건비 절감·가격 정확도 향상) 위주의 가치를 강조하고 있어, 이 법의 직접 적용 대상이 아닐 가능성이 높다. 규제 환경 속에서 'ESL ≠ 서베일런스'라는 명확한 포지셔닝이 고객 신뢰 제고로 이어질 수 있다.\n[⚡ 액션] 미국 고객사 대상 영업 자료에 ESL의 가격 투명성·운영 효율성 가치를 명확히 포함시키고, 감시 가격 책정 vs. 표준 ESL 운영의 차이점을 설명하는 FAQ/백서 준비 검토.",
+        "imageUrl": "https://s3.amazonaws.com/multistate.us/production/articles/a7m4pxtrXi43LfybM/image/MD-163dab-1200px.jpeg",
+        "pubDate": "2026-04-30",
+        "sourceUrl": "https://www.multistate.us/insider/2026/4/30/maryland-becomes-first-state-to-ban-surveillance-pricing-on-some-food-products",
+        "sourceName": "MultiState"
+      },
+      {
+        "title": "영국 전자선반 레이블 2026: Morrisons 전국 롤아웃, Sainsbury's·Tesco 파일럿 진행 중",
+        "summary": "영국 주요 슈퍼마켓의 ESL 도입이 2026년을 기점으로 본격적인 전국 확산 단계로 진입하고 있다. Morrisons는 VusionGroup과 파트너십을 맺고 497개 전 매장에 ESL을 순차적으로 설치 중이며, 완료 시 1,080만 개 이상의 ESL이 운영된다. 영국 빅4 슈퍼마켓 중 ESL 전국 배포를 공식 발표한 첫 사례다. Sainsbury's는 대형 포맷 3개 매장에서 ESL 파일럿을 진행 중이며 비어·와인·건강·일반 상품 등 카테고리별 영향을 평가하고 있다. Tesco는 VusionGroup과 Hanshow 두 브랜드의 라벨을 Royston·St Neots 등 Tesco Extra·Express 매장에서 병행 테스트 중이다. 영국 내 ESL 확산에 따라 '디지털 가격 태그가 서지 프라이싱을 유발할 수 있다'는 소비자 우려도 함께 제기되고 있다. *(검색 스니펫 기반)*",
+        "implications": "[🔵 트렌드] 영국 빅4 슈퍼마켓 모두 ESL 도입에 적극적으로 나서며 영국 ESL 시장이 급속히 성장하고 있다. 2026년은 영국 ESL 본격 확산의 원년이 될 전망이다.\n[🔴 위협] Morrisons의 전국 롤아웃 파트너는 VusionGroup이며, Tesco 파일럿에는 VusionGroup과 Hanshow가 공동 참여 중이다. SOLUM이 영국 빅4와의 협력 관계를 확보하지 못한 상황이다.\n[🟢 기회] Sainsbury's가 아직 공식 파트너를 발표하지 않아 진출 여지가 있으며, Tesco의 멀티벤더 파일럿 구조는 SOLUM의 경쟁 진입 가능성을 열어두고 있다.\n[⚡ 액션] SOLUM UK 영업팀의 Sainsbury's 및 Tesco 담당 임원 접촉 강화, Newton Core+ 기반 영국 파일럿 제안서 준비.",
+        "imageUrl": "",
+        "pubDate": "2026-05-01",
+        "sourceUrl": "https://barcodesforbusiness.co.uk/2026/05/01/electronic-shelf-edge-labels-uk-the-smart-retail-upgrade-for-2026/",
+        "sourceName": "Barcodes for Business"
+      }
+    ],
     "customerAdoption": {
       "약국/헬스": [
         {
@@ -36,6 +55,15 @@
         "pubDate": "2026-04-20",
         "sourceUrl": "https://www.pricer.com/press-release/pricer-and-jrtech-solutions-signs-51-musd-digital-store-transformation-deal-with-sobeys-in-canada",
         "sourceName": "Pricer"
+      },
+      {
+        "title": "Vusion, Retail Technology Show(RTS) 2026 이노베이션 어워드 수상",
+        "summary": "Vusion이 영국 런던에서 열린 Retail Technology Show(RTS) 2026에서 이노베이션 어워드를 수상했다. Vusion은 2억 5,000만 개 이상의 엔드포인트를 연결하는 AI 운영 시스템 'EdgeSense'를 통해 ESL, AI 카메라, 센서를 단일 인텔리전트 네트워크로 통합하며 수상 영예를 안았다. EdgeSense는 Carrefour를 포함한 글로벌 주요 유통사에 배포되어 가격 자동화, 머천다이징 최적화, 재고 정확도 향상, 손실 방지(슈링크 감소) 등을 지원한다. 이 수상은 4월 28일 TIME 선정 Top 10에 이어 같은 주 두 번째 주요 수상으로, Vusion의 글로벌 브랜드 파워가 단기간에 크게 강화되고 있음을 보여준다. *(검색 스니펫 기반)*",
+        "implications": "[🔴 위협] Vusion이 TIME Top 10(4/28)에 이어 RTS 이노베이션 어워드(4/30)까지 불과 이틀 사이에 두 개의 권위 있는 상을 연속 수상하며 글로벌 ESL 시장 리더로서의 이미지를 더욱 공고히 하고 있다.\n[🔵 트렌드] AI·IoT 통합 플랫폼(ESL + 카메라 + 센서 + RMN)이 단순 ESL 공급을 넘어 스마트 스토어의 핵심 인프라로 자리잡고 있으며, 이 방향성이 어워드 평가 기준의 중심이 되고 있다.\n[⚡ 액션] SOLUM Store Platform의 통합 역량(ESL + AI 카메라 + 디지털 사이니지 + 데이터 분석)을 국제 어워드·언론에 적극 어필하는 전략 수립 필요.",
+        "imageUrl": "",
+        "pubDate": "2026-04-30",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/4/30/vusion-wins-big-at-rts-2026-in-london-check-out-this-weeks-biggest-retail-technology-stories",
+        "sourceName": "Retail Technology Innovation Hub"
       }
     ],
     "technology": []
