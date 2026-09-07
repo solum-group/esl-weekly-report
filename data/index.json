@@ -162,6 +162,11 @@
   {
     "weekId": "2026-08-31",
     "weekLabel": "2026.08.31 ~ 2026.09.06",
-    "articleCount": 13
+    "articleCount": 15
+  },
+  {
+    "weekId": "2026-09-07",
+    "weekLabel": "2026.09.07 ~ 2026.09.07",
+    "articleCount": 0
   }
 ]

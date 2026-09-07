@@ -1,7 +1,7 @@
 {
   "weekId": "2026-08-31",
   "weekLabel": "2026.08.31 ~ 2026.09.06",
-  "searchAnalysis": "**08월 31일(월) 수집:** 월요일 발행 기사 3건—주요유통사 2(세인즈베리 Tu 패션 RFID 400개점 확대·까르푸 벨기에 챗GPT 식료품 주문), 기술 1(사이먼 프로퍼티그룹 자체 리테일미디어네트워크 'Simon Media Network' 출범). [커버리지] RTIH=/home stale→site:retailtechinnovationhub.com/home/2026/8 열거로 우회, 08.31자 기사 확보 / invidis=/news/2026/08 경로 확인·Simon Media Network 채택 / SOLUM·Hanshow·Pricer·Vusion·ZKONG=범위 내 신규 무기사 / retail-optimiser.de=Carrefour ChatGPT 기사 채택 / [감사] 재검색 결과 범위 내 추가 미수집 없음 확인.\n\n**09월 03일(목) 수집:** 월~목(08.31~09.03) 신규 10건—고객도입 3(아스다 Vusion ESL 550개점 완주·H&M GreyOrange gStore·보스코프 통합재고), 주요유통사 2(이케아 유럽 12억유로 가격인하·베스트바이 Ask Blue), 공급사 1(KB증권 솔루엠 목표가 19%↓·북미 ESL 공급지연), 기술 2(Circana×도어대시 증분매출 검증·앱토스 POS 리포트), 산업동향 2(FTC 아마존 광고경매 제소·NRF 유럽 2026 프리뷰). [커버리지] Hanshow=뉴스룸 방문·최신 08.10로 범위내 무기사 / Pricer=방문·최신 07.16 무기사 / Vusion=방문·최신 07.30 무기사 / SOLUM=SPA로 목록 미렌더(검색 대체·범위내 신규 PR 없음) / RTIH=/home/2026/9 site: 열거로 09.01자 10건 확인, ESL 태그페이지는 STALE(최신 2024.02)로 미사용 / RetailOptimiser·ChainStoreAge·RetailDive·GlobeNewswire=방문·채택 / invidis=09월 슬러그 기사 DooH 중심으로 ESL 연관 낮아 제외. [3.6-G] SKILL.md를 Read로 로드해 문서 내 URL이 provenance에 등록되지 않아 뉴스룸 직접 fetch가 전량 차단됨 → WebSearch 언락 후 재fetch로 복구. [3.6-H] RTIH ESL 태그페이지 STALE(최신 2024-02-05) 확인, site: 날짜 열거로 대체. [감사] 'digital shelf labels' 재검색·ESM/그로서 교차 확인 결과 범위 내 미수집 ESL 기사 추가 0건(알버트슨 ChatGPT 플러그인 08.05·사이먼 미디어 08.27 등은 기간 밖 또는 기수집).",
+  "searchAnalysis": "**08월 31일(월) 수집:** 월요일 발행 기사 3건—주요유통사 2(세인즈베리 Tu 패션 RFID 400개점 확대·까르푸 벨기에 챗GPT 식료품 주문), 기술 1(사이먼 프로퍼티그룹 자체 리테일미디어네트워크 'Simon Media Network' 출범). [커버리지] RTIH=/home stale→site:retailtechinnovationhub.com/home/2026/8 열거로 우회, 08.31자 기사 확보 / invidis=/news/2026/08 경로 확인·Simon Media Network 채택 / SOLUM·Hanshow·Pricer·Vusion·ZKONG=범위 내 신규 무기사 / retail-optimiser.de=Carrefour ChatGPT 기사 채택 / [감사] 재검색 결과 범위 내 추가 미수집 없음 확인.\n\n**09월 03일(목) 수집:** 월~목(08.31~09.03) 신규 10건—고객도입 3(아스다 Vusion ESL 550개점 완주·H&M GreyOrange gStore·보스코프 통합재고), 주요유통사 2(이케아 유럽 12억유로 가격인하·베스트바이 Ask Blue), 공급사 1(KB증권 솔루엠 목표가 19%↓·북미 ESL 공급지연), 기술 2(Circana×도어대시 증분매출 검증·앱토스 POS 리포트), 산업동향 2(FTC 아마존 광고경매 제소·NRF 유럽 2026 프리뷰). [커버리지] Hanshow=뉴스룸 방문·최신 08.10로 범위내 무기사 / Pricer=방문·최신 07.16 무기사 / Vusion=방문·최신 07.30 무기사 / SOLUM=SPA로 목록 미렌더(검색 대체·범위내 신규 PR 없음) / RTIH=/home/2026/9 site: 열거로 09.01자 10건 확인, ESL 태그페이지는 STALE(최신 2024.02)로 미사용 / RetailOptimiser·ChainStoreAge·RetailDive·GlobeNewswire=방문·채택 / invidis=09월 슬러그 기사 DooH 중심으로 ESL 연관 낮아 제외. [3.6-G] SKILL.md를 Read로 로드해 문서 내 URL이 provenance에 등록되지 않아 뉴스룸 직접 fetch가 전량 차단됨 → WebSearch 언락 후 재fetch로 복구. [3.6-H] RTIH ESL 태그페이지 STALE(최신 2024-02-05) 확인, site: 날짜 열거로 대체. [감사] 'digital shelf labels' 재검색·ESM/그로서 교차 확인 결과 범위 내 미수집 ESL 기사 추가 0건(알버트슨 ChatGPT 플러그인 08.05·사이먼 미디어 08.27 등은 기간 밖 또는 기수집).\n\n**09월 07일(월) 보완 수집:** 목~일(09.03~09.06) 및 소급 1건(09.02) 신규 2건—공급사 2(알캄포/오샹 한쇼 ESL 84개점·56만개 도입, SOLUM 호주 빙리·내추럴그로서리 ESL 확대). [커버리지] SOLUM·Hanshow·Pricer·Vusion·ZKONG 뉴스룸=WebSearch 언락 경유 방문·범위내 신규 PR 없음(뉴스룸 자체 업데이트 지연) / RTIH=/home/2026/9/3~9/7 site: 날짜 열거로 일별 전수 확인, 09.04·09.05는 ESL 연관 신규 없음, 09.06 주간 롱업은 기존 수집 기사(Asda·Sainsbury's) 재언급이라 중복 제외 / invidis=09월 게시물 호스피탈리티 중심으로 ESL 무관 / Chain Store Age news-briefs(09.01~09.04)=ESL·리테일미디어·재고관리 무기사 확인 / RMN·재고관리·디지털사이니지·스마트카트·리테일로봇 쿼리 블록 전수 실행=범위 내 신규 무기사 / Google News RSS(news.google.com)=권한 승인 대기 상태로 차단, WebSearch 대체 경로로 우회. [감사] site: 열거+원문 발행일 검증 교차 확인 결과 범위 내 추가 미수집 0건 확인. 신규 채택: 스페인 유통업체 알캄포, 매장 현대화 위해 한쇼 전자가격표시기 전면 도입; SOLUM, 호주서 빙리·내추럴 그로서리 컴퍼니 대상 ESL 공급 확대.",
   "sections": {
     "industryTrends": [
       {
@@ -56,6 +56,17 @@
           "sourceUrl": "https://chainstoreage.com/news-briefs/2026-09-01?article=boscovs-unifies-store-inventory-view",
           "sourceName": "Chain Store Age"
         }
+      ],
+      "슈퍼마켓": [
+        {
+          "title": "스페인 유통업체 알캄포, 매장 현대화 위해 한쇼 전자가격표시기 전면 도입",
+          "summary": "• 스페인 슈퍼마켓 체인 알캄포(오샹 리테일 산하)가 한쇼(Hanshow)와 협력해 매장 전반에 전자가격표시기(ESL)를 도입한다.\n• 84개 매장에 56만 개 이상의 ESL을 설치하는 대규모 프로젝트로, 가격·매대 정보를 중앙에서 통합 관리하는 플랫폼을 구축한다.\n• 종이 가격표 사용을 없애 연간 약 1,843km 분량의 종이 띠를 절감하고 CO2 배출량도 연 8.4톤 줄일 것으로 예상된다.\n• 직원의 가격 갱신 업무 부담을 낮춰 고객 응대에 집중하게 하며, 앞서 테스코가 한쇼와 약 3,000개 매장에 ESL을 도입하기로 한 것과 같은 흐름이다.",
+          "implications": "[🟢 기회] 한쇼가 유럽 대형 유통사(알캄포·테스코)向 ESL 공급을 연이어 확보하며 유럽 시장에서 SOLUM과의 경쟁이 한층 치열해지고 있다. 지속가능성(종이 절감) 스토리를 앞세운 수주 제안 강화가 필요하다.",
+          "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/590ef147e6f2e1fda30e84c5/6a984693ef69f32abfad03e3/1788409264362/Alcampo.png?format=1500w",
+          "pubDate": "2026-09-02",
+          "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/2/spanish-grocery-retailer-alcampo-deploys-hanshow-esls-across-supermarkets-as-part-of-modernisation-push",
+          "sourceName": "Retail Technology Innovation Hub"
+        }
       ]
     },
     "majorCompanies": [
@@ -105,6 +116,15 @@
         "pubDate": "2026-09-02",
         "sourceUrl": "https://www.etoday.co.kr/news/view/2620760",
         "sourceName": "이투데이"
+      },
+      {
+        "title": "SOLUM, 호주서 빙리·내추럴 그로서리 컴퍼니 대상 ESL 공급 확대",
+        "summary": "• SOLUM이 호주 가전 유통업체 빙리(Bing Lee)와의 파트너십을 확대하고, 프리미엄 그로서리 체인 더 내추럴 그로서리 컴퍼니에 신규로 ESL을 공급하기 시작했다.\n• 두 업체 모두 중앙관리형 ESL 플랫폼을 통해 원격 가격 갱신과 실시간 프로모션 반영이 가능해진다.\n• SOLUM 호주법인 폴 키리아코스 GM은 \"실시간 가격 정확도와 빠른 프로모션 갱신을 지원한다\"고 밝혔다.\n• 지난 4월 SOLUM-Rynly 매장 이행 솔루션 파트너십에 이어지는 확장으로, 클릭앤콜렉트·당일배송 수요가 늘어난 그로서리 매장을 겨냥한다.",
+        "implications": "[🟢 기회] SOLUM이 호주에서 가전·프리미엄 그로서리 두 축으로 고객사를 넓히며 아시아태평양 매출원을 다변화하고 있다. Rynly 연계 매장 이행 솔루션과 결합해 옴니채널 대응력을 강조하는 전략이 부각된다.",
+        "imageUrl": "https://www.retail-insight-network.com/wp-content/uploads/sites/18/2026/09/esl-shutterstock_2759918851.jpg",
+        "pubDate": "2026-09-04",
+        "sourceUrl": "https://www.retail-insight-network.com/news/solum-secures-australian-retail-deployments/",
+        "sourceName": "Retail Insight Network"
       }
     ],
     "technology": [
