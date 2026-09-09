@@ -1,12 +1,114 @@
 {
   "weekId": "2026-09-07",
-  "weekLabel": "2026.09.07 ~ 2026.09.07",
-  "searchAnalysis": "**09월 07일(월) 수집:** 오늘(월) 발행 ESL 산업 기사 없음. 뉴스룸 순회(SOLUM·Hanshow·Pricer·Vusion·ZKONG·E Ink)·RTIH site: 열거(/home/2026/9/7)·RMN·재고관리·디지털사이니지·리테일로봇 검색 블록을 모두 실행했으나 이른 아침(KST 01시) 시점상 당일자 신규 기사가 아직 색인되지 않음. 목요일 run에서 이번 주(09.07~09.13) 기사로 확장 수집 예정.",
+  "weekLabel": "2026.09.07 ~ 2026.09.13",
+  "searchAnalysis": "**09월 10일(목) 수집:** 이번 주(09.07~09.10) 신규 10건 수집. 핵심은 (1) 라인보우-한서 '스토어 디지털 트윈' 1호점(ESL을 센티미터급 측위 인프라로 재정의), (2) 월그린스-Looma 1,200개 매장 인스토어 스크린, (3) 레마 1000-Itab 3,000만 유로 650개 매장 리뉴얼(ESL CAPEX 진입 기회), (4) 모리슨스-Instaleap 매장 피킹 강화(Pick-to-Light 수요), (5) PQ미디어 2025 글로벌 DOOH +12%(275억 달러). | [커버리지] RTIH=site:/home/2026/9 열거·기사 4건 직접 fetch / Retail Optimiser=뉴스면 방문·1건 채택 / ESM=technology 인덱스 방문(무날짜, ID순 확인) / invidis=2건 채택 / Chain Store Age=news-briefs 09-08·09-09 방문·1건 채택 / Modern Retail=1건 채택 / GlobeNewswire=1건 채택 / SOLUM·Hanshow·Pricer·Vusion·ZKONG·E Ink 뉴스룸=범위 내 신규 릴리스 없음 / Retail Dive·Grocery Dive·Supermarket News·The Grocer=범위 내 ESL 기사 없음. | [G:provenance] SKILL.md에 적힌 뉴스룸 URL이 provenance set에 없어 web_fetch 직접 순회가 전량 차단됨(Read로 읽은 문서는 provenance에 편입되지 않음). WebSearch 언락(G-2) + 연쇄 fetch(G-3)로 우회해 RTIH·Retail Optimiser·ESM·invidis 확인 완료. 브라우저 페인은 사이트 승인 필요로 미사용. | [STALE] Grocery Dive 기술 토픽면 최신 08-28 → site: 검색·사이트맵 대체 경로로 라우팅, 범위 내 기사 없음 확인. | [감사] 범위 내 미수집 확인: Alcampo-Hanshow(Retail Optimiser 09-09)는 08-31 주차에 이미 수집된 동일 사안이라 제외, Asda Express ESL 완료(09-02)도 08-31 주차 기수집 제외, ZetaDisplay-SPAR RMN(09-09 PR)은 08-24 주차 기수집 사안이라 제외. Pick n Pay CIO 선임(09-07)·Hotel Chocolat-Deliveroo(09-09)·Keep Converting 스텔스 종료(09-09)는 스코프 외로 제외. | [소급] Perion-PRN 인스토어 리테일 미디어 인수(08-26)를 미수집 신규로 확인해 2026-08-24 주차에 소급 저장.",
   "sections": {
-    "industryTrends": [],
-    "customerAdoption": {},
-    "majorCompanies": [],
+    "industryTrends": [
+      {
+        "title": "PQ미디어: 2025년 글로벌 DOOH 광고비 12% 성장한 275억 달러",
+        "summary": "• PQ미디어 조사에 따르면 2025년 글로벌 디지털 옥외광고(DOOH) 지출은 전년 대비 12% 증가한 274억 7,000만 달러를 기록했다. 4년 연속 두 자릿수 성장이다.\n• 같은 기간 전통 OOH(정적 빌보드·포스터·앰비언트)는 4.1% 성장에 그쳤고, 디지털+전통 OOH 합산은 6.8% 성장했다.\n• 호주에서는 디지털 포맷이 전체 OOH 지출의 절반을 이미 넘어섰다.\n• PQ미디어는 2026년에도 이탈리아 동계올림픽, 캐나다·멕시코·미국 FIFA 월드컵, 50개국 이상의 선거를 동력으로 두 자릿수 증가를 전망했다.\n• 성장 동인은 프로그래매틱 구매 도구 고도화와 AI·스마트 기술이며, 리스크로는 경제·지정학적 불확실성이 꼽혔다. 원 보고서는 20개국의 리테일·교통·헬스케어·시네마 환경을 다룬 'Global Digital Out-of-Home Media Forecast 2026-2030'이다.",
+        "implications": "[🔵 트렌드] DOOH의 구조적 성장은 인스토어 미디어(리테일 미디어) 예산 유입의 상방을 보여준다. ESL은 매장 내 최대 규모의 '디지털 표면'(매장당 수만 개)이지만 아직 이 예산에서 배제돼 있다. SOLUM은 ESL 인벤토리를 프로그래매틱 측정 체계(도달·CPM 상당 지표)로 계량화하는 표준을 제시해야 DOOH 예산 편입 논의에 진입할 수 있다.",
+        "imageUrl": "https://invidis.com/wp-content/uploads/2026/09/PQ-Media-DOOH-spending.jpg",
+        "pubDate": "2026-09-07",
+        "sourceUrl": "https://invidis.com/news/2026/09/pq-media-research-global-dooh-spending-grew-12-percent-in-2025/",
+        "sourceName": "invidis"
+      }
+    ],
+    "customerAdoption": {
+      "슈퍼마켓": [
+        {
+          "title": "중국 라인보우, 한서(Hanshow) 기반 첫 '스토어 디지털 트윈' 슈퍼마켓 선전에 개장",
+          "summary": "• 중국 옴니채널 유통사 라인보우(Rainbow, 天虹)가 선전 난산구 샤허(Shahe) sp@ce 슈퍼마켓을 리뉴얼 개장하며 자사 첫 '스토어 디지털 트윈(Store Digital Twin)' 매장으로 전환했다.\n• 한서(Hanshow)와 라인보우 기술 자회사 링즈디지털테크놀로지(Lingzhi Digital Technology)가 공동 개발했으며, 1만 7,000개 이상의 IoT 디바이스와 AI를 결합해 매장 상태를 실시간 가시화한다.\n• 셸프엣지에는 한서 Nebular Ultra ESL이 적용돼 센티미터 단위 상품 측위를 제공하고, 탭-투-인터랙트로 상품 상세·이력추적·사용 가이드·프로모션까지 노출하는 인터랙티브 접점으로 확장됐다.\n• 한서 NexConnect 스마트카트에 링즈의 AI 쇼핑 어시스턴트를 결합해 상품 정보·매장 내비게이션·프로모션·결제 안내를 제공한다.\n• 셸프 관리 영역에서는 ESL·위치 인텔리전스·AI 비전·로보틱스를 결합해 결품 탐지와 진열 실행을 지원하고, 링즈의 '바이링냐오(Bailingniao)' 리테일 AI 모델이 수요예측·발주·업무배정을 담당한다.",
+          "implications": "[🔴 위협] 한서가 ESL을 '가격 표시 장치'에서 '디지털 트윈의 측위 인프라'로 재정의한 대표 레퍼런스다. 센티미터급 측위 + 탭-투-인터랙트 + 스마트카트 + 비전/로봇을 하나의 스택으로 묶어 파는 구조라, ESL 단품 경쟁에서는 방어가 어렵다. SOLUM도 Newton 플랫폼을 축으로 측위·매장 실행·카트/로봇 연계까지 포함한 '스토어 OS' 서사를 중국·아시아 레퍼런스로 조기 확보할 필요가 있다.",
+          "imageUrl": "https://images.squarespace-cdn.com/content/v1/590eeff5b8a79b2147a783be/4198b62e-6fe8-4a88-a467-ac1d6a080ea6/Hanshow.jpg",
+          "pubDate": "2026-09-08",
+          "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/8/chinese-retailer-rainbow-opens-its-first-hanshow-powered-store-digital-twin-supermarket-in-shenzhen",
+          "sourceName": "Retail Technology Innovation Hub"
+        }
+      ],
+      "식료품": [
+        {
+          "title": "캐나다 네이처스 엠포리엄, Retailgrid 도입해 매장에 AI 가격 인텔리전스 적용",
+          "summary": "• 캐나다 온타리오의 가족경영 유기농·자연식품 그로서 네이처스 엠포리엄(Nature's Emporium)이 '리테일용 AI 스프레드시트'를 표방하는 Retailgrid와 파트너십을 체결했다.\n• 목표는 머천다이징 팀에 일 단위 실시간 시장 시야와 가격 조정을 위한 반복 가능한 프로세스를 제공하는 것이다.\n• 파트너십에 앞서 Retailgrid의 Price Radar 플랫폼은 유기농 식품 카테고리에서 2,500개 유통사의 가격을 모니터링하고 카테고리 전반 2,000만 건의 거래를 모델링해 경쟁 포지션과 가격 인식·수익성 개선 기회를 분석했다.\n• 7월 말 도입 이후 Retailgrid는 일 단위 데이터 연동, 전 구색에 대한 수요 모델링·가격 탄력성 분석, 주요 자연식품 유통사 4곳과 Amazon.ca에 대한 실시간 가격 모니터링을 가동 중이다.",
+          "implications": "[🟢 기회] 중소·전문 그로서까지 '경쟁사 가격 실시간 추적 → 가격 변경' 사이클이 내려오고 있다는 신호다. 가격 변경 빈도가 올라갈수록 종이 라벨의 운영 한계가 커지고 ESL 도입 ROI가 자동으로 강화된다. SOLUM은 AI 프라이싱 SW 벤더(Retailgrid·Revionics·Engage3 등)와의 '결정→셸프 반영' 연동 커넥터를 표준 제공해 ESL을 프라이싱 스택의 필수 실행 계층으로 위치시켜야 한다.",
+          "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/t/6a9fd7944190ef386f1d6adc/1788860308891/unnamed+%2817%29.jpg?format=1500w",
+          "pubDate": "2026-09-08",
+          "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/8/canadian-retailer-natures-emporium-enlists-retailgrid-to-bring-ai-pricing-intelligence-to-stores",
+          "sourceName": "Retail Technology Innovation Hub"
+        }
+      ],
+      "디스카운터": [
+        {
+          "title": "노르웨이 레마 1000, Itab과 3,000만 유로 규모 650개 전 매장 리뉴얼 계약",
+          "summary": "• 라이탄 리테일(Reitan Retail) 산하 노르웨이 디스카운터 레마 1000(Rema 1000)이 스웨덴 매장 설계·리테일 기술 기업 Itab Group을 매장 인테리어 리뉴얼 및 손실방지(loss prevention) 솔루션 공급사로 선정했다.\n• Itab은 제품·서비스·설치를 합쳐 약 3,000만 유로 규모로 평가했으며, 노르웨이 전역 약 650개 매장 전체가 대상이다.\n• 계약은 9월 1일 발효돼 42개월간 유지되며, 월평균 15개 매장 리뉴얼 속도에 해당한다. 다만 최소 구매 약정이 없어 레마 1000이 CAPEX를 유연하게 조절할 수 있다.\n• 범위에는 맞춤형 인테리어 외에 계산대 게이트·출입구 게이트 등 표준 손실방지 솔루션, 고객 동선 유도 시스템, 쇼핑 트롤리·바스켓이 포함된다.\n• 이번 건은 GK Software의 클라우드 POS 'Cloud4Retail' 전사 도입을 포함한 레마 1000의 광범위한 매장 업그레이드 프로그램의 일부다.",
+          "implications": "[🟢 기회] 42개월간 650개 매장을 순차 리뉴얼하는 대형 CAPEX 사이클이 열렸다. 매장 리뉴얼 시점은 ESL 신규 도입의 최적 진입 구간(집기 교체와 동시 시공 시 설치비 절감)이므로, Itab·GK 등 인테리어·POS 파트너를 통한 간접 채널 확보가 유효하다. 북유럽은 Pricer의 텃밭이므로 조기 접촉이 필요한 [⚡ 액션] 건이다.",
+          "imageUrl": "https://retail-optimiser.de/wp-content/uploads/2026/09/Rema1000-Storefront.jpg",
+          "pubDate": "2026-09-09",
+          "sourceUrl": "https://retail-optimiser.de/en/rema-1000-selects-itab-for-store-refurbishment/",
+          "sourceName": "Retail Optimiser"
+        }
+      ],
+      "드럭스토어": [
+        {
+          "title": "월그린스, 1,200개 매장에 Looma 인스토어 광고 스크린 구축",
+          "summary": "• 미국 드럭스토어 체인 월그린스(Walgreens)가 인스토어 리테일 미디어 기업 Looma와 함께 1,200개 매장에 디지털 광고 스크린 네트워크를 구축한다고 발표했다.\n• 10월부터 롤아웃을 시작해 2027년 초까지 완료할 계획이며, 월그린스는 미국·푸에르토리코에 약 8,500개 매장을 운영한다.\n• John Storms 월그린스 디지털·리테일미디어 부사장은 \"더 강력한 고객 경험, 스마트한 오디언스, 고도화된 측정, 그리고 리테일 업계에서 가장 흥미로운 인스토어 미디어 플랫폼 중 하나에 투자하고 있다\"고 밝혔다.\n• Looma의 스택은 원격 콘텐츠 관리, 엔드캡·공간 기획 디지털화, 풀퍼널 성과 측정으로 구성되며 콘텐츠는 전 세계 독립 영상 제작자 네트워크가 제작한다.\n• BJ's Wholesale과 Kroger도 이미 Looma 스크린을 도입했다. 월그린스는 2025년 12월 LiveRamp와 크로스채널 퍼스트파티 데이터 측정 제휴를 체결한 바 있다.",
+          "implications": "[🔵 트렌드] 대형 드럭스토어까지 인스토어 미디어 네트워크를 자체 구축하는 흐름이 확산되고 있다. 다만 Looma형 '엔드캡 대형 스크린' 모델은 셸프엣지 커버리지가 없어, ESL 기반 셸프엣지 미디어(가격·프로모션·광고 동시 노출)와는 보완재다. SOLUM은 Newton ESL + 사이니지 통합 인벤토리를 하나의 캠페인 관리 콘솔로 묶어 \"엔드캡만으로는 도달 못 하는 구매 결정 순간\"을 세일즈 포인트로 삼을 수 있다.",
+          "imageUrl": "",
+          "pubDate": "2026-09-08",
+          "sourceUrl": "https://chainstoreage.com/news-briefs/2026-09-08?article=walgreens-deploy-store-advertising-screens",
+          "sourceName": "Chain Store Age"
+        }
+      ]
+    },
+    "majorCompanies": [
+      {
+        "title": "모리슨스, 인스타카트 소유 Instaleap과 제휴해 마켓플레이스·매장 피킹 강화",
+        "summary": "• 영국 그로서 모리슨스(Morrisons)가 인스타카트가 2026년 4월 인수한 이커머스 풀필먼트·라스트마일 소프트웨어 기업 Instaleap과 파트너십을 체결했다.\n• 모리슨스는 Uber Eats·Just Eat·Deliveroo 등 마켓플레이스/즉시배송 채널의 주문을 Instaleap으로 통합 관리하고, 매장 직원의 피킹 속도와 정확도를 높이는 데 활용한다.\n• Charlotte Exell 모리슨스 그룹 온라인 디렉터는 \"점점 더 많은 고객이 즉시배송 파트너를 통해 우리 상품을 구매하고 있다\"고 밝혔다.\n• 이번 제휴는 모리슨스가 최근 프레스턴 매장에서 시작한 Caper Cart 스마트 트롤리 도입(인스타카트의 영국 첫 리테일 파트너십)과 이어진다. 카트는 담긴 상품을 자동 인식하고 신선식품 무게도 즉석에서 측정한다.\n• Caper Cart는 실시간 장바구니 합계, 상품 추천, More Card 로열티 연동 할인, 트롤리 화면 바코드를 통한 전용 레인 결제를 제공한다.",
+        "implications": "[🟢 기회] 매장이 온라인 주문의 물류 거점이 되면서 '셸프에서 상품을 빠르게 찾는' 문제가 다시 핵심 과제로 부상했다. ESL의 Pick-to-Light(점멸 LED)는 이 문제의 직접 해답이며, 실제로 모리슨스는 이미 Vusion Pick-to-Light를 쓰고 있다. SOLUM은 Newton 기반 Pick-to-Light를 Instaleap 같은 피킹 SW와 API로 연동해 '피킹 SW ↔ 셸프 실행' 표준 커넥터를 선점해야 한다. [⚡ 액션]",
+        "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/590ef147e6f2e1fda30e84c5/6a9fe46b17fd3e010612a830/1788864665972/UNP+WM+48029+Caper+Carts+Preston076.JPG?format=1500w",
+        "pubDate": "2026-09-08",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/8/morrisons-teams-with-instacart-owned-instaleap-to-boost-online-marketplace-and-in-store-fulfulment",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ],
     "solutionProviders": [],
-    "technology": []
+    "technology": [
+      {
+        "title": "프론트라인 디바이스 관리 플랫폼 ARC, Acadia로부터 6,000만 달러 유치",
+        "summary": "• 미국 필라델피아 기반 ARC(Asset Recharge Center, 舊 ChargeItSpot)가 Acadia Investment Partners로부터 6,000만 달러 성장 투자를 유치했다. 누적 조달액은 1억 달러가 됐다.\n• ARC는 리테일·물류 현장 직원이 쓰는 핸드헬드 디바이스 플릿을 관리하는 엔터프라이즈 플랫폼으로, 셀프서비스 스마트 락커와 클라우드 SW를 결합해 1:1 단위 디바이스 책임 추적과 상태·가용성·가동률 실시간 가시화를 제공한다.\n• 회사가 제시한 도입 효과는 디바이스 분실 약 95% 감소, 관리자 디바이스 행정 시간 약 85% 감소, 디바이스 가동률 20% 이상 향상이며, 전국 단위 배치 이후 누적 1억 3,000만 건 이상의 사용 트랜잭션을 처리했다.\n• Douglas Baldasare CEO는 \"기업은 직원 생산성을 높이려 디바이스에 수십억 달러를 투자하지만, 그 디바이스가 작동하지 않거나 충전되지 않았거나 손에 없으면 투자가 낭비되고 생산성은 떨어진다\"고 말했다.\n• Acadia의 Harsh Agarwal과 Peter Schmitt가 이사회에 합류하며, 자금은 제품 개발 가속과 그로서리·항공·물류·창고·공공 부문 확장에 투입된다.",
+        "implications": "[🔵 트렌드] '매장 현장 하드웨어의 가용성 관리'가 별도 투자 카테고리로 자리 잡고 있다는 신호다. ESL도 매장당 수만 개의 배터리 구동 디바이스 플릿이라는 점에서 동일한 문제(배터리·통신 실패·미갱신 라벨)를 안고 있다. SOLUM은 Newton의 라벨 헬스 모니터링(배터리 잔량·미수신 라벨·갱신 실패율)을 별도 가치 제안으로 상품화해 '라벨 플릿 가동률 SLA'를 세일즈 무기로 삼을 수 있다.",
+        "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/590ef147e6f2e1fda30e84c5/6a9fee3bd03f384eeef962c2/1788927963038/unnamed%2B%252818%2529.jpg?format=1500w",
+        "pubDate": "2026-09-09",
+        "sourceUrl": "https://www.globenewswire.com/news-release/2026/09/09/3358626/0/en/arc-secures-60-million-growth-investment-from-acadia-to-transform-frontline-asset-management-technology.html",
+        "sourceName": "GlobeNewswire"
+      },
+      {
+        "title": "Limited Space, Legal & General 부동산 포트폴리오 기반 리테일·레저파크 디지털 미디어망 진출",
+        "summary": "• 영국 OOH 미디어 사업자 Limited Space가 Legal & General의 영국 부동산 포트폴리오 전반에 대한 독점 디지털 미디어 사업권을 확보하며 리테일·레저파크 네트워크로 포트폴리오를 확장했다.\n• 초기 롤아웃은 잉글랜드와 스코틀랜드의 주요 리테일파크에 디지털 미디어 지면을 신설하며, 연간 2,100만 명 이상의 소비자에게 도달한다.\n• Matt Gordon 공동창업자 겸 디렉터는 \"리테일·레저파크는 기존 네트워크를 훌륭하게 보완하며, 기존 광고주에게는 확장된 도달을, 신규 브랜드에는 OOH 진입 경로를 제공한다\"고 밝혔다.\n• 이번 설치는 Legal & General과의 광범위한 롤아웃 1단계이며 네트워크는 2026년 내내 계속 확대될 예정이다.",
+        "implications": "[🔵 트렌드] 매장 '밖'(리테일파크 진입 동선)의 디지털 미디어까지 상업화되면서, 브랜드 캠페인이 '주차장 → 매장 입구 → 통로 → 셸프'로 이어지는 풀퍼널 인스토어 여정으로 설계되고 있다. 이 여정의 마지막 접점인 셸프엣지를 ESL이 점유한다는 점에서 SOLUM에는 중장기 수익화 기회다. 다만 미디어 오너·DOOH 사업자가 매장 내부까지 침투할 경우 ESL 미디어 인벤토리 주도권 경쟁이 발생할 수 있다.",
+        "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/t/6a9ebb764b08934e6b0c1653/1788787574171/Limited+Space+Retail+%26+Leisure+Park.jpg?format=1500w",
+        "pubDate": "2026-09-07",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/7/limited-space-expands-into-retail-and-leisure-parks-with-legal-and-general-digital-media-rollout",
+        "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "마스터카드, 2030년 AI 에이전트 주도 소비 3,700억 파운드 전망 보고서 공개",
+        "summary": "• 마스터카드가 런던 Payeux Tapestry 쇼케이스와 함께 'A Short History of the Future of Shopping and Payments' 보고서를 공개하고, 2030년까지 소비자 10명 중 1명이 AI 에이전트로 일상적 쇼핑·결제를 하게 될 것으로 전망했다.\n• 이는 약 3억 명의 AI 기반 쇼퍼와 연간 약 3,700억 파운드의 AI 주도 소비에 해당한다.\n• 조사는 미래학자 4인의 인풋과 2026년 6~7월 13개국 부모·청소년 2만 6,000명 대상 Opinium 설문에 기반한다.\n• 이미 청소년의 18%가 구매 전 상품 비교에 주 1회 이상 AI 어시스턴트(ChatGPT·Claude·Gemini)를 사용하며, 영국 성인 약 5명 중 1명은 설정한 목표 범위 내에서 AI의 자율 실행을 허용할 의향이 있다고 답했다.\n• 보고서는 브랜드 충성 기반의 '탑 오브 월렛' 관행이 종료되고 AI가 금리·캐시백·환전 수수료·사기 책임·컴플라이언스로 카드를 점수화할 것이며, 2030년까지 최소 3개 G20 금융규제기관이 'KYA(Know Your Agent)' 가이드라인을 낼 것으로 예측했다.",
+        "implications": "[🔵 트렌드] AI 에이전트가 구매 결정을 대행하기 시작하면, 상품 정보의 '기계 판독 가능성'이 매출을 좌우한다. 셸프엣지의 ESL은 QR·NFC·탭-투-인터랙트를 통해 에이전트에게 가격·재고·프로모션의 신뢰 가능한 출처를 제공하는 물리적 앵커가 될 수 있다. SOLUM은 ESL 데이터를 구조화된 API/피드로 외부 에이전트에 노출하는 '에이전틱 셸프' 아키텍처를 선제 검토할 필요가 있다.",
+        "imageUrl": "",
+        "pubDate": "2026-09-08",
+        "sourceUrl": "https://paymentexpert.com/2026/09/08/mastercard-predicts-agentic-ai-impact/",
+        "sourceName": "Payment Expert"
+      },
+      {
+        "title": "리테일 미디어 네트워크 11곳, 광고주 대상 차별화 경쟁 본격화",
+        "summary": "• Ascendant Network가 뉴욕에서 개최한 'Showcase' 업프론트에서 홈디포·앨버트슨스·PayPal·메이시스·체이스·딕스·인스타카트·츄이·도어대시·월그린스·H-E-B 등 15개 리테일/커머스 미디어 네트워크가 발표를 진행했다.\n• 월그린스는 인스토어 리테일 미디어 기업 Looma와 함께 1,200개 매장 디지털 스크린 네트워크를 10월부터 구축한다고 무대에서 발표했다.\n• 앨버트슨스 미디어 컬렉티브의 Brian Monahan SVP는 자사 마이크로 시트콤 'Rico's Tacos' 영상 인접 광고가 벤치마크를 200% 상회했고, 'America 250' 캠페인이 참여 브랜드 판매량을 24% 끌어올렸다고 밝혔다.\n• H-E-B 리테일 미디어 GM Stacy Torstrick은 텍사스 약 500개 매장에서 주당 800만 가구에 도달하며 기획·예측 도구에 투자 중이라고 설명했다.\n• 홈디포 Orange Apron Media는 자사 브랜드 인접 노출 브랜드의 브랜드 신뢰도 +30%, 회상률 +70%, 구매의향 +40% 개선을 제시했다. 발표 전반의 공통 주제는 증분성·측정 입증과 인스토어 스크린·영상을 통한 어퍼퍼널 확장이었다.",
+        "implications": "[🟢 기회] RMN 경쟁의 축이 '온사이트 광고 재고'에서 '인스토어 물리 접점'으로 이동하고 있으며, 차별화 요건은 측정 가능성(증분 매출 입증)이다. ESL은 구매 결정이 실제로 일어나는 셸프엣지에 위치해 노출-구매 인과 입증에 가장 유리한 매체다. SOLUM은 ESL 노출 로그와 POS 데이터를 결합한 증분성 측정 레퍼런스를 확보해 RMN 사업자에게 '측정 가능한 셸프 미디어'로 제안해야 한다.",
+        "imageUrl": "https://www.modernretail.co/wp-content/uploads/sites/5/2024/07/retail-media-shop-digiday.webp",
+        "pubDate": "2026-09-08",
+        "sourceUrl": "https://www.modernretail.co/marketing/how-11-retail-media-networks-are-trying-to-differentiate-themselves-to-advertisers/",
+        "sourceName": "Modern Retail"
+      }
+    ]
   }
 }
