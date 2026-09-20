@@ -1,7 +1,7 @@
 {
   "weekId": "2026-09-14",
   "weekLabel": "2026.09.14 ~ 2026.09.20",
-  "searchAnalysis": "**09월 17일(목) 수집:** 이번 주(09.14~09.17) 신규 22건 수집. 이번 주의 최대 변수는 파리에서 열린 **NRF 2026: Retail's Big Show Europe(9/15~17, 파리 엑스포 포르트 드 베르사유)**로, ESL 공급사 발표가 이 기간에 집중됐다. 핵심은 (1) 한쇼 '네뷸러 럭스' 공개 — 실내 광 수확 하이브리드 전원으로 일일 소비전력 46% 절감·100만 라벨 기준 10년간 CO2 202톤 회피, 확보한 전력 여유를 측위 갱신 빈도와 LED 점등 시간에 재투자(9/16), (2) 프라이서 '애비뉴' 실매장 실증 — East of England Co-op 2개점 66개 상품 2주 측정에서 매출 +2.2%, 이미지 적용 +3.8%, 브랜드 로고 적용 +4.8%(9/15), (3) 한쇼·shopreme·Lucky cart 3사 스마트카트 — 리트로핏형을 통합형과 동일 투자 규모로 제시(9/15), (4) 뉴저지 공정가격보호법 발효로 美 최초 ESL 신규 설치 1년 모라토리엄, 월마트가 노스버건 매장을 공개하며 정면 반박(Fortune/Retail Brew, 9/15), (5) 웨이트로즈(SOLUM ESL 고객)가 Trust Retail 실시간 재고 시스템을 2031년까지 연장하고 크리스마스 전 125개점·2027년 3월 전점 확대(9/16). 리테일 미디어 쪽에서는 사이린 독일망의 프로그래매틱 개방(약 1,000개 스크린·RFID 기반 구매 어트리뷰션), 웨스트필드 라이즈의 drive-to-store 측정(노출군 방문확률 +27%), OAAA 조사(매장 내 광고 영향력 64%로 최고)가 같은 주에 나와 '측정 가능한 인스토어 미디어'로의 전환이 뚜렷했다. | [커버리지] Hanshow 뉴스룸=직접 fetch 성공·범위 내 2건(9/15 스마트카트, 9/16 네뷸러 럭스) / Pricer=ESM·FMCG·365Retail 미러로 확인·1건 / Vusion=뉴스룸 및 dm 키노트 확인, 범위 내 신규 dated 릴리스 없음(dm-Vusion 키노트는 1월 NRF 뉴욕 건) / SOLUM=뉴스룸 최신이 NRF 뉴욕(1월)·EuroShop(2월), 범위 내 신규 없음 / ZKONG·E Ink=범위 내 신규 없음 / DIGI NEXA=NRF 유럽 출품하나 발표일 2026-06-23로 범위 외 / ESM Magazine=technology 인덱스 직접 fetch·5건 채택 / RetailDetail EU=직접 fetch·1건 채택 / RTIH=site: 날짜 열거 + 서브에이전트 RSS 순회로 9/14~9/17 슬러그 전수 확인·4건 채택 / invidis=3건 채택 / The Shelby Report·Supply Chain Dive·Retail Customer Experience·PR Newswire·Fortune·Grocery Gazette=각 1~2건 채택 / Retail Dive·Grocery Dive·Supermarket News·The Grocer·Progressive Grocer·Chain Store Age·Digitimes=범위 내 ESL·RMN·재고관리 신규 기사 없음. | [G:provenance] SKILL.md에 등재된 URL도 web_fetch provenance set에 들어오지 않아(Read로 읽은 문서는 provenance에 편입되지 않음) 뉴스룸·Google News RSS·사이트맵 직접 순회가 전량 차단됨. G-2(WebSearch 언락) + G-3(연쇄 fetch)로 우회해 Hanshow·ESM·RetailDetail·invidis·PRNewswire를 확인 완료. | [C:JS렌더링] RTIH 개별 기사(/home/2026/9/15/...)는 WebFetch가 빈 본문 반환(SPA) → 서브에이전트 RSS 순회 + WebSearch 스니펫 교차로 대체 확인. 브라우저 페인은 사이트 승인 필요로 미사용(비대화형 실행). | [감사] 범위 내 미수집 확인: 알캄포 3.8M유로·84개점 56만 ESL(ISN 9/3, Xataka 9/7)은 08-31 주차 기수집 사안, UFCW의 ESL 20만 일자리 위협 보고서(Retail Gazette 9/10)·아스다 익스프레스 517개점(9/2)·Morrisons-Instaleap(ESM 9/12, 09-07 주차 기수집)·크로거-Simbe Tally 콜럼버스 60개점(원문 7/22 재신디케이션)·Hanshow 스토어 디지털 트윈 해설(원문 8/24)은 모두 범위 외 또는 기수집으로 제외. 아마존 프라임 빅딜데이(9/15)·앵테르마르셰 익스프레스 브뤼셀(9/15)·Bol AI 어시스턴트(9/15)·Sionic CTO 선임(9/13)·Do it Best 이노베이션랩(9/16)은 스코프 외로 제외.",
+  "searchAnalysis": "**09월 17일(목) 수집:** 이번 주(09.14~09.17) 신규 22건 수집. 이번 주의 최대 변수는 파리에서 열린 **NRF 2026: Retail's Big Show Europe(9/15~17, 파리 엑스포 포르트 드 베르사유)**로, ESL 공급사 발표가 이 기간에 집중됐다. 핵심은 (1) 한쇼 '네뷸러 럭스' 공개 — 실내 광 수확 하이브리드 전원으로 일일 소비전력 46% 절감·100만 라벨 기준 10년간 CO2 202톤 회피, 확보한 전력 여유를 측위 갱신 빈도와 LED 점등 시간에 재투자(9/16), (2) 프라이서 '애비뉴' 실매장 실증 — East of England Co-op 2개점 66개 상품 2주 측정에서 매출 +2.2%, 이미지 적용 +3.8%, 브랜드 로고 적용 +4.8%(9/15), (3) 한쇼·shopreme·Lucky cart 3사 스마트카트 — 리트로핏형을 통합형과 동일 투자 규모로 제시(9/15), (4) 뉴저지 공정가격보호법 발효로 美 최초 ESL 신규 설치 1년 모라토리엄, 월마트가 노스버건 매장을 공개하며 정면 반박(Fortune/Retail Brew, 9/15), (5) 웨이트로즈(SOLUM ESL 고객)가 Trust Retail 실시간 재고 시스템을 2031년까지 연장하고 크리스마스 전 125개점·2027년 3월 전점 확대(9/16). 리테일 미디어 쪽에서는 사이린 독일망의 프로그래매틱 개방(약 1,000개 스크린·RFID 기반 구매 어트리뷰션), 웨스트필드 라이즈의 drive-to-store 측정(노출군 방문확률 +27%), OAAA 조사(매장 내 광고 영향력 64%로 최고)가 같은 주에 나와 '측정 가능한 인스토어 미디어'로의 전환이 뚜렷했다. | [커버리지] Hanshow 뉴스룸=직접 fetch 성공·범위 내 2건(9/15 스마트카트, 9/16 네뷸러 럭스) / Pricer=ESM·FMCG·365Retail 미러로 확인·1건 / Vusion=뉴스룸 및 dm 키노트 확인, 범위 내 신규 dated 릴리스 없음(dm-Vusion 키노트는 1월 NRF 뉴욕 건) / SOLUM=뉴스룸 최신이 NRF 뉴욕(1월)·EuroShop(2월), 범위 내 신규 없음 / ZKONG·E Ink=범위 내 신규 없음 / DIGI NEXA=NRF 유럽 출품하나 발표일 2026-06-23로 범위 외 / ESM Magazine=technology 인덱스 직접 fetch·5건 채택 / RetailDetail EU=직접 fetch·1건 채택 / RTIH=site: 날짜 열거 + 서브에이전트 RSS 순회로 9/14~9/17 슬러그 전수 확인·4건 채택 / invidis=3건 채택 / The Shelby Report·Supply Chain Dive·Retail Customer Experience·PR Newswire·Fortune·Grocery Gazette=각 1~2건 채택 / Retail Dive·Grocery Dive·Supermarket News·The Grocer·Progressive Grocer·Chain Store Age·Digitimes=범위 내 ESL·RMN·재고관리 신규 기사 없음. | [G:provenance] SKILL.md에 등재된 URL도 web_fetch provenance set에 들어오지 않아(Read로 읽은 문서는 provenance에 편입되지 않음) 뉴스룸·Google News RSS·사이트맵 직접 순회가 전량 차단됨. G-2(WebSearch 언락) + G-3(연쇄 fetch)로 우회해 Hanshow·ESM·RetailDetail·invidis·PRNewswire를 확인 완료. | [C:JS렌더링] RTIH 개별 기사(/home/2026/9/15/...)는 WebFetch가 빈 본문 반환(SPA) → 서브에이전트 RSS 순회 + WebSearch 스니펫 교차로 대체 확인. 브라우저 페인은 사이트 승인 필요로 미사용(비대화형 실행). | [감사] 범위 내 미수집 확인: 알캄포 3.8M유로·84개점 56만 ESL(ISN 9/3, Xataka 9/7)은 08-31 주차 기수집 사안, UFCW의 ESL 20만 일자리 위협 보고서(Retail Gazette 9/10)·아스다 익스프레스 517개점(9/2)·Morrisons-Instaleap(ESM 9/12, 09-07 주차 기수집)·크로거-Simbe Tally 콜럼버스 60개점(원문 7/22 재신디케이션)·Hanshow 스토어 디지털 트윈 해설(원문 8/24)은 모두 범위 외 또는 기수집으로 제외. 아마존 프라임 빅딜데이(9/15)·앵테르마르셰 익스프레스 브뤼셀(9/15)·Bol AI 어시스턴트(9/15)·Sionic CTO 선임(9/13)·Do it Best 이노베이션랩(9/16)은 스코프 외로 제외. | [09/21(월) 보완 수집] 09/17~09/20(목~일) 기간 재점검으로 4건 추가: 알버트슨스 미디어 콜렉티브·라이브램프 인크리멘털 어트리뷰션(9/18, majorCompanies), E Ink→뉴카퍼 전도성 구리 잉크 투자(9/18, technology), 아조마-던험비 벤처스 에이전틱 커머스 투자(9/17, technology), AUO 디스플레이 플러스 주권형 E-Paper 사이니지(9/20, technology). [커버리지] RTIH=site: 열거+주간 롤업 2건 교차확인, invidis=직접 확인, Grocery Dive/Retail Dive/ESM/The Grocer/Digitimes/공급사 뉴스룸(SOLUM·Hanshow·Pricer·Vusion·ZKONG)=WebFetch가 PROVENANCE_REQUIRED로 차단돼 WebSearch 대체 경로로 확인, 범위 내 ESL 신규 기사 없음. [감사] 범위 내 미수집 0건 확인(Circle K-비주얼 아트 프레임워크는 9/16 기수집분으로 중복 제외).",
   "sections": {
     "industryTrends": [
       {
@@ -110,6 +110,15 @@
         "pubDate": "2026-09-16",
         "sourceUrl": "https://www.esmmagazine.com/technology/behind-the-wheel-lidl-germany-tests-cabless-autonomous-electric-lorry-321532",
         "sourceName": "ESM Magazine"
+      },
+      {
+        "title": "알버트슨스 미디어 콜렉티브, 라이브램프와 인크리멘털 멀티터치 어트리뷰션 출시…펩시코가 첫 파일럿",
+        "summary": "• 알버트슨스의 리테일 미디어 사업부 알버트슨스 미디어 콜렉티브(AMC)가 라이브램프와 함께 '리테일 미디어 인크리멘털리티 기반 멀티터치 어트리뷰션'을 공개했다(9/18). 펩시코가 론칭 파일럿 파트너로 참여한다.\n• 오운드 채널·오프사이트 매체(메타, 구글 DV360·애드매니저, 페리온 등) 임프레션 데이터를 알버트슨스 거래 데이터와 프라이버시 보존 클린룸 환경에서 결합해, 각 접점이 전환에 기여한 몫을 중복 제거해 보여준다.\n• AMC는 35개 주·워싱턴DC 소재 2,200여 개 매장을 아우르며, 라이브램프는 \"siloed 채널 전반에 걸친 인크리멘털 측정을 구현한 최초의 식료품 RMN\"이라고 소개했다.\n• 라이브램프 측정제품 총괄 잭 포스터는 라스트터치 귀속과 플랫폼별 리포팅이 만드는 '신뢰성 공백'을 이번 도구가 메운다고 설명했고, AMC의 리즈 로시 VP는 \"브랜드가 매체 투자의 인크리멘털 효과를 더 완전하게 이해하도록 돕는다\"고 밝혔다.",
+        "implications": "[🔵 트렌드] 미국 대형 식료품 유통사들의 RMN 경쟁이 '스크린 확보'에서 '증분 성과 입증'으로 넘어가고 있다. [⚡ 액션] SOLUM의 ESL·사이니지 기반 리테일 미디어 사업도 노출-구매 연결 데이터(클린룸 연동, 인크리멘털리티 측정)를 초기 설계 단계부터 갖춰야 광고주 예산 경쟁에서 밀리지 않는다.",
+        "imageUrl": "https://theshelbyreport.com/wp-content/uploads/2026/09/Albertsons-Media-Collective-PepsiCo.jpg",
+        "pubDate": "2026-09-18",
+        "sourceUrl": "https://theshelbyreport.com/2026/09/18/albertsons-media-collective-pepsico-pilot-attribution-tool/",
+        "sourceName": "The Shelby Report"
       }
     ],
     "solutionProviders": [
@@ -213,6 +222,33 @@
         "pubDate": "2026-09-16",
         "sourceUrl": "https://www.grocerygazette.co.uk/2026/09/16/trigo-biggest-shrink-problem/",
         "sourceName": "Grocery Gazette"
+      },
+      {
+        "title": "E Ink, 전도성 구리 잉크 스타트업 뉴카퍼에 투자…ESL 소재 공급망 다변화 겨냥",
+        "summary": "• E Ink이 디스플레이·인쇄전자용 전도성 구리 잉크를 개발하는 스타트업 뉴카퍼(Newcopper)에 포스트머니 SAFE 방식으로 초기 투자를 단행했다(9/18, 금액 비공개). 향후 소재 기술 협력과 양산 스케일업을 함께 추진한다.\n• 뉴카퍼의 핵심 기술은 저온·자기부동태화(self-passivating) 구리 잉크 제형으로, 기존 은 잉크의 고질적 산화 문제를 해결하면서 원가를 낮추는 것이 특징이다. 메릴랜드대·예일대 교수진의 연구가 출발점이다.\n• 명시된 적용 분야에 전자가격표시기(ESL)·리테일 미디어 디스플레이·디지털 사이니지·센서·RFID·태양광 기술이 포함돼, ESL 전극·회로 소재로의 채택 가능성이 열려 있다.\n• E Ink CEO 조슨 리는 \"선도적 소재·디스플레이 제조사로서 유망 기업의 스케일업을 돕는 것이 우리의 책무\"라고 밝혔으며, 구리 기반 소재가 보다 지역화된 공급망 구축에 기여할 수 있다고 설명했다.",
+        "implications": "[🟢 기회] ESL 원가의 상당 부분을 차지하는 은 기반 전극·배선 소재를 구리로 대체할 경우 중장기적 원가 절감 여지가 크다. [🔵 트렌드] E Ink이 소재 스타트업에 직접 투자하는 것은 ESL 공급망 전반의 원가 경쟁이 부품·소재 단으로 확산되고 있음을 시사하며, SOLUM 등 ESL 제조사도 자사 BOM 내 대체 소재 로드맵을 점검할 필요가 있다.",
+        "imageUrl": "https://invidis.com/wp-content/uploads/2026/09/e-ink-airport-display-.jpg",
+        "pubDate": "2026-09-18",
+        "sourceUrl": "https://invidis.com/news/2026/09/business-e-ink-invests-in-conductive-ink-startup-newcopper/",
+        "sourceName": "invidis"
+      },
+      {
+        "title": "AI 커머스 스타트업 아조마, 던험비 벤처스 투자 유치…'에이전틱 커머스 최적화' 로드맵 가속",
+        "summary": "• AI 쇼핑 에이전트 대응 커머스 최적화 스타트업 아조마(Azoma)가 던험비 벤처스로부터 금액 비공개 투자를 유치했다(9/17). 던험비 벤처스 대표 리오 나그다스가 이사회 어드바이저로 합류한다.\n• 아조마는 알렉사 포 쇼핑, 월마트 스파키, ChatGPT 등 AI 쇼핑 에이전트가 브랜드·유통사 상품을 어떻게 발견·해석·추천하는지 측정하고 개선하는 플랫폼으로, 로레알·유니레버·마스 등을 고객사로 두고 있다.\n• 아조마의 자체 2026년 2분기 분석에 따르면 알렉사 포 쇼핑 인용의 86.5%, 월마트 스파키 추천의 76%가 소셜·언드 미디어에서 나온 반면 ChatGPT는 37.1%만 유통사 소스를 인용해, 브랜드·유통사의 'AI 검색 가시성 격차'가 크다는 점을 짚었다.\n• 아조마 CEO 맥스 신클레어는 \"에이전틱 커머스는 9조 달러 규모의 기회이며, 이번 투자로 그 카테고리를 계속 정의해 나가겠다\"고 밝혔다.",
+        "implications": "[🔵 트렌드] AI 쇼핑 에이전트가 매장 밖 상품 발견·추천 채널로 빠르게 부상하는 흐름으로, ESL·매장 내 사이니지가 담당해온 '오프라인 발견 경험'과 AI 에이전트 추천 데이터를 연계할 필요성이 커지고 있다. 인접 트렌드로 SOLUM도 매장 데이터를 에이전틱 커머스 생태계에 어떻게 노출·연동할지 장기적으로 검토할 만하다.",
+        "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/590ef147e6f2e1fda30e84c5/6aabf6d9aa95a743571029b9/1789710715149/ACD+5.JPG?format=1500w",
+        "pubDate": "2026-09-17",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/17/azoma-lands-investment-from-dunnhumby-ventures-to-accelerate-roadmap-for-agentic-commerce-optimisation-platform",
+        "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "AUO 디스플레이 플러스, 대형 E-Paper를 '주권형 사이니지 인프라'로 포지셔닝…10월 암스테르담서 서밋",
+        "summary": "• E Ink과 51:49 지분으로 합작한 AUO 디스플레이 플러스(ADP)가 대형 E-Paper를 LCD의 대체재가 아니라 인쇄물을 대체하는 '인프라'로 자리매김시키겠다고 밝혔다(9/20). 대만 생산라인은 2025년 4분기부터 양산 중이다.\n• 신규 소프트웨어 플랫폼 'AecoSign'을 공개했다. 특정 CMS에 종속되지 않는 마이크로서비스 기반 아키텍처로, 서로 다른 콘텐츠 관리 시스템 간 연동 부담을 낮추는 것이 목표다.\n• 10월 8일 암스테르담에서 'AecoSummit Europe 2026'을 개최하며, 수명주기 관리·통합 편의성·컬러 성능 표준화를 핵심 의제로 다룬다.\n• 유럽 배포에서는 데이터 주권·GDPR 준수가 강조됐으며, 관계자는 \"유통사들은 이제 디스플레이를 인프라로 보기 시작했다\", \"E-Paper는 LCD가 아니라 대체하려는 인쇄물과 비교당한다\"고 언급했다.",
+        "implications": "[🔵 트렌드] 대형 E-Paper가 매장 사이니지·인쇄물 대체 인프라로 자리잡는 흐름은 SOLUM의 대형 E-Paper·디지털 사이니지 라인업 확장 전략과 맞닿아 있다. [⚡ 액션] 컬러 표준화·수명주기 관리·CMS 연동성 이슈를 선제적으로 정리해두면 유럽 주권형 인프라 수요에 대응하는 데 도움이 될 것이다.",
+        "imageUrl": "https://invidis.com/wp-content/uploads/2026/09/2026-09-AMS-AUO-Display-Plus-Sian-Rees-2.jpg",
+        "pubDate": "2026-09-20",
+        "sourceUrl": "https://invidis.com/news/2026/09/e-paper-auo-display-plus-takes-sovereign-signage-mainstream/",
+        "sourceName": "invidis"
       }
     ]
   }
