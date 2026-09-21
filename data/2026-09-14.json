@@ -1,7 +1,7 @@
 {
   "weekId": "2026-09-14",
   "weekLabel": "2026.09.14 ~ 2026.09.20",
-  "searchAnalysis": "**09월 17일(목) 수집:** 이번 주(09.14~09.17) 신규 22건 수집. 이번 주의 최대 변수는 파리에서 열린 **NRF 2026: Retail's Big Show Europe(9/15~17, 파리 엑스포 포르트 드 베르사유)**로, ESL 공급사 발표가 이 기간에 집중됐다. 핵심은 (1) 한쇼 '네뷸러 럭스' 공개 — 실내 광 수확 하이브리드 전원으로 일일 소비전력 46% 절감·100만 라벨 기준 10년간 CO2 202톤 회피, 확보한 전력 여유를 측위 갱신 빈도와 LED 점등 시간에 재투자(9/16), (2) 프라이서 '애비뉴' 실매장 실증 — East of England Co-op 2개점 66개 상품 2주 측정에서 매출 +2.2%, 이미지 적용 +3.8%, 브랜드 로고 적용 +4.8%(9/15), (3) 한쇼·shopreme·Lucky cart 3사 스마트카트 — 리트로핏형을 통합형과 동일 투자 규모로 제시(9/15), (4) 뉴저지 공정가격보호법 발효로 美 최초 ESL 신규 설치 1년 모라토리엄, 월마트가 노스버건 매장을 공개하며 정면 반박(Fortune/Retail Brew, 9/15), (5) 웨이트로즈(SOLUM ESL 고객)가 Trust Retail 실시간 재고 시스템을 2031년까지 연장하고 크리스마스 전 125개점·2027년 3월 전점 확대(9/16). 리테일 미디어 쪽에서는 사이린 독일망의 프로그래매틱 개방(약 1,000개 스크린·RFID 기반 구매 어트리뷰션), 웨스트필드 라이즈의 drive-to-store 측정(노출군 방문확률 +27%), OAAA 조사(매장 내 광고 영향력 64%로 최고)가 같은 주에 나와 '측정 가능한 인스토어 미디어'로의 전환이 뚜렷했다. | [커버리지] Hanshow 뉴스룸=직접 fetch 성공·범위 내 2건(9/15 스마트카트, 9/16 네뷸러 럭스) / Pricer=ESM·FMCG·365Retail 미러로 확인·1건 / Vusion=뉴스룸 및 dm 키노트 확인, 범위 내 신규 dated 릴리스 없음(dm-Vusion 키노트는 1월 NRF 뉴욕 건) / SOLUM=뉴스룸 최신이 NRF 뉴욕(1월)·EuroShop(2월), 범위 내 신규 없음 / ZKONG·E Ink=범위 내 신규 없음 / DIGI NEXA=NRF 유럽 출품하나 발표일 2026-06-23로 범위 외 / ESM Magazine=technology 인덱스 직접 fetch·5건 채택 / RetailDetail EU=직접 fetch·1건 채택 / RTIH=site: 날짜 열거 + 서브에이전트 RSS 순회로 9/14~9/17 슬러그 전수 확인·4건 채택 / invidis=3건 채택 / The Shelby Report·Supply Chain Dive·Retail Customer Experience·PR Newswire·Fortune·Grocery Gazette=각 1~2건 채택 / Retail Dive·Grocery Dive·Supermarket News·The Grocer·Progressive Grocer·Chain Store Age·Digitimes=범위 내 ESL·RMN·재고관리 신규 기사 없음. | [G:provenance] SKILL.md에 등재된 URL도 web_fetch provenance set에 들어오지 않아(Read로 읽은 문서는 provenance에 편입되지 않음) 뉴스룸·Google News RSS·사이트맵 직접 순회가 전량 차단됨. G-2(WebSearch 언락) + G-3(연쇄 fetch)로 우회해 Hanshow·ESM·RetailDetail·invidis·PRNewswire를 확인 완료. | [C:JS렌더링] RTIH 개별 기사(/home/2026/9/15/...)는 WebFetch가 빈 본문 반환(SPA) → 서브에이전트 RSS 순회 + WebSearch 스니펫 교차로 대체 확인. 브라우저 페인은 사이트 승인 필요로 미사용(비대화형 실행). | [감사] 범위 내 미수집 확인: 알캄포 3.8M유로·84개점 56만 ESL(ISN 9/3, Xataka 9/7)은 08-31 주차 기수집 사안, UFCW의 ESL 20만 일자리 위협 보고서(Retail Gazette 9/10)·아스다 익스프레스 517개점(9/2)·Morrisons-Instaleap(ESM 9/12, 09-07 주차 기수집)·크로거-Simbe Tally 콜럼버스 60개점(원문 7/22 재신디케이션)·Hanshow 스토어 디지털 트윈 해설(원문 8/24)은 모두 범위 외 또는 기수집으로 제외. 아마존 프라임 빅딜데이(9/15)·앵테르마르셰 익스프레스 브뤼셀(9/15)·Bol AI 어시스턴트(9/15)·Sionic CTO 선임(9/13)·Do it Best 이노베이션랩(9/16)은 스코프 외로 제외. | [09/21(월) 보완 수집] 09/17~09/20(목~일) 기간 재점검으로 4건 추가: 알버트슨스 미디어 콜렉티브·라이브램프 인크리멘털 어트리뷰션(9/18, majorCompanies), E Ink→뉴카퍼 전도성 구리 잉크 투자(9/18, technology), 아조마-던험비 벤처스 에이전틱 커머스 투자(9/17, technology), AUO 디스플레이 플러스 주권형 E-Paper 사이니지(9/20, technology). [커버리지] RTIH=site: 열거+주간 롤업 2건 교차확인, invidis=직접 확인, Grocery Dive/Retail Dive/ESM/The Grocer/Digitimes/공급사 뉴스룸(SOLUM·Hanshow·Pricer·Vusion·ZKONG)=WebFetch가 PROVENANCE_REQUIRED로 차단돼 WebSearch 대체 경로로 확인, 범위 내 ESL 신규 기사 없음. [감사] 범위 내 미수집 0건 확인(Circle K-비주얼 아트 프레임워크는 9/16 기수집분으로 중복 제외).",
+  "searchAnalysis": "**09월 17일(목) 수집:** 이번 주(09.14~09.17) 신규 22건 수집. 이번 주의 최대 변수는 파리에서 열린 **NRF 2026: Retail's Big Show Europe(9/15~17, 파리 엑스포 포르트 드 베르사유)**로, ESL 공급사 발표가 이 기간에 집중됐다. 핵심은 (1) 한쇼 '네뷸러 럭스' 공개 — 실내 광 수확 하이브리드 전원으로 일일 소비전력 46% 절감·100만 라벨 기준 10년간 CO2 202톤 회피, 확보한 전력 여유를 측위 갱신 빈도와 LED 점등 시간에 재투자(9/16), (2) 프라이서 '애비뉴' 실매장 실증 — East of England Co-op 2개점 66개 상품 2주 측정에서 매출 +2.2%, 이미지 적용 +3.8%, 브랜드 로고 적용 +4.8%(9/15), (3) 한쇼·shopreme·Lucky cart 3사 스마트카트 — 리트로핏형을 통합형과 동일 투자 규모로 제시(9/15), (4) 뉴저지 공정가격보호법 발효로 美 최초 ESL 신규 설치 1년 모라토리엄, 월마트가 노스버건 매장을 공개하며 정면 반박(Fortune/Retail Brew, 9/15), (5) 웨이트로즈(SOLUM ESL 고객)가 Trust Retail 실시간 재고 시스템을 2031년까지 연장하고 크리스마스 전 125개점·2027년 3월 전점 확대(9/16). 리테일 미디어 쪽에서는 사이린 독일망의 프로그래매틱 개방(약 1,000개 스크린·RFID 기반 구매 어트리뷰션), 웨스트필드 라이즈의 drive-to-store 측정(노출군 방문확률 +27%), OAAA 조사(매장 내 광고 영향력 64%로 최고)가 같은 주에 나와 '측정 가능한 인스토어 미디어'로의 전환이 뚜렷했다. | [커버리지] Hanshow 뉴스룸=직접 fetch 성공·범위 내 2건(9/15 스마트카트, 9/16 네뷸러 럭스) / Pricer=ESM·FMCG·365Retail 미러로 확인·1건 / Vusion=뉴스룸 및 dm 키노트 확인, 범위 내 신규 dated 릴리스 없음(dm-Vusion 키노트는 1월 NRF 뉴욕 건) / SOLUM=뉴스룸 최신이 NRF 뉴욕(1월)·EuroShop(2월), 범위 내 신규 없음 / ZKONG·E Ink=범위 내 신규 없음 / DIGI NEXA=NRF 유럽 출품하나 발표일 2026-06-23로 범위 외 / ESM Magazine=technology 인덱스 직접 fetch·5건 채택 / RetailDetail EU=직접 fetch·1건 채택 / RTIH=site: 날짜 열거 + 서브에이전트 RSS 순회로 9/14~9/17 슬러그 전수 확인·4건 채택 / invidis=3건 채택 / The Shelby Report·Supply Chain Dive·Retail Customer Experience·PR Newswire·Fortune·Grocery Gazette=각 1~2건 채택 / Retail Dive·Grocery Dive·Supermarket News·The Grocer·Progressive Grocer·Chain Store Age·Digitimes=범위 내 ESL·RMN·재고관리 신규 기사 없음. | [G:provenance] SKILL.md에 등재된 URL도 web_fetch provenance set에 들어오지 않아(Read로 읽은 문서는 provenance에 편입되지 않음) 뉴스룸·Google News RSS·사이트맵 직접 순회가 전량 차단됨. G-2(WebSearch 언락) + G-3(연쇄 fetch)로 우회해 Hanshow·ESM·RetailDetail·invidis·PRNewswire를 확인 완료. | [C:JS렌더링] RTIH 개별 기사(/home/2026/9/15/...)는 WebFetch가 빈 본문 반환(SPA) → 서브에이전트 RSS 순회 + WebSearch 스니펫 교차로 대체 확인. 브라우저 페인은 사이트 승인 필요로 미사용(비대화형 실행). | [감사] 범위 내 미수집 확인: 알캄포 3.8M유로·84개점 56만 ESL(ISN 9/3, Xataka 9/7)은 08-31 주차 기수집 사안, UFCW의 ESL 20만 일자리 위협 보고서(Retail Gazette 9/10)·아스다 익스프레스 517개점(9/2)·Morrisons-Instaleap(ESM 9/12, 09-07 주차 기수집)·크로거-Simbe Tally 콜럼버스 60개점(원문 7/22 재신디케이션)·Hanshow 스토어 디지털 트윈 해설(원문 8/24)은 모두 범위 외 또는 기수집으로 제외. 아마존 프라임 빅딜데이(9/15)·앵테르마르셰 익스프레스 브뤼셀(9/15)·Bol AI 어시스턴트(9/15)·Sionic CTO 선임(9/13)·Do it Best 이노베이션랩(9/16)은 스코프 외로 제외. | [09/21(월) 보완 수집] 09/17~09/20(목~일) 기간 재점검으로 4건 추가: 알버트슨스 미디어 콜렉티브·라이브램프 인크리멘털 어트리뷰션(9/18, majorCompanies), E Ink→뉴카퍼 전도성 구리 잉크 투자(9/18, technology), 아조마-던험비 벤처스 에이전틱 커머스 투자(9/17, technology), AUO 디스플레이 플러스 주권형 E-Paper 사이니지(9/20, technology). [커버리지] RTIH=site: 열거+주간 롤업 2건 교차확인, invidis=직접 확인, Grocery Dive/Retail Dive/ESM/The Grocer/Digitimes/공급사 뉴스룸(SOLUM·Hanshow·Pricer·Vusion·ZKONG)=WebFetch가 PROVENANCE_REQUIRED로 차단돼 WebSearch 대체 경로로 확인, 범위 내 ESL 신규 기사 없음. [감사] 범위 내 미수집 0건 확인(Circle K-비주얼 아트 프레임워크는 9/16 기수집분으로 중복 제외). | [09/21(월) 라이브 세션 재실행] 사용자 실시간 세션에서 뉴스룸 직접 순회 재시도 시 PROVENANCE 승인 게이트가 해제되어 RTIH·ESM·Retail Dive·Grocery Dive·SOLUM·Hanshow·Pricer·Vusion·E Ink·Digitimes·Chain Store Age·Supermarket News·RetailDetail EU·ZKONG 뉴스룸을 직접 WebFetch로 재순회, 5건 추가 확보: Simbe Tally 3,000대 커밋 함대(9/20 URL, technology), VILLOID-StrongPoint 세계 최대 Pio 자동창고(9/20, technology), Amazon Just Walk Out 헬스케어 확장(9/20, technology), Snappy Technologies AI 플랫폼 베타(9/20, technology), Acosta Group \"AI가 쇼핑 채널화\" 조사(9/18, industryTrends). Macy's AI 재고보충·Pricer NRF Europe 기사는 기존 09-14 수집분과 중복 확인돼 제외. SOLUM 뉴스룸은 동적 로딩으로 목록 미노출, E Ink 블로그·Vusion·Hanshow·Pricer·ZKONG·Digitimes·The Grocer(405)·Progressive Grocer는 범위 내 ESL 신규 없음 확인.",
   "sections": {
     "industryTrends": [
       {
@@ -30,6 +30,15 @@
         "pubDate": "2026-09-16",
         "sourceUrl": "https://invidis.com/news/2026/09/oaaa-analysis-retail-ooh-prompts-action-from-86-of-consumers/",
         "sourceName": "invidis"
+      },
+      {
+        "title": "액코스타 그룹 조사 \"AI, 주류 쇼핑 채널로 부상\"…쇼퍼 34% AI로 쇼핑, Z세대·밀레니얼은 74%",
+        "summary": "• 액코스타 그룹의 AI 쇼퍼 조사에 따르면 전체 쇼퍼의 34%가 AI 도구로 쇼핑을 하고 있으며, Z세대·밀레니얼 쇼퍼의 74%가 생성형 AI를 활용한다고 밝혔다(9/18 보도).\n• 베이비부머의 AI 활용률도 45%로 빠르게 늘고 있고, 쇼퍼의 25%는 구글 제미나이를 온라인 상품 검색에 상시 활용한다고 답했다. Z세대 AI 이용자의 55%는 매장 안에서도 AI를 함께 사용한다.\n• AI 이용 쇼퍼의 60%는 AI를 다른 정보원만큼 신뢰한다고 답했고, Z세대·밀레니얼의 50%는 최근 3개월 내 구매 결정에 AI가 영향을 미쳤다고 응답했다. 다만 AI 이용자의 22%(밀레니얼은 35%)만이 자율 에이전트의 구매 대행을 신뢰한다고 답해, 완전 자동화 구매에 대한 신뢰는 아직 제한적이다.\n• 데이터 저장·보호에 대한 프라이버시 우려는 쇼퍼의 48%가 표명했다. 액코스타 그룹의 커넥티드 커머스 사장 존 캐롤은 \"브랜드는 AI가 상품을 이해·추천·비교·선택하도록 만드는 새로운 경로를 구축해야 성공할 수 있다\"고 말했다.",
+        "implications": "[🔵 트렌드] AI가 매장 밖에서부터 이미 주류 쇼핑 채널로 자리잡고 있으며, 특히 Z세대의 55%는 매장 안에서도 AI를 함께 쓴다는 점이 눈에 띈다. [⚡ 액션] SOLUM은 ESL·매장 사이니지가 AI 쇼핑 에이전트·앱과 연동되는 '온·오프라인 통합 발견 경험' 시나리오를 장기 로드맵에 반영할 필요가 있다.",
+        "imageUrl": "https://eu-images.contentstack.com/v3/assets/blt58a1f8f560a1ab0e/blt79fd725291e78869/6aad6f91223abeaab3c9972d/A_hand_holds_up_a_smartphone_in_the_produce_section_of_a_grocery_store.webp",
+        "pubDate": "2026-09-18",
+        "sourceUrl": "https://www.supermarketnews.com/grocery-technology/ai-is-becoming-a-shopping-channel-report",
+        "sourceName": "Supermarket News"
       }
     ],
     "customerAdoption": {
@@ -249,6 +258,42 @@
         "pubDate": "2026-09-20",
         "sourceUrl": "https://invidis.com/news/2026/09/e-paper-auo-display-plus-takes-sovereign-signage-mainstream/",
         "sourceName": "invidis"
+      },
+      {
+        "title": "심비 로보틱스, '탤리' 3,000대 돌파…상업적으로 계약된 셸프 인텔리전스 함대 최대 규모 주장",
+        "summary": "• 심비 로보틱스가 자사 셸프 스캐닝 로봇 '탤리(Tally)'의 상업 계약 대수가 3,000대를 넘어섰다며, 셸프 인텔리전스 기술 분야에서 상업적으로 가장 큰 규모의 함대를 확보했다고 밝혔다(9/20).\n• 전 세계 75개 이상 유통 브랜드에 배치돼 있으며, BJ's 홀세일 클럽·크로거·SPAR 등이 고객사로 거론됐다. 매장 관리자의 90% 이상이 탤리가 업무에 도움이 된다고 응답했다고 전했다.\n• 심비는 자율 셸프 디지털화에서 출발해 로봇·컴퓨터 비전·RFID·센싱을 결합한 종합 매장 운영 플랫폼으로 진화하고 있다고 강조했으며, 공공장소 운용 로봇으로는 유일하게 UL 3300 인증을 획득한 점도 재확인했다.\n• 심비 공동창업자 겸 CEO 브래드 보골레아는 \"10년간 매장에서 자율주행을 운영해온 경험이 로봇을 넘어선 사고를 가능케 했다\"고 밝혔고, 이클립스 벤처스의 에이단 매디건-커티스는 \"글로벌 규모로 실제 임팩트를 내는 몇 안 되는 기업\"이라고 평가했다.",
+        "implications": "[🔵 트렌드] 재고·온셸프 가용성 로봇 시장이 '실증'에서 '대규모 상업 계약'으로 본격 전환되는 신호다. [⚡ 액션] SOLUM의 ESL·재고관리 솔루션 로드맵에서도 심비 같은 셸프 스캐닝 로봇과의 데이터 연동(재고 정확도·결품 감지)을 통합 제안하는 방안을 검토할 만하다.",
+        "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/583a0f79-0523-4da2-946f-8ecb3a85fb06/Tally+-+Meat.jpg",
+        "pubDate": "2026-09-20",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/20/simbe-lays-claim-to-largest-commercially-committed-fleet-of-shelf-intelligence-technology",
+        "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "노르웨이 패션 리테일러 빌로이드, 스트롱포인트와 계약…'세계 최대 규모' Pio 자동창고 구축",
+        "summary": "• 노르웨이 온라인 패션 플랫폼 빌로이드가 스트롱포인트와 계약을 맺고 오토스토어(AutoStore) 기반 자동화 솔루션 'Pio' 물류센터를 확장 이전한다고 밝혔다(9/20). 프로젝트 규모는 약 1,700만 노르웨이 크로네이며 2027년 2분기 완공을 목표로 한다.\n• 기존 Pio 시스템 규모를 두 배로 늘리는 방식으로, 완공 시 '세계에서 가장 큰 오토스토어 Pio 설비'가 될 것이라고 소개됐다.\n• 스트롱포인트 CEO 야콥 트베라보크는 \"빌로이드 같은 유통사들은 자사의 풀필먼트 운영을 이해하는 파트너를 찾고 있다\"고 말했고, 빌로이드 CEO 겸 창업자 지넷 디레 크비스빅은 \"당일배송 수준의 세계적인 물류가 강력하고 수익성 있는 성장의 핵심 동력이었다\"고 밝혔다.",
+        "implications": "[🔵 인접 트렌드] ESL과 직접 연관은 낮지만, 오토스토어형 자동창고가 '세계 최대'를 다투는 규모 경쟁에 들어섰다는 점에서 매장-물류센터 전반의 자동화 투자가 지속 확대되고 있음을 보여주는 사례다.",
+        "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/590ef147e6f2e1fda30e84c5/6aaf5d0e40aba04152f28fe9/1789965895454/VILLOID.jpg?format=1500w",
+        "pubDate": "2026-09-20",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/20/norwegian-fashion-retailer-villoid-inks-deal-with-strongpoint-for-worlds-largest-pio-installation",
+        "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "아마존 '저스트 워크 아웃', 헬스케어 매장으로 확장…메모리얼 허먼 매장 오픈",
+        "summary": "• 미국 메모리얼 허먼 더 우들랜즈 메디컬 센터에 아마존의 계산대 없는 매장 기술 '저스트 워크 아웃'을 적용한 매장이 새로 문을 열었다(9/20). 프릭션리스(frictionless) 리테일이 전통 유통을 넘어 헬스케어 영역으로 확장되는 흐름을 보여준다.\n• 저스트 워크 아웃 담당 아마존 시니어 테크 비즈니스 개발 매니저 웨스 문은 \"전 세계 400개 이상 매장을 넘어섰다\"며 \"고객 경험 최적화에 집중하고 있다\"고 밝혔다.\n• 프로젝트 파트너사 갤러리의 개럿 부크홀츠는 \"이런 프로젝트는 강력한 파트너십과 협업, 상당한 조율이 필요하다\"고 말했다.\n• 병원·의료시설이라는 새로운 채널에서의 도입은 저스트 워크 아웃 기술이 전통 소매를 넘어 다양한 공간(교통·스포츠 경기장·헬스케어 등)으로 확장 적용되고 있음을 재확인시킨다.",
+        "implications": "[🔵 트렌드] 계산대 없는 매장 기술의 적용처가 순수 소매를 넘어 헬스케어·시설 운영 전반으로 확장되고 있다. ESL·디지털 사이니지 역시 병원 매점·편의시설 등 비전통 채널로의 확장 가능성을 검토할 만한 인접 사례다.",
+        "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/590ef147e6f2e1fda30e84c5/6aaf56f9affc65662a484926/1789965228290/Amazon+Just+Walk+Out.jpeg?format=1500w",
+        "pubDate": "2026-09-20",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/20/another-checkout-free-store-go-live-for-amazon-as-just-walk-out-takes-off-in-healthcare-space",
+        "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "스내피 테크놀로지스, 편의점 유통사向 AI 어시스턴트 '스내피 AI' 공개…10월 베타 시작",
+        "summary": "• 스내피 그룹 산하 스내피 테크놀로지스가 편의점 유통사의 매출·상품 성과 분석과 의사결정을 돕는 AI 어시스턴트 '스내피 AI'를 공개했다(9/20). 기존 '스내피 쇼퍼' 리테일러 관리 대시보드에 통합되는 모바일 최적화 플랫폼이다.\n• 매출 실적·베스트셀러 상품에 대한 질의응답과 트렌드·기회 파악 기능을 제공하며, 영업시간 변경·가격 조정 같은 반복 운영 업무를 자동화해 기존에 수 시간이 걸리던 작업을 줄인다.\n• 10월부터 다양한 매장 유형을 대표하는 약 10곳의 리테일러를 대상으로 무료 베타 테스트를 시작하며, 향후 정식 요금제는 미정이다.\n• 스내피 그룹 CTO 앨런 리드는 \"리테일러에게는 어디에 시간과 관심을 집중해야 할지 알려주는 명확하고 유용한 정보가 필요하다\"며 이를 위해 스내피 AI를 만들고 있다고 밝혔다.",
+        "implications": "[🔵 인접 트렌드] 편의점·소형 유통 세그먼트에서도 AI 어시스턴트형 매장 운영 도구가 확산되고 있다. 소규모 유통사 대상 ESL·AI 결합 제안 시 '운영 자동화'를 핵심 가치로 내세우는 전략에 참고할 만하다.",
+        "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/590ef147e6f2e1fda30e84c5/6aaf59cfba7cf87864a31f47/1789965024783/tempImage1ONklb.jpg?format=1500w",
+        "pubDate": "2026-09-20",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/20/snappy-technologies-unveils-ai-technology-powered-platform-for-retailers-and-preps-beta",
+        "sourceName": "Retail Technology Innovation Hub"
       }
     ]
   }
