@@ -1,0 +1,124 @@
+{
+  "weekId": "2026-09-21",
+  "weekLabel": "2026.09.21 ~ 2026.09.27",
+  "searchAnalysis": "**09월 24일(목) 수집:** 이번 주(09.21~09.24) 신규 12건 수집, 과거 주차 소급 3건(09-14 주차 1건, 09-07 주차 2건). 이번 주의 최대 변수는 라스베이거스 **그로서리샵 2026(9/22~24)**이었다. ESL 공급사 쪽에서는 (1) VusionGroup 상반기 실적 — 유기적 매출 +30%, EBITDA 마진 19.1%, VAS 반복매출 +70%↑, 연간 가이던스 상향·하반기 수주 10억 유로 예상, 셸프 AI 카메라 약 20만 대, 2027년 컬러 전자종이 확대, 다만 '월마트 이후' 공백 우려(9/21), (2) 프라이서·솔루엠의 그로서리샵 동시 출격 — 프라이서는 애비뉴 매출 +4.8% 실증 데이터를 北美에 재투입, 솔루엠은 ESL·EPS·디지털 사이니지 통합 시연(9/22), (3) 한쇼의 '스토어 디지털 트윈'(NexFamily+xPilot) 로드맵 공개(9/21), (4) 솔루엠 매장 통합관리 플랫폼 전환 보도(서울신문, 9/23)가 나왔다. 규제 측면에서는 시애틀이 美 도시 최초로 식료품 알고리즘 가격 제한 조례를 7대2로 가결했고(디지털 셸프 태그 우려 명시), 포춘이 월마트 가격 특허 2건과 DSL 전사 확대를 엮어 감시가격 논란을 재점화했다(9/22). 리테일 테크 쪽은 인스타카트의 쇼퍼 폰·케이퍼 카트 기반 매대 가시화 서비스, 크로거의 3단계 AI 전략, 이마케터 RMN 조사('증분 확신' 31%), Thri5 시드 투자, 베스트바이 캐나다-렐렉스가 수집됐다. | [커버리지] 메인 에이전트 직접 fetch: Hanshow 뉴스룸=방문·1건(9/21 블로그, 최신 PR 9/16) / Pricer=방문·1건(9/22) / SOLUM=뉴스룸 provenance 차단→PR Newswire 미러로 1건 / Vusion=뉴스룸 provenance 차단→Investing.com·Actusnews로 H1 실적 확인·1건(9/23 반기보고서 공시는 절차성이라 제외) / ZKONG·E Ink=WebSearch상 범위 내 신규 없음 / RTIH=site: 날짜 열거 + 기사 페이지 연쇄 fetch로 9/21~9/23 슬러그 전수 확인·2건 채택(인사·BNPL·파셀락커 등 비관련 제외) / Retail Optimiser=방문, 최신 9/22(모리슨스 소급 반영) / Supermarket News=방문·1건 + AFL-CIO 소급 / ESM=site: 열거, 범위 내 기술 기사 없음(최신 9/17) / The Shelby Report·Fortune·The Stranger·PR Newswire·서울신문=서브에이전트 키워드 팬아웃에서 채택. [STALE:Grocery Dive 토픽면 최신 기사 9/11(스폰서 9/21)→사이트맵 대신 SN·Shelby 교차 확인] [STALE:Progressive Grocer·Chain Store Age 토픽 검색 결과 구버전→키워드 검색으로 대체] [G-provenance] SKILL 등록 뉴스룸 URL이 Read 경유라 provenance 미편입→WebSearch 언락 후 fetch, 인앱 브라우저는 사이트 승인 필요로 미사용. [감사] 뉴스룸 site: 열거와 서브에이전트 2개(공급사·지역 키워드 / RMN·재고·로봇·가격규제) 결과를 대조해 범위 내 미수집 ESL 기사 0건 확인, 과거 미수집 3건 소급(모리슨스 ESL 점등 9/18, AFL-CIO 보고서 9/10, 감시가격 주별 트래커 9/11).",
+  "sections": {
+    "industryTrends": [
+      {
+        "title": "월마트 가격 특허 2건에 '감시가격' 우려 확산…디지털 셸프 라벨 전사 확대와 맞물려 논란",
+        "summary": "• 포춘은 월마트가 받은 미국 특허 2건을 두고 감시가격(surveillance pricing) 논란이 일고 있다고 보도했다. 하나는 예측 수요에 따라 온라인 마크다운을 자동 조정하는 특허(US12524776B2, 2026년 1월), 다른 하나는 과거 구매 이력으로 수요를 예측해 품목 가격을 권고하는 특허(US12572954B2, 3월)다.\n• 3월 특허 명세서에는 결제수단·고객 ID를 포함할 수 있는 구매 기록이 언급된다. 다만 미래프라이버시포럼(FPF)·ACLU 전문가들은 두 특허 모두 쇼퍼 개인별이 아닌 '품목 단위' 가격 책정으로 해석했다.\n• 기사는 이를 월마트의 디지털 셸프 라벨 확대와 연결했다. 3월 기준 미국 약 2,300개 매장에 도입됐고, 향후 1년 내 전 매장으로 확대될 예정이다.\n• 월마트는 가격 변경을 매장 직원이 승인하며 주로 영업시간 외에 반영하고, 매장 내 모든 고객이 같은 가격을 보며, 라벨은 고객 데이터를 수집하지 않는다고 반박했다. FTC는 개인 데이터를 가격 책정에 쓸 때의 고지 의무를 검토 중이다.",
+        "implications": "[🔴 위협] 'ESL=감시가격 인프라' 프레임이 특허라는 새 소재로 다시 확산되고 있다. 뉴저지 ESL 모라토리엄, 시애틀 조례, AFL-CIO 보고서에 이어 여론 압력이 누적돼 美 신규 고객의 의사결정 지연 요인이 될 수 있다. [⚡ 액션] 솔루엠 북미 영업 자료에 '가격 변경 승인 워크플로·감사 로그·개인정보 비수집' 설계를 명시한 컴플라이언스 백서를 포함하고, FMI 등 업계 단체의 대응 논리와 보조를 맞출 필요가 있다.",
+        "imageUrl": "https://fortune.com/img-assets/wp-content/uploads/2026/09/GettyImages-2276082150-e1790091433544.jpg?resize=1200,600",
+        "pubDate": "2026-09-22",
+        "sourceUrl": "https://fortune.com/2026/09/22/walmart-pricing-patents-surveillance-pricing-shoppers/",
+        "sourceName": "Fortune"
+      },
+      {
+        "title": "시애틀 시의회, 식료품 '알고리즘 가격' 제한 조례 7대2 가결…美 도시 최초, 디지털 셸프 태그 우려 명시",
+        "summary": "• 시애틀 시의회가 9월 22일 '공정·투명 가격(Fair and Transparent Pricing)' 조례를 7대 2로 가결했다. 20개 이상 매장을 운영하는 식료품점이 개인 데이터를 활용해 쇼퍼별로 가격을 매기는 행위를 금지하는 미국 도시 최초의 조례다.\n• 논의 과정에서 매대 앞 쇼퍼에 따라 가격이 바뀔 수 있는 디지털 셸프 태그가 구체적인 우려 사례로 거론됐다.\n• 소비자의 직접 소송(사적 소권)을 허용하고, 시니어·재향군인 할인은 유지했다. 알고리즘 기반 할인을 허용하자는 수정안은 부결됐다.\n• 시장 서명을 거쳐 2027년 9월 1일 시행될 예정이다. 컨슈머리포트는 알고리즘 가격 인상 폭이 최대 23%에 이른다는 조사를 내놓은 바 있다.",
+        "implications": "[🔴 위협] 주(州) 단위(메릴랜드·코네티컷·뉴저지)에서 시 단위로 규제가 내려오고 있다. 이번 조례는 ESL 자체가 아니라 '개인 데이터 기반 가격'을 막는 구조지만, 입법 과정에서 ESL이 대표적 위험 기기로 명시됐다는 점이 부담이다. [🟢 기회] 규제가 '개인화 가격 금지'에 초점을 맞출수록 '모두에게 동일 가격 + 변경 이력 감사' 기능을 증명하는 ESL 공급사가 오히려 신뢰를 얻는다. [⚡ 액션] 가격 변경 감사 로그·동일가격 보증 리포트를 SSP 표준 기능으로 패키징해 북미 규제 대응 셀링포인트로 활용할 필요가 있다.",
+        "imageUrl": "https://i0.wp.com/www.thestranger.com/wp-content/uploads/2026/09/citycouncil-092226-photo-courtesy-of-seattle-channel-scaled.jpg?fit=2560%2C1760&ssl=1",
+        "pubDate": "2026-09-22",
+        "sourceUrl": "https://www.thestranger.com/news/seattle-votes-7-2-to-restrict-algorithmic-grocery-pricing/",
+        "sourceName": "The Stranger"
+      }
+    ],
+    "customerAdoption": {},
+    "majorCompanies": [
+      {
+        "title": "크로거, 그로서리샵서 AI 전략 공개…'보조→증강→자율' 3단계, 전 배너 AI 쇼핑 어시스턴트·40만 명 AI 교육",
+        "summary": "• 크로거 야엘 코셋 최고디지털책임자(CDO)가 그로서리샵 2026 개막 세션에서 AI 적용 단계를 '보조(assisted)→증강(augmented)→자율(autonomous)'의 3단계로 제시했다.\n• 수요 예측·운영·개인화에는 자체 모델을, 그 밖에는 외부 프런티어 모델을 결합해 쓴다. 현장 직원이 하루 수십 건씩 받는 알림을 걸러주는 에이전트를 개발 중이며, 40만 명 이상의 직원에게 AI 교육을 확대하고 있다.\n• AI 쇼핑 어시스턴트는 올여름 전 배너에 도입됐다. 코셋 CDO는 AI 에이전트가 고객 목표에 맞춰 계획·구매·배송까지 맡는 '관리형 서비스(managed service)'로 식료품 쇼핑이 진화할 것으로 전망했다. 크로거의 하루 고객은 1,100만 명 이상이다.\n• 그는 \"모든 곳을 자율화하는 것이 목표가 아니다\"라며, AI 수준은 위험도와 반복성에 따라 정해야 한다고 말했다.",
+        "implications": "[🔵 트렌드] 美 2위 식품유통사가 AI를 '매대 뒤(behind the shelf)' 운영과 현장 직원 작업 관리에 집중 투입하고 있다. 이 경우 ESL은 AI 에이전트가 내린 작업·가격 결정이 매장에서 실행되는 접점이 된다. [🟢 기회] '알림 과부하 해소 에이전트'는 ESL LED 점등·작업 지시와 궁합이 좋은 영역이다. [⚡ 액션] 크로거(현재 다른 공급사 ESL 도입 매장 보유)를 대상으로 AI 작업 에이전트와 ESL 실행을 연동하는 PoC 제안을 준비해 볼 만하다.",
+        "imageUrl": "https://theshelbyreport.com/wp-content/uploads/2026/09/Kroger-2026-Uniforms-02-e1790172595144.jpg",
+        "pubDate": "2026-09-22",
+        "sourceUrl": "https://www.prnewswire.com/news-releases/kroger-details-ai-strategy-built-on-decades-retail-expertise-at-groceryshop-2026-302886589.html",
+        "sourceName": "PR Newswire (Kroger) / The Shelby Report"
+      },
+      {
+        "title": "베스트바이 캐나다, 렐렉스 도입해 300여 개 매장·2개 물류센터 수요예측·자동보충 고도화…210만 SKU 대상",
+        "summary": "• 베스트바이 캐나다가 렐렉스 솔루션즈(RELEX Solutions)를 선정해 매장·물류센터 전반의 수요 예측과 재고 보충을 최적화한다고 발표했다.\n• 밴쿠버에 본사를 둔 베스트바이 캐나다는 300개 이상 매장과 2개 물류센터를 운영하며, 약 210만 개 SKU를 관리한다.\n• 공급망 제약을 반영한 보충 계획, 채널 간 재고 최적화, 대규모 운영 지원, 핵심 계획 업무 자동화가 선정 이유로 제시됐다.\n• 베스트바이 캐나다는 6월 페리온(Perion)과 매장 DOOH 리테일 미디어 네트워크를 구축하는 등 매장 디지털화를 병행하고 있다.",
+        "implications": "[🔵 트렌드] 가전 리테일에서도 AI 기반 수요예측·자동보충으로 매장 재고 정확도를 높이는 투자가 이어지고 있다. 재고 정확도가 확보되면 옴니채널 가격 동기화와 매장 픽업 지원을 위한 ESL 도입 명분이 커진다. [🟢 기회] 솔루엠은 호주 빙리(Bing Lee) 등 가전 리테일 ESL 레퍼런스를 갖고 있다. 북미 가전 채널(베스트바이 캐나다 등)에 렐렉스 연동형 가격·재고 동기화 제안을 검토할 만하다.",
+        "imageUrl": "https://images.squarespace-cdn.com/content/v1/590eeff5b8a79b2147a783be/8e2076d2-5eb1-46c4-b06d-5fe4ba0ceac5/Best+Buy.jpg",
+        "pubDate": "2026-09-22",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/22/best-buy-canada-taps-relex-solutions-tech-for-forecasting-and-replenishment-push-across-stores-and-dcs",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ],
+    "solutionProviders": [
+      {
+        "title": "솔루엠, 그로서리샵 2026서 ESL·전자종이 사이니지·디지털 사이니지 통합 시연…美 식품유통 공략 강화",
+        "summary": "• 솔루엠(SOLUM)이 9월 22~24일 라스베이거스 만달레이 베이에서 열린 그로서리샵(Groceryshop) 2026에 참가해 1409번 부스에서 라이브 데모와 비즈니스 상담을 진행한다고 발표했다.\n• 전시 품목은 전자가격표시기(ESL), 전자종이 사이니지(EPS), 디지털 사이니지, 스마트 스토어 운영 솔루션, 리테일 IoT 기반 매장관리 솔루션 5개 라인이다.\n• 팀 맥크래컨 솔루엠 아메리카 CRO는 \"리테일러가 운영 효율과 고객 경험을 동시에 높이려 하면서 디지털 전환의 중요성이 커지고 있다\"고 밝혔다.\n• 그로서리샵은 식료품·대형마트·편의점·약국·CPG·리테일테크 기업이 모이는 북미 최대 '일상 리테일' 행사로, 같은 행사에 프라이서도 1033번 부스로 참가했다.",
+        "implications": "[🔵 트렌드] 같은 주 같은 전시장에서 프라이서는 '애비뉴 매출 +4.8%'라는 정량 실증 데이터를, 솔루엠은 ESL·EPS·디지털 사이니지의 제품 폭을 내세웠다. 美 식품유통 바이어의 평가 축이 '라벨 사양'에서 '매장 성과 증명'으로 옮겨가는 흐름이 분명하다. [⚡ 액션] 북미 리드 전환을 위해 (1) 웨이트로즈·호주 딜 등 기존 고객의 운영 KPI(가격 변경 시간, 결품 개선, 인건비 절감)를 1장짜리 케이스로 정리해 부스 후속 미팅에 투입하고, (2) EPS·디지털 사이니지를 '인스토어 리테일 미디어' 패키지로 묶은 제안을 준비할 필요가 있다.",
+        "imageUrl": "",
+        "pubDate": "2026-09-22",
+        "sourceUrl": "https://www.prnewswire.com/news-releases/solum-to-showcase-esl-e-paper-signage-digital-signage-and-retail-innovation-solutions-at-groceryshop-2026-302884422.html",
+        "sourceName": "PR Newswire (SOLUM)"
+      },
+      {
+        "title": "프라이서, 그로서리샵 2026서 '셸프 엣지=매출 동력' 제시…애비뉴 실매장 매출 최대 4.8%↑ 데이터 美 첫 공개",
+        "summary": "• 프라이서(Pricer)가 그로서리샵 2026(라스베이거스, 9/22~24) 1033번 부스에서 무배터리 모듈형 셸프 엣지 디스플레이 '프라이서 애비뉴(Pricer Avenue)', 클라우드 플랫폼 '프라이서 플라자', 컬러 ESL 'SmartTAG Color'를 시연한다고 발표했다.\n• East of England Co-op 2개점(Broke Hall·Heath Road)에서 66개 상품을 2주간 측정한 결과 애비뉴 설치 시 매출 평균 +2.2%, 상품 이미지 적용 +3.8%, 브랜드 로고 적용 +4.8%였고, 쇼퍼가 프로모션 피처 베이를 43% 더 빨리 찾았다. 응답자 90%는 애비뉴 디스플레이가 구매 관심을 높인다고 답했다.\n• 애비뉴는 급전 레일에 라벨을 스냅온 방식으로 결합해 여러 디스플레이를 하나의 '플로팅 캔버스'로 쓰며 엔드캡·프로모션 존·브랜드 존에 적용한다.\n• SmartTAG Color는 4·6색 전자종이, 1초 미만 갱신, LED 알림, 최대 10년 배터리를 내세운다. 프라이서 누적 출하는 80여 개국 2만 8,000개 매장, 3억 8,000만 개 이상이다.",
+        "implications": "[🔴 위협] 지난주 NRF 유럽(파리)에서 공개한 애비뉴 실증 데이터를 1주 만에 北美 핵심 식품 전시로 옮겨 재사용했다. '브랜드 로고 +4.8%'는 CPG 광고비를 셸프 엣지로 끌어오는 리테일 미디어 논리와 바로 연결되며, 소베이스 등 캐나다 대형 수주와 맞물려 북미 식품 채널에서 공세가 강해지고 있다. [⚡ 액션] 솔루엠도 레일형·대형 셸프 엣지 디스플레이(EPS·뉴턴 대형)의 매장 A/B 매출 데이터를 확보해야 한다. 브랜드 로고·이미지 적용 효과를 측정할 파일럿 고객을 유럽·북미에 각 1곳 지정할 필요가 있다.",
+        "imageUrl": "",
+        "pubDate": "2026-09-22",
+        "sourceUrl": "https://www.pricer.com/press-release/pricer-to-showcase-the-shelf-edge-as-a-driver-of-grocery-retail-performance-at-groceryshop-2026",
+        "sourceName": "Pricer"
+      },
+      {
+        "title": "VusionGroup 상반기 유기적 매출 30% 성장…연간 가이던스 상향·하반기 수주 10억 유로 예상, '월마트 이후' 공백 우려도",
+        "summary": "• VusionGroup이 9월 21일 2026년 상반기 실적을 발표했다. 유기적 매출은 약 30%(관세·환율 불변 기준 37%) 성장했고, 조정 EBITDA는 38% 늘어 마진이 16.7%에서 19.1%로 개선됐다. 조정 순이익은 81% 증가한 7,700만 유로, 영업 FCF는 50% 늘어난 1억 2,700만 유로다.\n• 반복성 VAS(부가가치 서비스) 매출이 전년 대비 70% 이상 늘었다. 티에리 가두 CEO는 \"순수 ESL 기업에서 풀 플랫폼·리테일 디지털 전환 기업으로의 전환을 완료했다\"며, 매출이 어느 경쟁사보다 2배 이상 크다고 주장했다.\n• 연간 매출 가이던스를 16억~16.8억 유로(불변 기준 17.5억~18.3억 유로, +15~20%)로 상향했다. 하반기 수주 10억 유로 이상, 연말 월마트 EdgeSense 구축 완료, 2027년 풀컬러 전자종이 본격 확대(유럽 선행 후 미국)를 제시했다. 'Vusion 27' 매출 목표 22억 유로와 2027년 VAS 6.5억 유로 목표도 유지했다.\n• 셸프 AI 카메라 설치 기반이 약 20만 대라고 밝혔다. 반면 애널리스트들은 월마트 롤아웃 종료 이후의 매출 공백과 컴퓨터 비전·리테일 미디어·컬러 전자종이의 상용화 속도를 집중 질의했다. 관세·환율 영향은 연간 약 1.5억 유로다.",
+        "implications": "[🔴 위협] 선두 업체가 하드웨어 매출보다 VAS(클라우드·컴퓨터 비전·리테일 미디어)에서 더 빨리 성장하고 있어, ESL 경쟁의 중심이 '라벨 단가'에서 '구독형 매장 플랫폼'으로 옮겨가고 있다. 20만 대 셸프 카메라와 컬러 전자종이 2027년 양산은 솔루엠의 차기 RFP에서 직접 비교될 항목이다. [🟢 기회] 월마트 이후 공백을 메우기 위해 VusionGroup은 신규 지역·신규 고객 확보에 공격적으로 나설 것이다. 그만큼 기존 대형 고객 관리 역량이 분산될 수 있어, 솔루엠은 북미 2~3선 식품 체인과 유럽 중견 유통사를 파고들 틈이 생긴다. [⚡ 액션] 솔루엠 SSP 기반 반복매출(SaaS) 지표를 IR·영업 자료에 별도 KPI로 공개해 '하드웨어 업체' 프레임을 벗어날 필요가 있다.",
+        "imageUrl": "https://content-media.investing.com/news/LYNXMPEDAF0IH_L.jpg",
+        "pubDate": "2026-09-21",
+        "sourceUrl": "https://www.investing.com/news/transcripts/earnings-call-transcript-vusiongroup-posts-strong-h1-2026-growth-shares-slip-93CH-4909476",
+        "sourceName": "Investing.com"
+      },
+      {
+        "title": "한쇼, '스토어 디지털 트윈' 로드맵 공개…ESL·AI 셸프 센싱·로봇·스마트카트 묶은 'NexFamily'와 xPilot으로 매장 폐쇄루프 운영 제시",
+        "summary": "• 한쇼(Hanshow)가 9월 21일 자사 블로그에서 ESL, AI 카메라, IoT 센서를 결합해 매장을 상시 갱신되는 운영 뷰로 만드는 '스토어 디지털 트윈(Store Digital Twin)' 전략을 구체화했다.\n• 구성은 'NexFamily' 5종이다. NexShelf(네뷸러 울트라 ESL + 품목 단위 위치 인텔리전스 + N5 AI 셸프 센싱), NexConnect(스마트카트, 리테일 미디어 활성화 포함), NexMate(점검·청소 로봇), NexOptim(설비·온도·에너지 IoT), NexGrid(태양광·저장·에너지 관리)이며, AI 작업 오케스트레이션 도구 'xPilot'이 인사이트를 우선순위 작업과 결과 검증으로 연결한다.\n• 예시 워크플로는 유제품 매대 빈칸을 AI 센싱이 감지하면 위치 인텔리전스가 해당 SKU를 판별하고, 보충 작업을 매장 팀에 배정한 뒤 해당 ESL을 점등하고, 보충 완료 후 결과를 검증·학습하는 방식이다.\n• 한쇼는 이 접근을 11월 30일~12월 1일 파리 'Tech For Retail'(7.2홀 B31)에서 시연할 계획이다. 9월 8일에는 중국 레인보우(Rainbow) 선전 매장에서 첫 디지털 트윈 매장을 오픈한 바 있다.",
+        "implications": "[🔴 위협] 한쇼가 ESL을 '디지털 트윈의 실행 레이어'로 재정의하며 셸프 센싱·로봇·스마트카트·에너지까지 하나의 제품군으로 묶었다. 경쟁 단위가 '라벨'에서 '매장 운영 OS'로 올라간 만큼, 단품 ESL 입찰에서도 통합 로드맵 유무가 평가 요소가 된다. [⚡ 액션] 솔루엠도 SSP 위에 '감지→작업 배정→ESL 점등→결과 검증'의 폐쇄루프 데모 시나리오(결품·가격 불일치 등)를 표준화해 유럽 전시(Tech For Retail 등)에 맞대응할 필요가 있다. 카메라·로봇은 파트너 연동으로라도 확보해야 한다.",
+        "imageUrl": "https://storage.hanshow.com/production/storage/images/pages/news/blog/202611%20Tech%20for%20Retail/全场景解决方案.png",
+        "pubDate": "2026-09-21",
+        "sourceUrl": "https://www.hanshow.com/en/blog/from-shelf-visibility-to-store-wide-action:-building-a-store-digital-twin",
+        "sourceName": "Hanshow"
+      },
+      {
+        "title": "솔루엠, ESL 공급 기반으로 '매장 통합관리 플랫폼' 확대 추진…하드웨어 넘어 데이터 사업 강화",
+        "summary": "• 서울신문은 솔루엠이 전자가격표시기(ESL) 하드웨어 판매를 넘어, 자체 SSP 플랫폼을 중심으로 매장 내 디바이스와 운영 데이터를 통합 관리하는 플랫폼 사업으로 확장을 추진한다고 보도했다. 50여 개국 ESL 공급 기반을 활용하는 구상이다.\n• 비교 사례로 타깃의 디지털 트윈 '프록시마'(8/13 발표; 신선 63개 SKU 파일럿에서 진열 가용성 +2.5%p, 신규 물류거점 시뮬레이션 정확도 약 98%)와, 결품·반품을 함께 다루는 블루욘더의 에이전틱 AI 플랫폼(8/26)을 들었다.\n• 같은 기사는 킨(Keonn)의 신형 RFID 리더를 소개했다. 9,000개 이상 태그 매장에서 백룸 재고 정확도 90% 도달 시간을 약 1시간에서 8분 미만으로 줄였고, 올해 20여 개 유통사 1,600개 매장 공급을 계획한다.\n• 기사는 플랫폼 사업의 수익모델과 성장 속도는 아직 검증이 필요하다고 지적했다.",
+        "implications": "[🟢 기회] 국내 언론이 '하드웨어 → 매장 데이터 플랫폼' 전환 서사를 다루기 시작했다. 같은 주 VusionGroup이 'VAS 70%+ 성장'으로 플랫폼 전환을 수치로 입증했기 때문에 비교 프레임이 곧바로 만들어질 수 있다. [⚡ 액션] 기사가 지적한 '수익모델 미검증'을 해소하려면 SSP 유료 고객 수, 매장당 반복매출, 연동 디바이스 수 같은 공개 KPI를 정해 3분기 실적 발표 때 제시할 필요가 있다.",
+        "imageUrl": "https://img.seoul.co.kr//img/upload/2026/09/22/SSC_20260922123641_O2.png.webp",
+        "pubDate": "2026-09-23",
+        "sourceUrl": "https://www.seoul.co.kr/news/economy/2026/09/22/20260922500111",
+        "sourceName": "서울신문"
+      }
+    ],
+    "technology": [
+      {
+        "title": "인스타카트, 매대 실시간 가시화 '인벤토리 인텔리전스'·CPG용 '스토어 엑설런스 포털' 출시…쇼퍼 폰·케이퍼 카트로 셸프 데이터 수집",
+        "summary": "• 인스타카트가 매장 관리자용 '인벤토리 인텔리전스'(통로를 가상으로 둘러보고 플래노그램 변경을 테스트)와 CPG 브랜드용 '스토어 엑설런스 포털'(매장·UPC별 손실 매출, 결품 예측)을 공개했다.\n• 매장마다 하루 15회 이상 방문하는 약 60만 명의 쇼퍼 네트워크에서 하루 1,000만 건 이상의 데이터가 나오며, 누적 주문은 16억 건이다.\n• 셸프 이미지는 쇼퍼 스마트폰과 케이퍼 카트(Caper Cart)로 수집하고, 7월 인수한 아르팔루스(Arpalus)의 컴퓨터 비전으로 분석한다.\n• 인스타카트는 2,200개 이상 배너, 약 10만 개 매장과 연결돼 있다. 첫 공개 고객은 프라이스 초퍼(Price Chopper)이며, 수개월 내 추가 리테일러로 확대한다.",
+        "implications": "[🔴 위협] 고정 카메라·로봇·ESL 카메라 없이도 '쇼퍼 폰 + 스마트카트'로 매대 가시성을 얻는 대체 경로가 상용화됐다. VusionGroup Captana·심비 탤리와 같은 셸프 인텔리전스 시장에 설비 투자가 필요 없는 모델이 들어온 셈이며, 결품 데이터를 CPG에 파는 수익화 구조까지 갖췄다. [⚡ 액션] 솔루엠의 셸프 가시성 전략은 '고정 인프라 정밀도(실시간·전 SKU)'를 차별점으로 내세우고, 인스타카트·케이퍼 데이터와 ESL(점등·가격)을 연동하는 파트너 시나리오도 검토할 필요가 있다.",
+        "imageUrl": "https://theshelbyreport.com/wp-content/uploads/2026/09/Maplebear-Inc-dba-Instacart-Image-e1790022934304.jpg",
+        "pubDate": "2026-09-21",
+        "sourceUrl": "https://theshelbyreport.com/2026/09/21/instacart-gives-grocers-cpg-brands-real-time-view-of-store-shelves/",
+        "sourceName": "The Shelby Report"
+      },
+      {
+        "title": "이마케터 \"리테일 미디어망 올해 매출 23% 성장 기대하지만 실행력은 의문\"…'증분 확신' 31%, 경쟁력 자신감 14%p 하락",
+        "summary": "• 그로서리샵 2026에서 이마케터 사라 마르자노 수석 애널리스트는 리테일 미디어 네트워크(RMN)가 올해 평균 약 23% 매출 성장을 기대하지만, 계획을 초과할 것으로 보는 곳은 5곳 중 1곳 미만이고 약 3분의 1은 미달을 예상한다고 발표했다.\n• RMN 매출이 기존 공급사 판촉비와 별개인 '증분'이라고 확신하는 리더는 31%에 그쳤다. 동종 대비 경쟁력에 자신 있다는 응답도 31%로 전년보다 14%p 떨어졌고, 전체 시장 규모(TAM)를 산정할 역량이 있다는 응답은 28%였다.\n• 단기 성장 포맷은 검색 광고·온사이트 디스플레이·리테일러 네이티브 AI 광고였다. 네이티브 AI 에이전트가 없는 RMN의 34%는 수익화를 염두에 두고 에이전트를 구축 중이며, 77%는 에이전틱 광고 포맷을 테스트하거나 투자하고 있다.\n• P&G 자크 하고피안 SVP는 \"진열대에 없는 상품은 최고의 마케팅도 팔 수 없다\"며, 광고 효과가 결품·매장 실행 문제에 가려질 수 있다고 강조했다.",
+        "implications": "[🔵 트렌드] RMN의 과제가 '규모'에서 '증분 입증·측정'으로 옮겨갔다. 온사이트 광고 편중 속에서 인스토어 미디어는 측정 가능성과 매대 실행(결품 해소)을 함께 보여줘야 예산을 받는다. [🟢 기회] P&G의 '진열대에 없으면 못 판다' 발언은 ESL·셸프 가시성과 리테일 미디어를 결합한 제안의 명분이 된다. [⚡ 액션] 솔루엠은 EPS·디지털 사이니지 광고 노출과 ESL 기반 재고·가격 데이터를 묶은 '결품 없는 캠페인 보장'형 인스토어 미디어 상품을 설계해 볼 만하다.",
+        "imageUrl": "https://eu-images.contentstack.com/v3/assets/blt58a1f8f560a1ab0e/blt966c9ec42e7ea994/6ab308f0c8295f6e9142a2a8/Sarah_Marzano_principal_analyst_Retail_&_Commerce_Media_at_eMarketer_talks_at_Groceryshop_2026.png?disable=upscale&width=1200&height=630&fit=crop",
+        "pubDate": "2026-09-22",
+        "sourceUrl": "https://www.supermarketnews.com/retail-media/retail-media-networks-expect-growth-but-execution-challenges-remain",
+        "sourceName": "Supermarket News"
+      },
+      {
+        "title": "前 M&S CDTO 창업 AI 매장실행 스타트업 Thri5, 540만 달러 시드 유치…와일드 포크 푸즈 美·加 전 매장 도입",
+        "summary": "• AI 리테일 스타트업 Thri5가 540만 달러 시드 투자를 유치했다. Whitecap Venture Partners와 Mistral Venture Partners가 공동 주도하고, MaRS IAF·N49P와 리테일·테크 업계 베테랑들이 참여했다.\n• 정육 전문 리테일러 와일드 포크 푸즈(Wild Fork Foods)가 파일럿을 거쳐 미국·캐나다 매장 네트워크 전체에 Thri5를 도입했다.\n• Thri5는 기존 시스템 위에 얹는 'AI 네이티브 실행 레이어'를 표방한다. 리테일러의 데이터·시스템 신호를 해석해 가치가 가장 큰 기회를 골라 본사 우선순위와 매장 실행을 연결하고, 결과를 학습해 개선한다.\n• 공동창업자 제러미 피는 막스앤스펜서 최고디지털기술책임자(CDTO) 출신이며, 허먼 백과 함께 로블로 디지털을 창업·확장한 바 있다.",
+        "implications": "[🔵 트렌드] '인사이트 시스템'에서 '실행 시스템'으로 넘어가는 흐름이 VC 투자로 확인되고 있다. 한쇼 xPilot, VusionGroup 가이드 태스크와 같은 방향이다. 매장 작업 지시의 최종 접점(ESL 점등·가격 반영)은 셸프 인프라가 쥐고 있다. [⚡ 액션] 솔루엠 SSP에 외부 작업 오케스트레이션 도구(Thri5류)의 지시를 받아 ESL로 실행하는 오픈 API·웹훅 연동을 준비하면, 플랫폼 경쟁 대신 '실행 레이어의 표준 인프라'로 포지셔닝할 수 있다.",
+        "imageUrl": "https://images.squarespace-cdn.com/content/v1/590eeff5b8a79b2147a783be/83c9393c-9018-4396-b2b7-fec57d476c5f/Thri5.jpeg",
+        "pubDate": "2026-09-21",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/9/21/ai-retail-technology-startup-thri5-builds-on-wild-fork-foods-pilot-as-it-lands-54-million-in-seed-funding",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ]
+  }
+}
