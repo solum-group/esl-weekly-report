@@ -1,0 +1,43 @@
+{
+  "weekId": "2026-09-28",
+  "weekLabel": "2026.09.28 ~ 2026.10.04",
+  "searchAnalysis": "**[소급 보완 수집 — 10/12(월) 세션에서 사후 실행]** 담당 스케줄 작업이 'device_absent'(맥북·Claude 데스크톱 앱 미접속)로 자동 비활성화되어 09/28(목요일 run)·10/05(월요일 보완)가 모두 결손됐다. 10/12 사용자 확인 후 해당 주차(09/28~10/04)를 소급 리서치했다. RTIH 주간/월간 롤업(9/30, 10/1, 10/2), SOLUM/Hanshow/Pricer/Vusion 뉴스룸, 공급사·유통사 키워드 검색, 규제 트래커를 종합해 신규 3건을 확인했다: (1) 월마트 CEO 존 퍼너의 '가격은 상품에, 사람에 아니다' 공개서한 및 ESL 전국 롤아웃 완료 목표(연말·4,600+매장+샘스클럽 600개)(9/28), (2) 메릴랜드·커네티컷 '감시가격' 금지법 10/1 시행(9/30 보도), (3) JB Hi-Fi(호주·뉴질랜드)의 Vusion 디지털 셸프엣지 전사 도입(9/29). RTIH 자체 주간 롤업에는 이 기간 ESL 벤더 신규 언급이 없었음을 확인(커버리지 감사).",
+  "sections": {
+    "industryTrends": [
+      {
+        "title": "월마트 CEO 공개서한 \"상품에 가격을 매기지, 사람에 매기지 않는다\"…ESL 전국 롤아웃은 연말 완료",
+        "summary": "• 월마트 CEO 존 퍼너가 공개서한에서 \"우리는 상품에 가격을 매기지, 사람에 가격을 매기지 않는다(We price the product, not the person)\"며 소득·구매 이력·급박한 필요 등 개인 데이터로 가격을 차등화하지 않겠다고 밝혔다.\n• 디지털 셸프 라벨은 미국 전 매장(4,600여 개)과 샘스클럽 창고형 매장(약 600개)에 올해 말까지 설치가 완료될 예정이며, 종이 가격표 교체 노동을 없애고 매대·계산대 가격 불일치를 막는 용도로 설명됐다.\n• AI 쇼핑 어시스턴트 '스파키(Sparky)' 역시 특정 고객에게 더 비싼 가격을 보여주는 데 쓰이지 않을 것이라고 못 박았다.\n• 서한은 시애틀의 美 도시 최초 감시가격 금지 조례 통과, 뉴저지·메릴랜드·커네티컷의 유사 입법, FTC의 의견수렴 등 규제 압력이 커지는 가운데 나왔다.",
+        "implications": "[🔴 위협] 업계 1위 월마트가 '감시가격 안 쓴다'를 공식화하며 ESL=가격차별 프레임에 선제 대응했다. 이는 역으로 ESL을 쓰는 모든 유통사에 유사한 투명성 공약을 요구하는 압력으로 번질 수 있다. [⚡ 액션] 솔루엠도 가격 변경 승인·감사 로그·개인정보 비사용을 증명하는 컴플라이언스 자료를 표준 패키지로 준비해 북미 영업에서 월마트식 공약에 대응할 필요가 있다.",
+        "imageUrl": "https://eu-images.contentstack.com/v3/assets/blt58a1f8f560a1ab0e/blt4c453a5af5ae3937/6aba98f811b764943565a42a/A_Walmart_sign.webp?disable=upscale&width=1200&height=630&fit=crop",
+        "pubDate": "2026-09-28",
+        "sourceUrl": "https://www.supermarketnews.com/grocery-technology/walmart-ceo-no-personal-info-used-in-pricing",
+        "sourceName": "Supermarket News"
+      },
+      {
+        "title": "메릴랜드·커네티컷, 10월 1일부로 식료품 '감시가격' 금지법 시행…전자라벨 업계도 영향권",
+        "summary": "• 메릴랜드의 '약탈적 가격 방지법(Protection From Predatory Pricing Act)'과 커네티컷 SB4가 10월 1일부터 시행됐다. 두 법 모두 소비자 개인 데이터로 식료품 가격을 개인별 차등화하는 행위를 금지한다.\n• 메릴랜드법은 매장 면적 1만5,000제곱피트 이상 식료품점과 인스타카트 등 배송 대행업체에 적용되며, 위반 시 최대 1만 달러(재범 2만5,000달러) 과태료와 45일 시정 기간을 규정한다. 프로모션·로열티·구독 가격 등은 예외다.\n• 커네티컷법은 알고리즘·개인데이터로 가격을 바꿀 경우 \"이 가격은 귀하의 개인 데이터를 이용한 가격설정 장치로 책정되었습니다\"라는 문구 표시를 의무화하는 공시 규정을 포함한다.\n• 뉴저지는 이미 신규 ESL 설치에 대한 1년 모라토리엄을 시행 중이며, 24개 주에서 40건 이상의 유사 법안이 발의돼 규제가 주 단위로 빠르게 확산되고 있다.",
+        "implications": "[🔴 위협] 메릴랜드·커네티컷으로 '감시가격' 입법이 세 번째·네 번째 주로 확산됐다. 뉴저지식 ESL 설치 모라토리엄이 다른 주로 번질 경우 북미 신규 수주 일정에 직접 차질이 생길 수 있다. [⚡ 액션] 주별 규제 트래커를 구축해 시행일·공시 의무를 선제 반영하고, 가격설정 알고리즘이 개인 데이터를 쓰지 않는다는 점을 계약서·설치 매뉴얼에 명시하는 표준 절차가 필요하다.",
+        "imageUrl": "https://mocoshow.com/wp-content/uploads/2026/09/IMG_7637-1.jpeg",
+        "pubDate": "2026-09-30",
+        "sourceUrl": "https://mocoshow.com/2026/09/30/new-maryland-law-limits-how-grocery-stores-and-delivery-apps-can-set-personalized-prices/",
+        "sourceName": "MoCo Show"
+      }
+    ],
+    "customerAdoption": {
+      "가전전문점": [
+        {
+          "title": "호주 가전 유통 JB Hi-Fi, 뷰전(Vusion) 디지털 셸프엣지 전사 도입…뉴질랜드까지 확대",
+          "summary": "• JB Hi-Fi가 파일럿을 마치고 뷰전(Vusion)의 디지털 셸프엣지 기술을 매장 전반에 도입한다고 발표했다. 이번 계약은 뉴질랜드 매장망까지 포함한다.\n• 뷰전 솔루션은 매장 직원이 PDA로 매대 제품 정보를 비접촉 확인할 수 있게 하며, 시스코 메라키(Cisco Meraki)와의 네이티브 연동으로 기존 무선 인프라를 활용해 추가 하드웨어 설치 부담과 환경 영향을 줄인다.\n• JB 하이파이그룹(JB Hi-Fi·굿가이즈·e&s 포함)은 호주·뉴질랜드에 355개 매장, 1만7,000명 이상의 직원을 두고 있다.\n• 뷰전 아태 COO 피에르 드무레스는 \"호주는 뷰전의 핵심 시장\"이라고 밝혔고, JB Hi-Fi 호주 대표 카메론 트레이너는 \"매장 운영 효율을 높이는 혁신에 집중하고 있다\"고 말했다.",
+          "implications": "[🔴 위협] 뷰전이 가전 전문 유통(JB Hi-Fi)까지 고객군을 넓히며 식품을 넘어선 비식품 채널에서도 레퍼런스를 쌓고 있다. 솔루엠의 호주 가전 채널(빙리 등) 레퍼런스와 직접 경쟁하는 구도다. [⚡ 액션] 메라키 등 기존 무선 인프라 연동 용이성이 가전 유통의 핵심 구매 기준인 만큼, 솔루엠도 주요 네트워크 장비사와의 연동 인증을 마케팅 포인트로 강조할 필요가 있다.",
+          "imageUrl": "",
+          "pubDate": "2026-09-29",
+          "sourceUrl": "https://www.prnewswire.com/apac/news-releases/australian-retailer-jb-hi-fi-selects-vusion-to-advance-its-connected-store-strategy-302892670.html",
+          "sourceName": "PR Newswire (Vusion)"
+        }
+      ]
+    },
+    "majorCompanies": [],
+    "solutionProviders": [],
+    "technology": []
+  }
+}
