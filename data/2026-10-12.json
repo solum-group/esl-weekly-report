@@ -1,11 +1,21 @@
 {
   "weekId": "2026-10-12",
-  "weekLabel": "2026.10.12 ~ 2026.10.12",
-  "searchAnalysis": "**[소급 보완 수집 — 10/12(월) 세션에서 사후 실행]** 담당 월요일 보완 작업이 device_absent로 비활성화돼 있던 중 사용자가 직접 재활성화를 요청, 오늘(10/12) 발행분을 리서치해 신규 주차 파일을 생성했다. 신규 1건 확인: 솔루엠의 일본 아오키수퍼 ESL 도입 사례 및 비프로지 협업 확대(헤럴드경제). 이후 목요일(10/15) 정기 run부터 월~목 수집이 정상 가동된다.",
+  "weekLabel": "2026.10.12 ~ 2026.10.18",
+  "searchAnalysis": "**[소급 보완 수집 — 10/12(월) 세션에서 사후 실행]** 담당 월요일 보완 작업이 device_absent로 비활성화돼 있던 중 사용자가 직접 재활성화를 요청, 오늘(10/12) 발행분을 리서치해 신규 주차 파일을 생성했다. 신규 1건 확인: 솔루엠의 일본 아오키수퍼 ESL 도입 사례 및 비프로지 협업 확대(헤럴드경제).\n\n**10월 14일(수) 정기 수집(월~수):** 신규 1건 추가(크로거 AI 연계 본사 3,000명 감축, AP 10/13). [커버리지] RTIH=ESL카테고리 fetch 실패·태그페이지 stale(2024년까지)→검색 대체·범위 내 미확인 / Retail Dive=방문·최신 10/13·ESL 무기사 / Grocery Dive=방문·최신 10/14·ESL 무기사(Ahold Delhaize 사이버 장애는 범위 외 주제로 제외) / ESM=날짜 미표기·ESL 무기사 / Google News RSS=ROBOTS_DISALLOWED / SOLUM·Hanshow·Pricer·Vusion 뉴스룸=검색 대체(범위 내 PR 없음). [STALE:RTIH 태그 최신2024→검색대체] [감사] 범위 내 ESL 직접 기사 0건 확인, 인접 트렌드 1건 포착. 참고: 오늘은 수요일(10/14)이라 월~수 범위로 수집.",
   "sections": {
     "industryTrends": [],
     "customerAdoption": {},
-    "majorCompanies": [],
+    "majorCompanies": [
+      {
+        "title": "크로거, 향후 3년간 본사 인력 3,000명 감축…AI 활용 확대로 업무 효율화",
+        "summary": "• 미국 최대 독립 슈퍼마켓 체인 크로거(Kroger)가 AI 활용 확대에 따라 향후 3년에 걸쳐 본사(코퍼레이트) 직원 3,000명을 감축한다고 10월 13일 AP가 보도했다.\n• 그렉 포런(Greg Foran) CEO는 직원 메모에서 중복 업무를 줄이고 업무 수행 위치를 재정비할 필요성을 언급하며 \"기술이 가능성을 바꾸고 있다\"고 밝혔다. 크로거는 지난달 고객경험·직원 업무 간소화·사업성과 개선을 목표로 한 AI 전략을 공개한 바 있다.\n• 크로거는 약 40만 9천 명을 고용하고 2,700개 이상 매장을 운영하며, 월마트·알디·리들·아마존의 압박을 받고 있다. 앨버슨스 CEO도 향후 12~18개월 내 추가 인력 감축을 예고했다.\n• 이날 크로거 주가는 2.2% 하락한 61.21달러를 기록했다.",
+        "implications": "[🔵 트렌드] 북미 대형 식품 유통사들이 AI를 비용 구조 개편의 핵심 수단으로 삼고 있음을 보여준다. [🟢 기회] 인건비·운영 효율 압박이 커질수록 라벨 교체·가격 갱신·피킹 지원 등 매장 인력 절감형 솔루션(ESL, 라이트 투 피크 등)의 투자 명분이 강화된다. [⚡ 액션] 크로거·앨버슨스 대상 영업 시 ‘본사·매장 운영 인력 절감’ ROI 관점의 제안 메시지를 준비할 필요가 있다.",
+        "imageUrl": "https://gray-wtoc-prod.gtv-cdn.com/resizer/v2/A3IETFP62ZFY5EMOKRRI5NS4NA.jpg?auth=50564c66712cbce3bda697f2c20552d3b96ad747aefdfe9bb756bc226e04f87a&width=1200&height=600&smart=true",
+        "pubDate": "2026-10-13",
+        "sourceUrl": "https://www.wtoc.com/2026/10/13/kroger-lay-off-3000-employees-it-leans-into-artificial-intelligence/",
+        "sourceName": "AP / WTOC"
+      }
+    ],
     "solutionProviders": [
       {
         "title": "솔루엠, 일본 아오키수퍼에 4컬러 ESL 전점 확대…유통 인력난 속 비프로지와 디지털 전환 공략",
