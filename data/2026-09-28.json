@@ -1,7 +1,7 @@
 {
   "weekId": "2026-09-28",
   "weekLabel": "2026.09.28 ~ 2026.10.04",
-  "searchAnalysis": "**[소급 보완 수집 — 10/12(월) 세션에서 사후 실행]** 담당 스케줄 작업이 'device_absent'(맥북·Claude 데스크톱 앱 미접속)로 자동 비활성화되어 09/28(목요일 run)·10/05(월요일 보완)가 모두 결손됐다. 10/12 사용자 확인 후 해당 주차(09/28~10/04)를 소급 리서치했다. RTIH 주간/월간 롤업(9/30, 10/1, 10/2), SOLUM/Hanshow/Pricer/Vusion 뉴스룸, 공급사·유통사 키워드 검색, 규제 트래커를 종합해 신규 3건을 확인했다: (1) 월마트 CEO 존 퍼너의 '가격은 상품에, 사람에 아니다' 공개서한 및 ESL 전국 롤아웃 완료 목표(연말·4,600+매장+샘스클럽 600개)(9/28), (2) 메릴랜드·커네티컷 '감시가격' 금지법 10/1 시행(9/30 보도), (3) JB Hi-Fi(호주·뉴질랜드)의 Vusion 디지털 셸프엣지 전사 도입(9/29). RTIH 자체 주간 롤업에는 이 기간 ESL 벤더 신규 언급이 없었음을 확인(커버리지 감사).\n[소급 10/14 추가] 월마트 라이트 기능 3종 전 매장 확대(CNBC 10/1) — 10/14 run에서 뒤늦게 포착.",
+  "searchAnalysis": "**[소급 보완 수집 — 10/12(월) 세션에서 사후 실행]** 담당 스케줄 작업이 'device_absent'(맥북·Claude 데스크톱 앱 미접속)로 자동 비활성화되어 09/28(목요일 run)·10/05(월요일 보완)가 모두 결손됐다. 10/12 사용자 확인 후 해당 주차(09/28~10/04)를 소급 리서치했다. RTIH 주간/월간 롤업(9/30, 10/1, 10/2), SOLUM/Hanshow/Pricer/Vusion 뉴스룸, 공급사·유통사 키워드 검색, 규제 트래커를 종합해 신규 3건을 확인했다: (1) 월마트 CEO 존 퍼너의 '가격은 상품에, 사람에 아니다' 공개서한 및 ESL 전국 롤아웃 완료 목표(연말·4,600+매장+샘스클럽 600개)(9/28), (2) 메릴랜드·커네티컷 '감시가격' 금지법 10/1 시행(9/30 보도), (3) JB Hi-Fi(호주·뉴질랜드)의 Vusion 디지털 셸프엣지 전사 도입(9/29). RTIH 자체 주간 롤업에는 이 기간 ESL 벤더 신규 언급이 없었음을 확인(커버리지 감사).\n[소급 10/14 추가] 월마트 라이트 기능 3종 전 매장 확대(CNBC 10/1) — 10/14 run에서 뒤늦게 포착.\n[소급 10/22 추가] 마수티스-뷰전 ESL 확대(Vusion 10/1) — 10/22 run에서 뒤늦게 포착.",
   "sections": {
     "industryTrends": [
       {
@@ -33,6 +33,17 @@
           "pubDate": "2026-09-29",
           "sourceUrl": "https://www.prnewswire.com/apac/news-releases/australian-retailer-jb-hi-fi-selects-vusion-to-advance-its-connected-store-strategy-302892670.html",
           "sourceName": "PR Newswire (Vusion)"
+        }
+      ],
+      "슈퍼마켓": [
+        {
+          "title": "그리스 디아만티스 마수티스, 뷰전 ESL 롤아웃 확대…1단계 28개 매장 설치",
+          "summary": "• 그리스 대형 유통사 디아만티스 마수티스(1,400개 이상 접점, 직원 1만 6,000명)가 뷰전의 클라우드 기반 ESL 플랫폼 롤아웃을 확대한다고 10월 1일 발표했다.\n• 현지 파트너 모바일 테크놀로지와 함께 1단계로 28개 매장에 설치를 완료했다.\n• 이번 도입은 '커넥티드 스토어' 네트워크 구축 계획의 일부로, 운영 효율, 빠르고 정확한 가격 반영, 종이 사용 절감, 직원 시간의 고객 서비스 전환을 목표로 한다.",
+          "implications": "[🔴 위협] 뷰전이 남유럽 대형 유통사 전점 확대 계약을 이어가고 있다. [🔵 트렌드] 그리스·남유럽에서도 ESL을 커넥티드 스토어 기반으로 확대하는 흐름이다. [⚡ 액션] 남유럽 시장에서 솔루엠 파트너 채널 현황 점검.",
+          "imageUrl": "https://www.vusion.com/sites/default/files/styles/insight_image_large/public/2026-09/whatsapp_image_2026-06-25_at_16.43.43.jpeg.webp?itok=ARVUuj1o",
+          "pubDate": "2026-10-01",
+          "sourceUrl": "https://www.vusion.com/newsroom/masoutis-expands-rollout-electronic-shelf-labels",
+          "sourceName": "Vusion"
         }
       ]
     },

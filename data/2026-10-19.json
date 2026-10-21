@@ -1,0 +1,22 @@
+{
+  "weekId": "2026-10-19",
+  "weekLabel": "2026.10.19 ~ 2026.10.25",
+  "searchAnalysis": "**10월 22일(목) 수집(월~목):** 범위 내 신규 1건(뷰전그룹 Q3 매출·수주, 10/20). [커버리지] RTIH=ESLs 태그 방문(최신 ESL 10/15·10/19~21 기사는 비ESL) / Retail Dive=방문·최신 10/20·ESL 무기사 / Grocery Dive=방문·최신 10/16·ESL 무기사 / Vusion=actusnews·Zonebourse 경유 / SOLUM·Hanshow·Pricer=검색 대체·범위 내 PR 없음 / Google News RSS·일부 뉴스룸=미접근. [감사] 범위 내 ESL 직접 기사는 뷰전 Q3 1건. 또한 과거 미수집 2건(Pricer-Orange, Kenty Adria-Hanshow)을 10/12 주차에, 1건(Masoutis-Vusion)을 9/28 주차에 소급 저장.",
+  "sections": {
+    "industryTrends": [],
+    "customerAdoption": {},
+    "majorCompanies": [],
+    "solutionProviders": [
+      {
+        "title": "뷰전그룹 3분기 조정 매출 €4.45억(+25%, 고정환율 +49%)·수주 €4.62억으로 3분기 최대",
+        "summary": "• 뷰전그룹이 10월 20일 발표한 2026년 3분기 조정 매출은 4억 4,500만 유로(전년比 +25%, 고정 환율·관세 기준 +49%)이며, 누적(9M) 조정 매출은 12억 8,400만 유로(+28%, 고정 기준 +41%)다.\n• 3분기 수주는 4억 6,200만 유로(+10%)로 역대 3분기 최대 수준이며, 9M 수주는 11억 4,300만 유로다. 경영진은 4분기 수주가 5억 유로를 넘길 것으로 전망했다.\n• 부가서비스(VAS) 9M 매출은 2억 200만 유로(+40%), 이 중 반복 매출은 1억 유로(+77%), ARR은 1억 5,400만 유로(+82%)다. VusionCloud 연결 기기는 6억 대를 넘어섰다(전년 3억 1,400만 대).\n• 월마트 미국 EdgeSense 구축이 연말까지 완료되고 멕시코·캐나다 신규 배치, 월마트 캐나다 2027년 차세대 플랫폼 계약이 확인됐다. 미국·캐나다 약 200개 비식품 매장 롤아웃과 독일 대형 수주도 있었다.\n• 2026년 가이던스(고정 기준 매출 +15~20%, VAS 약 +40%, EBITDA 마진 +100bp 이상)는 유지됐다. 환율·관세로 약 1.5억 유로의 역풍이 있고, 진행 중인 In-Store Media(ISM) 인수는 연내 종결 예정이며 자본시장의 날은 11월 18일 파리에서 열린다.",
+        "implications": "[🔴 위협] 뷰전이 월마트·독일 유통 등 대형 수주와 VAS(리테일 미디어·클라우드) 반복 매출 급성장으로 ESL 1위 입지를 굳히고 있어, 솔루엠의 북미·유럽 대형 입찰에서 가격·플랫폼 양면 경쟁이 심화될 수 있다. [🔵 트렌드] ESL 하드웨어에서 구독형 VAS·인스토어 미디어로 수익 축이 이동 중이다. [⚡ 액션] 솔루엠의 RMN·클라우드 반복 매출 전략 및 11/18 뷰전 자본시장의 날 발표 내용 모니터링 필요.",
+        "imageUrl": "",
+        "pubDate": "2026-10-20",
+        "sourceUrl": "https://www.zonebourse.com/actualite-bourse/vusiongroup-chiffre-d-affaires-du-3eme-trimestre-2026-forte-croissance-au-troisieme-trimestre-p-ce785cd8da8ef024",
+        "sourceName": "Zonebourse"
+      }
+    ],
+    "technology": []
+  }
+}

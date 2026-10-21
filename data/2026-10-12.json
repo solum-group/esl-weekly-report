@@ -1,7 +1,7 @@
 {
   "weekId": "2026-10-12",
   "weekLabel": "2026.10.12 ~ 2026.10.18",
-  "searchAnalysis": "**[소급 보완 수집 — 10/12(월) 세션에서 사후 실행]** 담당 월요일 보완 작업이 device_absent로 비활성화돼 있던 중 사용자가 직접 재활성화를 요청, 오늘(10/12) 발행분을 리서치해 신규 주차 파일을 생성했다. 신규 1건 확인: 솔루엠의 일본 아오키수퍼 ESL 도입 사례 및 비프로지 협업 확대(헤럴드경제).\n\n**10월 14일(수) 정기 수집(월~수):** 신규 1건 추가(크로거 AI 연계 본사 3,000명 감축, AP 10/13). [커버리지] RTIH=ESL카테고리 fetch 실패·태그페이지 stale(2024년까지)→검색 대체·범위 내 미확인 / Retail Dive=방문·최신 10/13·ESL 무기사 / Grocery Dive=방문·최신 10/14·ESL 무기사(Ahold Delhaize 사이버 장애는 범위 외 주제로 제외) / ESM=날짜 미표기·ESL 무기사 / Google News RSS=ROBOTS_DISALLOWED / SOLUM·Hanshow·Pricer·Vusion 뉴스룸=검색 대체(범위 내 PR 없음). [STALE:RTIH 태그 최신2024→검색대체] [감사] 범위 내 ESL 직접 기사 0건 확인, 인접 트렌드 1건 포착. 참고: 오늘은 수요일(10/14)이라 월~수 범위로 수집.\n\n**10월 19일(월) 보완 수집(목~일, 10/15~10/18):** 신규 4건 추가(월마트 감시가격 공언·규제 FoodNavigator 10/15, AP 소비자 불안 10/18, LAT 탤리 로봇 10/15, RTIH 프라이서 어워드 10/15). 월요일(10/19) 발행분 0건(실행 시각 KST 01시, 미색인). [커버리지] WebFetch 대부분 PROVENANCE_REQUIRED(Google News RSS·Retail Dive·Grocery Dive 토픽면 차단)→WebSearch 언락 후 개별 기사 fetch로 대체 / RTIH=site: 열거 부정확·개별 URL로 확인 / 공급사 뉴스룸=검색 대체(범위 내 PR 없음) / 솔루엠 국내 보도=10/7~12 기사 외 범위 내 신규 없음. [감사] 뉴스룸 직접 순회 미완료(차단), 범위 내 ESL 직접 PR 0건 — 미확인 소스 존재.",
+  "searchAnalysis": "**[소급 보완 수집 — 10/12(월) 세션에서 사후 실행]** 담당 월요일 보완 작업이 device_absent로 비활성화돼 있던 중 사용자가 직접 재활성화를 요청, 오늘(10/12) 발행분을 리서치해 신규 주차 파일을 생성했다. 신규 1건 확인: 솔루엠의 일본 아오키수퍼 ESL 도입 사례 및 비프로지 협업 확대(헤럴드경제).\n\n**10월 14일(수) 정기 수집(월~수):** 신규 1건 추가(크로거 AI 연계 본사 3,000명 감축, AP 10/13). [커버리지] RTIH=ESL카테고리 fetch 실패·태그페이지 stale(2024년까지)→검색 대체·범위 내 미확인 / Retail Dive=방문·최신 10/13·ESL 무기사 / Grocery Dive=방문·최신 10/14·ESL 무기사(Ahold Delhaize 사이버 장애는 범위 외 주제로 제외) / ESM=날짜 미표기·ESL 무기사 / Google News RSS=ROBOTS_DISALLOWED / SOLUM·Hanshow·Pricer·Vusion 뉴스룸=검색 대체(범위 내 PR 없음). [STALE:RTIH 태그 최신2024→검색대체] [감사] 범위 내 ESL 직접 기사 0건 확인, 인접 트렌드 1건 포착. 참고: 오늘은 수요일(10/14)이라 월~수 범위로 수집.\n\n**10월 19일(월) 보완 수집(목~일, 10/15~10/18):** 신규 4건 추가(월마트 감시가격 공언·규제 FoodNavigator 10/15, AP 소비자 불안 10/18, LAT 탤리 로봇 10/15, RTIH 프라이서 어워드 10/15). 월요일(10/19) 발행분 0건(실행 시각 KST 01시, 미색인). [커버리지] WebFetch 대부분 PROVENANCE_REQUIRED(Google News RSS·Retail Dive·Grocery Dive 토픽면 차단)→WebSearch 언락 후 개별 기사 fetch로 대체 / RTIH=site: 열거 부정확·개별 URL로 확인 / 공급사 뉴스룸=검색 대체(범위 내 PR 없음) / 솔루엠 국내 보도=10/7~12 기사 외 범위 내 신규 없음. [감사] 뉴스룸 직접 순회 미완료(차단), 범위 내 ESL 직접 PR 0건 — 미확인 소스 존재.\n[소급 10/22 추가] 한샤우-켄티 아드리아(콘줌·메르카토르, RTIH 10/13), 프라이서-오랑주 561개 매장(RTIH 10/15) — 10/22 run에서 뒤늦게 포착.",
   "sections": {
     "industryTrends": [
       {
@@ -23,7 +23,30 @@
         "sourceName": "AP / ABC News"
       }
     ],
-    "customerAdoption": {},
+    "customerAdoption": {
+      "슈퍼마켓": [
+        {
+          "title": "한샤우·켄티 아드리아, 크로아티아·슬로베니아 콘줌·메르카토르 ESL 대규모 확대(약 310만 개)",
+          "summary": "• 한샤우가 포르테노바 그룹 계열 켄티 아드리아와 손잡고 크로아티아 콘줌(Konzum)·슬로베니아 메르카토르(Mercator) 매장에 ESL을 대규모 확대한다.\n• 콘줌은 이미 200개 이상 매장에 ESL을 설치했고 260개를 추가할 계획이며, 자그레브 최대 매장은 4만 4,000개 ESL을 쓴다. 600개 이상 매장 대부분을 2027년 여름 시즌까지 설치할 예정이다.\n• 메르카토르는 슬로베니아 50개 매장에 설치했고 2027년 말까지 전 네트워크 적용이 목표다. 전체 소요 물량은 약 310만 개로 추산된다.\n• 파일럿에서 가격 정확도 향상, 가격 오류 감소, 직원의 반복 업무 경감 효과가 확인됐다.",
+          "implications": "[🔴 위협] 한샤우가 발칸·동유럽 대형 그룹(포르테노바)에서 310만 개 규모 물량을 확보해 유럽 신흥 시장 선점에 나섰다. [🔵 트렌드] 동유럽·발칸 식품 유통의 ESL 전점 확대가 본격화되고 있다. [⚡ 액션] 동유럽 대형 그룹 대상 솔루엠 영업 파이프라인 및 현지 파트너 점검.",
+          "imageUrl": "https://storage.googleapis.com/rtih-storage/migration/sqs/47/476241eaeb469585e396d62b7ac04f0164421e54.jpeg",
+          "pubDate": "2026-10-13",
+          "sourceUrl": "https://retailtechinnovationhub.com/home/2026/10/12/kenty-adria-and-hanshow-tie-up-brings-electronic-pricing-technology-to-konzum-and-mercator-stores",
+          "sourceName": "Retail Technology Innovation Hub"
+        }
+      ],
+      "통신 소매": [
+        {
+          "title": "프라이서, 프랑스 통신사 오랑주(Orange) 561개 매장 ESL 공급 계약 수주",
+          "summary": "• 프라이서가 프랑스 통신사 오랑주의 소매 매장망 디지털화 사업자로 선정됐다. 대상은 평균 120㎡ 규모의 561개 매장이며 약 2년에 걸쳐 구축한다.\n• ESL 하드웨어·인프라·부착 솔루션·설치와 클라우드 관리 플랫폼 'Plaza'를 포함하며, 장기 유지보수 계약과 연간 반복 SaaS·유지보수 매출이 수반된다.\n• 여러 매장 파일럿을 거쳐 선정됐고, 2026년 4분기부터 구축을 시작해 올해 안에 첫 100개 매장을 완료, 2028년 종료한다.\n• 오랑주는 고객 경험, 어드바이저 효율, 오퍼 가시성, 가격 변경 대응력 향상을 목표로 한다. 프라이서는 식품 외 영역에서도 가치를 입증한 사례로 평가했다.",
+          "implications": "[🔴 위협] 프라이서가 통신 리테일이라는 비식품 영역에서 561개 매장 규모 계약을 확보해 유럽 비식품 채널에서 경쟁이 커진다. [🔵 트렌드] 통신·가전·전문점 등 비식품 ESL 도입이 확산 중이다. [⚡ 액션] 유럽 통신사·전문 리테일 대상 솔루엠 영업 및 PLAZA 대비 클라우드 관리 차별점 점검.",
+          "imageUrl": "http://static1.squarespace.com/static/590eeff5b8a79b2147a783be/590ef147e6f2e1fda30e84c5/6ad07a6f01724b28f08781a2/1792048259398/Orange.jpeg?format=1500w",
+          "pubDate": "2026-10-15",
+          "sourceUrl": "https://retailtechinnovationhub.com/home/2026/10/15/pricer-selected-by-orange-for-electronic-shelf-labels-roll-out-across-store-network-in-france",
+          "sourceName": "Retail Technology Innovation Hub"
+        }
+      ]
+    },
     "majorCompanies": [
       {
         "title": "크로거, 향후 3년간 본사 인력 3,000명 감축…AI 활용 확대로 업무 효율화",
