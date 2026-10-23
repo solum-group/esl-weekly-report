@@ -1,7 +1,7 @@
 {
   "weekId": "2026-10-19",
   "weekLabel": "2026.10.19 ~ 2026.10.25",
-  "searchAnalysis": "**10월 22일(목) 수집(월~목):** 범위 내 신규 1건(뷰전그룹 Q3 매출·수주, 10/20). [커버리지] RTIH=ESLs 태그 방문(최신 ESL 10/15·10/19~21 기사는 비ESL) / Retail Dive=방문·최신 10/20·ESL 무기사 / Grocery Dive=방문·최신 10/16·ESL 무기사 / Vusion=actusnews·Zonebourse 경유 / SOLUM·Hanshow·Pricer=검색 대체·범위 내 PR 없음 / Google News RSS·일부 뉴스룸=미접근. [감사] 범위 내 ESL 직접 기사는 뷰전 Q3 1건. 또한 과거 미수집 2건(Pricer-Orange, Kenty Adria-Hanshow)을 10/12 주차에, 1건(Masoutis-Vusion)을 9/28 주차에 소급 저장.\n[재점검 10/23] 리테일 미디어·디지털 사이니지 쿼리로 Tesco-Booker 500스크린(10/20) 1건 추가 포착. ESL 직접 기사는 재검색에서도 추가 없음(Hanshow·Pricer·SOLUM·Vusion 범위 내 PR 없음, Retail Dive 최신 10/20·Grocery Dive 최신 10/16 ESL 무기사). 금~일(10/23~25)은 월요일 보완 수집 예정.",
+  "searchAnalysis": "**10월 22일(목) 수집(월~목):** 범위 내 신규 1건(뷰전그룹 Q3 매출·수주, 10/20). [커버리지] RTIH=ESLs 태그 방문(최신 ESL 10/15·10/19~21 기사는 비ESL) / Retail Dive=방문·최신 10/20·ESL 무기사 / Grocery Dive=방문·최신 10/16·ESL 무기사 / Vusion=actusnews·Zonebourse 경유 / SOLUM·Hanshow·Pricer=검색 대체·범위 내 PR 없음 / Google News RSS·일부 뉴스룸=미접근. [감사] 범위 내 ESL 직접 기사는 뷰전 Q3 1건. 또한 과거 미수집 2건(Pricer-Orange, Kenty Adria-Hanshow)을 10/12 주차에, 1건(Masoutis-Vusion)을 9/28 주차에 소급 저장.\n[재점검 10/23] 리테일 미디어·디지털 사이니지 쿼리로 Tesco-Booker 500스크린(10/20) 1건 추가 포착. ESL 직접 기사는 재검색에서도 추가 없음(Hanshow·Pricer·SOLUM·Vusion 범위 내 PR 없음, Retail Dive 최신 10/20·Grocery Dive 최신 10/16 ESL 무기사). 금~일(10/23~25)은 월요일 보완 수집 예정.\n[2차 재점검 10/23] 생략했던 소스 실행: Digitimes(ESL 무관·STALE 9월)·Progressive Grocer(날짜 미표기)·Chain Store Age(최신 10/22·ESL 무기사)·Supermarket News(최신 10/20·범위 내 ESL 무기사)·Retail Optimiser(ICA-Cota 로봇 10/21 추가)·Retail Detail EU(최신 10/22·ESL 무기사)·Retail World AU(ESL 무기사) 방문. The Grocer·뉴스 사이트맵 5종=fetch 실패. 불·독·스·중·일·한 언어 쿼리, 중동·아프리카·중남미·인도·호주, 기술(RFID·e-paper), 투자·재고비전 쿼리 실행—범위 내 신규 없음.",
   "sections": {
     "industryTrends": [],
     "customerAdoption": {},
@@ -27,6 +27,16 @@
         "sourceName": "Zonebourse"
       }
     ],
-    "technology": []
+    "technology": [
+      {
+        "title": "스웨덴 ICA, 스타트업 코타(Cota)와 선반 자동 진열 로봇 시범 운영",
+        "summary": "• 스웨덴 유통사 ICA 그룹이 스톡홀름 ICA Nära Roslagstull 매장에서 신생 로봇업체 코타 로보틱스(Cota Robotics)의 야간 자동 선반 보충 로봇을 시험 중이다(10월 21일 Retail Optimiser 보도).\n• 현재는 입고장에서 롤 컨테이너를 옮겨 올바른 선반에 상품을 진열하는 기능을 수행하며, 입고 검수·진열 정리·재고 실사·무인 주문 이행 등을 추가할 계획이다.\n• 로봇이 작업하며 매장 3D 모델을 구축하고, 이를 통해 재고 수준·가격·플래노그램 준수 여부를 모니터링하는 것이 목표다.\n• 코타는 2025년 스톡홀름에서 항공우주·로보틱스 엔지니어들이 창업했으며, 시험은 초기 단계다.",
+        "implications": "[🔵 트렌드] 매장 로봇이 진열 작업을 넘어 가격·플래노그램 모니터링까지 겨냥하고 있어, 가격 표시 정합성 관리 영역에서 ESL과 역할이 겹치거나 연동될 수 있는 인접 기술이다. [⚡ 액션] 로봇·비전 업체와의 ESL 데이터 연동(가격·위치 매핑) 가능성을 모니터링할 필요가 있다.",
+        "imageUrl": "https://retail-optimiser.de/wp-content/uploads/2026/10/robot-aisle-2048-BkWVFfjd_1024.jpeg",
+        "pubDate": "2026-10-21",
+        "sourceUrl": "https://retail-optimiser.de/en/ica-tests-robotics-for-shelf-stocking-with-start-up-cota/",
+        "sourceName": "Retail Optimiser"
+      }
+    ]
   }
 }
