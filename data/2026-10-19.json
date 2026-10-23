@@ -1,11 +1,21 @@
 {
   "weekId": "2026-10-19",
   "weekLabel": "2026.10.19 ~ 2026.10.25",
-  "searchAnalysis": "**10월 22일(목) 수집(월~목):** 범위 내 신규 1건(뷰전그룹 Q3 매출·수주, 10/20). [커버리지] RTIH=ESLs 태그 방문(최신 ESL 10/15·10/19~21 기사는 비ESL) / Retail Dive=방문·최신 10/20·ESL 무기사 / Grocery Dive=방문·최신 10/16·ESL 무기사 / Vusion=actusnews·Zonebourse 경유 / SOLUM·Hanshow·Pricer=검색 대체·범위 내 PR 없음 / Google News RSS·일부 뉴스룸=미접근. [감사] 범위 내 ESL 직접 기사는 뷰전 Q3 1건. 또한 과거 미수집 2건(Pricer-Orange, Kenty Adria-Hanshow)을 10/12 주차에, 1건(Masoutis-Vusion)을 9/28 주차에 소급 저장.",
+  "searchAnalysis": "**10월 22일(목) 수집(월~목):** 범위 내 신규 1건(뷰전그룹 Q3 매출·수주, 10/20). [커버리지] RTIH=ESLs 태그 방문(최신 ESL 10/15·10/19~21 기사는 비ESL) / Retail Dive=방문·최신 10/20·ESL 무기사 / Grocery Dive=방문·최신 10/16·ESL 무기사 / Vusion=actusnews·Zonebourse 경유 / SOLUM·Hanshow·Pricer=검색 대체·범위 내 PR 없음 / Google News RSS·일부 뉴스룸=미접근. [감사] 범위 내 ESL 직접 기사는 뷰전 Q3 1건. 또한 과거 미수집 2건(Pricer-Orange, Kenty Adria-Hanshow)을 10/12 주차에, 1건(Masoutis-Vusion)을 9/28 주차에 소급 저장.\n[재점검 10/23] 리테일 미디어·디지털 사이니지 쿼리로 Tesco-Booker 500스크린(10/20) 1건 추가 포착. ESL 직접 기사는 재검색에서도 추가 없음(Hanshow·Pricer·SOLUM·Vusion 범위 내 PR 없음, Retail Dive 최신 10/20·Grocery Dive 최신 10/16 ESL 무기사). 금~일(10/23~25)은 월요일 보완 수집 예정.",
   "sections": {
     "industryTrends": [],
     "customerAdoption": {},
-    "majorCompanies": [],
+    "majorCompanies": [
+      {
+        "title": "테스코, 부커 영국 도매 100개 사이트에 500개 이상 광고 스크린 설치…8주 만에 구축",
+        "summary": "• 테스코가 자회사 부커(Booker)의 영국 도매 매장 100곳에 65인치 소니 BRAVIA 프로페셔널 디스플레이 500개 이상을 설치해 인스토어 광고 네트워크를 가동했다(10월 20일 Grocery Gazette 보도). 설치는 8주 만에 완료됐다.\n• 소매 미디어 전문사 던험비(dunnhumby)와 디지털 사이니지 업체 픽셀 인스퍼레이션(Pixel Inspiration)이 네트워크와 보호 마운트를 개발했고, 스크린은 DISE 콘텐츠 관리 플랫폼으로 중앙 운영된다. 소니의 원격 관리로 모니터링과 소프트웨어 업데이트를 수행한다.\n• 스크린은 랙 끝단과 팔레트 상단에 설치됐다.\n• 테스코 그룹의 디지털 광고 스크린은 부커·원스톱 포함 7,500개 이상이며, Tesco Media의 활성 광고주는 17% 증가했다.",
+        "implications": "[🔵 트렌드] 대형 유통사가 도매·소형 포맷까지 인스토어 리테일 미디어 스크린을 빠르게 확장하고 있다. [🟢 기회] 선반 단위 매장 미디어 수익화를 겨냥한 대형 전자종이 사이니지·ESL 연동 광고 솔루션의 수요 근거가 된다. [⚡ 액션] 테스코(ESL 파일럿 진행 중)와의 대화에서 스크린+ESL 통합 리테일 미디어 제안을 검토할 필요가 있다.",
+        "imageUrl": "https://www.grocerygazette.co.uk/wp-content/uploads/2026/10/Booker-debts-1.jpg.webp",
+        "pubDate": "2026-10-20",
+        "sourceUrl": "https://www.grocerygazette.co.uk/2026/10/20/tesco-launches-500-screen-advertising-blitz-across-bookers-uk-wholesale-estate/",
+        "sourceName": "Grocery Gazette"
+      }
+    ],
     "solutionProviders": [
       {
         "title": "뷰전그룹 3분기 조정 매출 €4.45억(+25%, 고정환율 +49%)·수주 €4.62억으로 3분기 최대",
