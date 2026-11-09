@@ -1,7 +1,7 @@
 {
   "weekId": "2026-11-02",
   "weekLabel": "2026.11.02 ~ 2026.11.08",
-  "searchAnalysis": "**11월 9일(월) 수집:** 11/2~11/8 범위 5건(11/3~11/5; 목요일 run 누락분 포함). 주요: M&S의 뷰전 커넥티드 스토어 도입, RTIH 어워드(뷰전·프라이서·SOLUM·한샤우 수상), JD스포츠 RFID. [커버리지] RTIH=/home·ESLs 태그·주간요약 방문(최신 11/8) / Retail Dive·Grocery Dive·Vusion·SOLUM·Retail Optimiser=WebFetch 권한 미응답(PROVENANCE_REQUIRED)으로 미확인 / Hanshow·Pricer·ZKONG·Google News RSS=검색 대체·범위 내 PR 미확인. [감사] 11/9 이후 신규는 검색상 미확인.",
+  "searchAnalysis": "**11월 9일(월) 수집:** 11/2~11/8 범위 5건(11/3~11/5; 목요일 run 누락분 포함). 주요: M&S의 뷰전 커넥티드 스토어 도입, RTIH 어워드(뷰전·프라이서·SOLUM·한샤우 수상), JD스포츠 RFID. [커버리지] RTIH=/home·ESLs 태그·주간요약 방문(최신 11/8) / Retail Dive·Grocery Dive·Vusion·SOLUM·Retail Optimiser=WebFetch 권한 미응답(PROVENANCE_REQUIRED)으로 미확인 / Hanshow·Pricer·ZKONG·Google News RSS=검색 대체·범위 내 PR 미확인. [감사] 11/9 이후 신규는 검색상 미확인.\n[재점검 11/9] Retail Optimiser·Grocery Dive·Retail Dive·Vusion 뉴스룸 열람 성공. Kroger RFID·비전, Salling 휴머노이드 2건 추가. M&S-Vusion은 Retail Optimiser(11/6)·Vusion 뉴스룸에서도 확인(기수집).",
   "sections": {
     "industryTrends": [],
     "customerAdoption": {
@@ -17,7 +17,17 @@
         }
       ]
     },
-    "majorCompanies": [],
+    "majorCompanies": [
+      {
+        "title": "크로저, RFID·컴퓨터 비전 데이터로 재고 관리 강화…베이커리 1,500개 매장 RFID 시범",
+        "summary": "• 크로저가 10월 20일 투자자의 날에서 RFID, 디지털 선반 라벨, 로보틱스, AI로 재고 흐름·신선도·가용성을 개선한다고 밝혔다(11월 4일 Grocery Dive 보도).\n• 베이커리 부문 약 1,500개 매장 RFID 시범에서 98% 판독률, 재고 실사 약 70% 단축, 폐기 50% 감소를 확인했고, 2029년까지 2,300개 이상 매장으로 확대한다.\n• 컴퓨터 비전 데이터를 공급업체와 공유해 선반 가용성을 높이며, AI 도구는 20개 데이터 파이프라인을 연결해 상품·매장 단위 가시성을 제공한다. 켄터키 프랭클린에 2028년 완공 예정의 자동화 시설도 짓는다.",
+        "implications": "[🔵 트렌드] 미국 최대 식품 유통사가 ESL·RFID·비전·로봇을 하나의 ‘커넥티드 스토어’ 전략으로 묶고 있어 ESL 단독이 아닌 통합 솔루션 경쟁이 심화된다. [⚡ 액션] 크로저 등 미국 대형 유통사 대상 RFID·비전 연동 ESL 제안이 필요하다.",
+        "imageUrl": "https://imgproxy.divecdn.com/QqAs-1UnmaGjYtmLMHfKAeBSj1HC51Oj7nZ3CtUgi5M/g:ce/rs:fit:770:435/Z3M6Ly9kaXZlc2l0ZS1zdG9yYWdlL2RpdmVpbWFnZS9HZXR0eUltYWdlcy0yMjQwMDMxNjI1LmpwZw==.webp",
+        "pubDate": "2026-11-04",
+        "sourceUrl": "https://www.grocerydive.com/news/kroger-rfid-computer-vision-data-inventory-management/873639/",
+        "sourceName": "Grocery Dive"
+      }
+    ],
     "solutionProviders": [
       {
         "title": "2026 RTIH 이노베이션 어워드: 뷰전·프라이서·SOLUM, 영국 유통사와의 프로젝트로 수상",
@@ -56,6 +66,15 @@
         "pubDate": "2026-11-03",
         "sourceUrl": "https://retailtechinnovationhub.com/home/2026/11/3/morrisons-partners-with-duvo-as-uk-grocery-giant-eyes-opportunities-for-ai-adoption",
         "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "덴마크 살링 그룹, 푀텍스 매장에서 휴머노이드 로봇 선반 진열 훈련",
+        "summary": "• 덴마크 살링 그룹이 코펜하겐 인근 링뷔 푀텍스(Føtex) 매장에서 2026년 6월부터 다년간 휴머노이드 로봇 선반 진열 시험을 하고 있다(11월 3일 보도).\n• 중국 유니트리(Unitree) 로봇에 덴마크 스타트업 하이브 로보틱스(Hive Robots)가 소프트웨어를 제공하며, 운영자가 VR 장비로 시연한 데이터를 학습시킨다. 훈련은 야간에 진행하고 유리 등 깨지기 쉬운 상품은 제외한다.\n• 장기적으로 누락·오배치 상품 탐지, 빈 박스 제거, 유통기한 점검까지 맡길 계획이며 하이브는 2027년부터 시간당 과금으로 선별 품목 자동 진열을 제공할 전망이다. 현재 속도는 직원보다 느리다.",
+        "implications": "[🔵 트렌드] 유통업 인력난 대응으로 휴머노이드 로봇이 선반 진열·점검으로 확대되고 있다. [⚡ 액션] 로봇이 상품 위치·누락을 인식할 때 ESL의 위치 정보와 연동될 수 있어 로봇·비전 업체와의 개방형 API 준비가 필요하다.",
+        "imageUrl": "https://retail-optimiser.de/wp-content/uploads/2026/11/hive-robots-2-1024x710-1.jpg",
+        "pubDate": "2026-11-03",
+        "sourceUrl": "https://retail-optimiser.de/en/salling-group-trains-humanoid-robots-for-supermarket-operations/",
+        "sourceName": "Retail Optimiser"
       }
     ]
   }
