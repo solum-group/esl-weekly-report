@@ -1,0 +1,62 @@
+{
+  "weekId": "2026-11-02",
+  "weekLabel": "2026.11.02 ~ 2026.11.08",
+  "searchAnalysis": "**11월 9일(월) 수집:** 11/2~11/8 범위 5건(11/3~11/5; 목요일 run 누락분 포함). 주요: M&S의 뷰전 커넥티드 스토어 도입, RTIH 어워드(뷰전·프라이서·SOLUM·한샤우 수상), JD스포츠 RFID. [커버리지] RTIH=/home·ESLs 태그·주간요약 방문(최신 11/8) / Retail Dive·Grocery Dive·Vusion·SOLUM·Retail Optimiser=WebFetch 권한 미응답(PROVENANCE_REQUIRED)으로 미확인 / Hanshow·Pricer·ZKONG·Google News RSS=검색 대체·범위 내 PR 미확인. [감사] 11/9 이후 신규는 검색상 미확인.",
+  "sections": {
+    "industryTrends": [],
+    "customerAdoption": {
+      "슈퍼마켓": [
+        {
+          "title": "마크스앤스펜서(M&S), 신규 매장에 뷰전 '엣지센스' 커넥티드 스토어 플랫폼 도입",
+          "summary": "• 영국 M&S가 뷰전(Vusion)의 커넥티드 스토어 플랫폼(EdgeSense)을 여러 신규 매장에 도입하며, 이후 확대 가능성도 열어뒀다(11월 4일 보도).\n• 블루투스 기반 인프라 위에서 종이 가격표를 대체하는 전자 선반 라벨과 상품정보 관리, 직원이 상품을 찾도록 라벨이 깜빡이는 위치 인식 기능, 매장 재고 프로세스를 지원한다.\n• 일부 구성에는 AI 재고 카메라와 재입고 알림이 포함되며, 가격은 클라우드로 일괄 갱신해 수작업 교체가 필요 없다.\n• 매장 수와 금액, 일정은 공개되지 않았다. 뷰전 UK&아일랜드 CEO 로이 호건은 M&S의 매장·직원 경험 투자에 동참하게 돼 기쁘다고 밝혔다.",
+          "implications": "[🔴 위협] 영국 대형 비식품·식품 복합 유통사가 뷰전의 Bluetooth 기반 ESL+매장 실행 플랫폼을 채택해 영국 시장 내 뷰전의 레퍼런스가 더욱 두터워졌다(Morrisons·Co-op에 이은 사례). [⚡ 액션] 신규 매장 중심의 점진 도입 모델이므로, SOLUM은 영국 대형 유통사의 신규 점포·리모델링 일정에 맞춘 선제 제안과 위치 탐색·재고 연동 기능 차별화가 필요하다.",
+          "imageUrl": "https://storage.googleapis.com/rtih-storage/32007/Clapham-Junction8.jpg",
+          "pubDate": "2026-11-04",
+          "sourceUrl": "https://retailtechinnovationhub.com/home/2026/11/4/marks-and-spencer-taps-vusion-edgesense-platform-amid-retailers-store-modernisation-push",
+          "sourceName": "Retail Technology Innovation Hub"
+        }
+      ]
+    },
+    "majorCompanies": [],
+    "solutionProviders": [
+      {
+        "title": "2026 RTIH 이노베이션 어워드: 뷰전·프라이서·SOLUM, 영국 유통사와의 프로젝트로 수상",
+        "summary": "• 11월 4일 런던에서 열린 2026 RTIH 이노베이션 어워드에서 모리슨스가 종합 우승을 차지했다(11월 5일 보도).\n• SOLUM은 웨이트로즈와 함께 '가장 혁신적인 영국 유통사' 부문을, 뷰전은 케이버나(Kavanagh)와 '데이터 분석 기반 리테일 이니셔티브'를, 프라이서는 컴퍼니 숍 그룹과 '지속가능 리테일 혁신'을 수상했다.\n• 한샤우는 '리테일 미디어 혁신' 부문을, 포컬 시스템즈는 '신흥 리테일 기술' 부문을 수상했다.\n• 주최 측은 역대 최다 응모가 있었다고 밝혔다.",
+        "implications": "[🔵 트렌드] 영국 시상식에서 ESL 4개 주요 공급사가 모두 수상하며 ESL이 매장 혁신의 핵심 인프라로 인정받는 분위기다. [🟢 기회] SOLUM-웨이트로즈 협업이 '가장 혁신적인 영국 유통사'로 평가받아 영국 내 레퍼런스 마케팅에 활용할 수 있다. [🔴 위협] 한샤우의 리테일 미디어 부문 수상은 ESL 공급사 간 인스토어 미디어 경쟁이 본격화됐음을 보여준다.",
+        "imageUrl": "https://storage.googleapis.com/rtih-storage/32017/RTIH_Awards26_winners_49.jpg",
+        "pubDate": "2026-11-05",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/11/5/morrisons-waitrose-and-dunelm-take-top-honours-at-2026-rtih-innovation-awards-ceremony-in-london",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ],
+    "technology": [
+      {
+        "title": "JD스포츠, 제브라 RFID를 영국·아일랜드 414개 매장에 도입…매장 내 재고 가용률 98%",
+        "summary": "• JD스포츠가 제브라 테크놀로지스의 RFID 솔루션(TC2 모바일 컴퓨터+RFD40 UHF 리더)을 영국·아일랜드 414개 매장에 적용했다(11월 5일 보도).\n• 첫 매장은 76일 만에 가동했고 이후 주당 평균 26개 매장씩 약 3개월 만에 전체 도입을 마쳤다.\n• 제브라는 선반 가용률 98%, 보충 속도 20% 향상, 창고에서 매장으로 옮기는 재고량 95% 증가를 성과로 제시했다.\n• 재고 실사를 주 2회 또는 매일 수행할 수 있어 90~180일 단위 감사 대비 손실을 빠르게 파악한다. 체크포인트의 ItemOptix가 재고 통합 가시성을 제공한다.",
+        "implications": "[🔵 트렌드] 대형 유통사의 RFID 기반 실시간 재고 정확도 투자가 확산되고 있어 ESL과 연계한 재고·위치 데이터 활용이 중요해진다. [⚡ 액션] RFID·재고 플랫폼과의 ESL 연동(가격·재고 위치 매핑) 레퍼런스를 준비할 필요가 있다.",
+        "imageUrl": "https://storage.googleapis.com/rtih-storage/32011/JD-Sports.jpeg",
+        "pubDate": "2026-11-05",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/11/5/jd-sports-rolls-out-zebra-technologies-rfid-tech-across-414-stores-in-uk-and-ireland",
+        "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "아홀드 델하이즈 USA, NCR 보익스와 매장 POS·셀프계산대 현대화 확대",
+        "summary": "• 아홀드 델하이즈 USA가 NCR 보익스(Voyix)의 커머스 플랫폼으로 POS, 셀프계산대, 약국, 주유 부문을 현대화하는 다년 프로젝트를 확대한다(11월 3일 보도).\n• 새 POS 기술은 이미 100개 매장에 적용됐고 향후 수년에 걸쳐 확대된다.\n• CIO 앤 도지어는 더 일관된 기술 기반과 연결된 경험을 목표로 한다고 밝혔다.",
+        "implications": "[🔵 트렌드] 미국 대형 식품 유통사가 매장 IT 기반을 통합 현대화하는 흐름이어서, 통합 플랫폼 위에서 ESL 연동 가능성이 높아지는 인접 트렌드다.",
+        "imageUrl": "https://storage.googleapis.com/rtih-storage/31995/Ahold-Delhaize-USA.png",
+        "pubDate": "2026-11-03",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/11/3/ahold-delhaize-usa-ramps-up-in-store-technology-modernisation-push-with-ncr-voyix-technology",
+        "sourceName": "Retail Technology Innovation Hub"
+      },
+      {
+        "title": "모리슨스, AI 업무 자동화 기업 두보(Duvo)와 AI 도입 파트너십",
+        "summary": "• 영국 모리슨스가 업무 자동화 스타트업 두보(Duvo.ai)와 손잡고 기존 시스템 전반에서 AI를 확대할 영역을 찾는다(11월 3일 보도).\n• 두보는 먼저 사람·팀·시스템에 걸친 업무 프로세스를 매핑한 뒤 프로세스를 재설계하고 일상 업무의 AI 도입 경로를 수립한다.\n• 금전 조건은 공개되지 않았다. 두보는 로리크 그룹 창업자 토마시 추프르가 공동 창업했다.",
+        "implications": "[🔵 트렌드] 모리슨스는 뷰전 ESL 전 매장 도입에 이어 AI 기반 운영 혁신을 추진 중이며, ESL이 쌓는 매장 데이터가 AI 활용의 기반이 되는 인접 트렌드다.",
+        "imageUrl": "https://storage.googleapis.com/rtih-storage/31996/crunchyWAVE_Morrisons_Xmas_Pets_551.jpg",
+        "pubDate": "2026-11-03",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/11/3/morrisons-partners-with-duvo-as-uk-grocery-giant-eyes-opportunities-for-ai-adoption",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ]
+  }
+}

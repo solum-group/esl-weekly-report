@@ -1,0 +1,22 @@
+{
+  "weekId": "2026-10-26",
+  "weekLabel": "2026.10.26 ~ 2026.11.01",
+  "searchAnalysis": "**11월 9일(월) 소급 수집:** 목요일 run 누락 주차를 월요일 run에서 보완. RTIH 주간 요약 경유로 범위 내 1건(Walmart-Symbotic, 10/30) 포착. [커버리지] RTIH=/home·ESLs 태그 방문(ESL 태그 최신 10/15) / Retail Dive·Grocery Dive·Vusion·SOLUM·Retail Optimiser=WebFetch 권한 미응답(PROVENANCE_REQUIRED)으로 미확인 / 검색 대체. 해당 주 ESL 직접 기사는 미확인 상태.",
+  "sections": {
+    "industryTrends": [],
+    "customerAdoption": {},
+    "majorCompanies": [
+      {
+        "title": "월마트·심보틱, 미국 25개 지역 물류센터 자동화로 협력 확대(약 60억 달러)",
+        "summary": "• 월마트와 심보틱이 미국 25개 지역 물류센터에 자동화를 적용하는 파트너십을 확대하며, 초기 약 60억 달러를 수년간 투입한다(10월 30일 보도).\n• 심보틱의 BreakPack 낱개 피킹, SymMicro 이커머스 소형 풀필먼트, AI 기반 케이스 이동 조정 소프트웨어가 포함된다.\n• 월마트는 이를 통해 취급 상품 확대, 배송 속도 향상, 보충 안정성 제고를 기대한다.",
+        "implications": "[🔵 트렌드] 월마트가 공급망 자동화에 대규모 투자를 이어가며 매장·물류 전반의 디지털화를 가속하고 있다(전사 ESL 도입과 같은 맥락의 인접 트렌드).",
+        "imageUrl": "https://storage.googleapis.com/rtih-storage/31965/Walmart-Symbotic.jpeg",
+        "pubDate": "2026-10-30",
+        "sourceUrl": "https://retailtechinnovationhub.com/home/2026/10/30/walmart-and-symbotic-ramp-up-automation-and-ai-powered-supply-chain-transformation-push",
+        "sourceName": "Retail Technology Innovation Hub"
+      }
+    ],
+    "solutionProviders": [],
+    "technology": []
+  }
+}

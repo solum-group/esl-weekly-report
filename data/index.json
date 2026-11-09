@@ -198,5 +198,20 @@
     "weekId": "2026-10-19",
     "weekLabel": "2026.10.19 ~ 2026.10.25",
     "articleCount": 3
+  },
+  {
+    "weekId": "2026-10-26",
+    "weekLabel": "2026.10.26 ~ 2026.11.01",
+    "articleCount": 1
+  },
+  {
+    "weekId": "2026-11-02",
+    "weekLabel": "2026.11.02 ~ 2026.11.08",
+    "articleCount": 5
+  },
+  {
+    "weekId": "2026-11-09",
+    "weekLabel": "2026.11.09 ~ 2026.11.09",
+    "articleCount": 0
   }
 ]
